@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>acsTokenFetchUrl</key>
+	<string></string>
+	<key>isAADAuthEnabled</key>
+	<false/>
+	<key>aadClientId</key>
+	<string></string>
+	<key>aadTenantId</key>
+	<string></string>
+	<key>aadRedirectURI</key>
+	<string></string>
+	<key>aadScopes</key>
+	<array/>
+</dict>
+</plist>
