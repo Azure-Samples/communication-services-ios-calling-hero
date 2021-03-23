@@ -4,6 +4,10 @@ The sample is a native iOS application that uses the Azure Communication Service
 
 Additional documentation for this sample can be found on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/communication-services/samples/calling-hero-sample?pivots=platform-ios).
 
+## Known Issues
+
+Please refer to the [wiki](https://github.com/Azure-Samples/communication-services-ios-calling-hero/wiki/Known-Issues) for known issues related to this sample.
+
 ## Features
 
 - Start a new group call
