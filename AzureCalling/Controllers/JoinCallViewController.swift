@@ -10,29 +10,23 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     // MARK: Constants
 
     private let groupIdPlaceHolder: String = "ex. 4fe34380-81e5-11eb-a16e-6161a3176f61"
-    private let teamsLinkPlaceHolder: String = "ex. https://teams.microsoft.com/..."
 
     // MARK: Properties
 
     var callingContext: CallingContext!
 
-    private var joinCallType: JoinCallType = .groupCall
-
     // MARK: IBOutlets
 
     @IBOutlet weak var joinCallButton: UIRoundedButton!
-    @IBOutlet weak var joinIdTextField: UITextField!
-    @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var groupIdButton: UIButton!
-    @IBOutlet weak var meetingLinkButton: UIButton!
+    @IBOutlet weak var groupInputTextField: UITextField!
 
     // MARK: UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        joinIdTextField.delegate = self
-        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
+        groupInputTextField.delegate = self
+        groupInputTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
                                                                    attributes: [.foregroundColor: UIColor.systemGray])
         updateJoinCallButton(forInput: nil)
 
@@ -64,18 +58,10 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     // MARK: Navigation
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        let joinId = joinIdTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        switch joinCallType {
-        case .groupCall:
-            guard UUID(uuidString: joinId) != nil else {
-                promptInvalidJoinIdInput()
-                return false
-            }
-        case .teamsMeeting:
-            guard URL(string: joinId) != nil else {
-                promptInvalidJoinIdInput()
-                return false
-            }
+        let joinId = groupInputTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard UUID(uuidString: joinId) != nil else {
+            promptInvalidJoinIdInput()
+            return false
         }
         return true
     }
@@ -97,40 +83,15 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         }
 
         lobbyViewController.callingContext = callingContext
-        lobbyViewController.joinInput = joinIdTextField.text!
-        lobbyViewController.joinCallType = joinCallType
+
+        let groupId = UUID(uuidString: groupInputTextField.text!)?.uuidString
+        lobbyViewController.groupId = groupId
     }
 
-    private func promptInvalidJoinIdInput() {
-        var alertMessgae = ""
-        switch joinCallType {
-        case .groupCall:
-            alertMessgae = "The meeting ID entered is invalid. Please try again."
-        case .teamsMeeting:
-            alertMessgae = "The meeting link entered is invalid. Please try again."
-        }
+      private func promptInvalidJoinIdInput() {
+        let alertMessgae = "The meeting ID entered is invalid. Please try again."
         let alert = UIAlertController(title: "Unable to join", message: alertMessgae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
         self.present(alert, animated: true, completion: nil)
-    }
-
-    // MARK: Actions
-
-    @IBAction func selectedGroupCall(_ sender: Any) {
-        joinIdTextField.removeFromSuperview()
-        contentStackView.insertArrangedSubview(joinIdTextField, at: 1)
-        joinIdTextField.placeholder = groupIdPlaceHolder
-        joinCallType = .groupCall
-        groupIdButton.isSelected = true
-        meetingLinkButton.isSelected = false
-    }
-
-    @IBAction func selectedTeamsMeeting(_ sender: Any) {
-        joinIdTextField.removeFromSuperview()
-        contentStackView.insertArrangedSubview(joinIdTextField, at: 2)
-        joinIdTextField.placeholder = teamsLinkPlaceHolder
-        joinCallType = .teamsMeeting
-        groupIdButton.isSelected = false
-        meetingLinkButton.isSelected = true
     }
 }
