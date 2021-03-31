@@ -286,18 +286,6 @@ class CallingContext: NSObject {
 
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
-        participantsEventsAdapter?.onStateChanged = { [weak self] remoteParticipant in
-            guard let self = self else {
-                return
-            }
-            guard self.displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
-                  remoteParticipant.state == .connected,
-                  let userIdentifier = remoteParticipant.identifier.stringValue else {
-                return
-            }
-            self.displayedRemoteParticipants.append(forKey: userIdentifier, value: remoteParticipant)
-            self.notifyRemoteParticipantsUpdated()
-        }
 
         participantsEventsAdapter?.onIsSpeakingChanged = { [weak self] remoteParticipant in
             guard let self = self else {
