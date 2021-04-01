@@ -262,6 +262,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recordingActiveChangeUpdated(_:)), name: .onRecordingActiveChangeUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appOutOfFocus(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appIntoFocus(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         onCallStateUpdated()
         meetingInfoViewUpdate()
         initParticipantViews()
@@ -542,6 +544,16 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         default:
             break
         }
+    }
+
+    @objc func appOutOfFocus(_ notification: Notification) {
+        print("appOutOfFocus")
+        callingContext.pauseVideo()
+    }
+
+    @objc func appIntoFocus(_ notification: Notification) {
+        print("appIntoFocus")
+        callingContext.resumeVideo()
     }
 
     func promptForFeedback() {

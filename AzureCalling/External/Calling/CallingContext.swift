@@ -25,6 +25,7 @@ class CallingContext: NSObject {
     private (set) var joinId: String!
     private (set) var displayName: String!
     private (set) var isCameraPreferredOn: Bool = false
+    private (set) var isVideoOnHold: Bool = false
     private (set) var displayedRemoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private (set) var remoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private var localVideoStream: LocalVideoStream?
@@ -170,6 +171,18 @@ class CallingContext: NSObject {
         }
     }
 
+    func resumeVideo() {
+        if isVideoOnHold {
+            startVideo { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                self.isVideoOnHold = false
+                print("Local video resumed successfully")
+            }
+        }
+    }
+
     func stopVideo(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         isCameraPreferredOn = false
         self.call?.stopVideo(stream: self.localVideoStream) { (error) in
@@ -180,6 +193,18 @@ class CallingContext: NSObject {
             }
             print("Local video stopped successfully")
             completionHandler(.success(()))
+        }
+    }
+
+    func pauseVideo() {
+        if isCameraPreferredOn {
+            stopVideo { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                self.isVideoOnHold = true
+                print("Local video paused successfully")
+            }
         }
     }
 
