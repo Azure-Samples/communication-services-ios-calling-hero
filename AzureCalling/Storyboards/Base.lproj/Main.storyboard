@@ -75,8 +75,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Join a Call" id="vl3-Cd-bdU"/>
                     <connections>
-                        <outlet property="groupInputTextField" destination="TwH-Ic-aMc" id="5Sf-88-MCR"/>
                         <outlet property="joinCallButton" destination="hwl-9h-PR7" id="GAP-R6-E49"/>
+                        <outlet property="joinIdTextField" destination="TwH-Ic-aMc" id="pS7-5h-r7g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
