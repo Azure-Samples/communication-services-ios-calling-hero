@@ -261,6 +261,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recordingActiveChangeUpdated(_:)), name: .onRecordingActiveChangeUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(transcriptionActiveChangeUpdated(_:)), name: .onTranscriptionActiveChangeUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
         onCallStateUpdated()
         meetingInfoViewUpdate()
@@ -521,10 +522,46 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func recordingActiveChangeUpdated(_ notification: Notification) {
-        guard let isRecordingActive = callingContext?.isRecordingActive else {
+        guard let isRecordingActive = callingContext?.isRecordingActive,
+              let isTranscriptionActive = callingContext?.isTranscriptionActive else {
             return
         }
-        let notificationText = isRecordingActive ? meetingRecordingActiveText : meetingRecordingStopText
+
+        let notificationText: NSAttributedString = {
+            switch (isRecordingActive, isTranscriptionActive) {
+            case (true, false):
+                return meetingRecordingActiveText
+            case (true, true):
+                return meetingRecordingAndTranscriptionActiveText
+            case (false, true):
+                return meetingRecordingStopTranscriptionActiveText
+            default:
+                return meetingRecordingStopText
+            }
+        }()
+
+        messageBannerView.showBannerMessage(notificationText)
+    }
+
+    @objc func transcriptionActiveChangeUpdated(_ notification: Notification) {
+        guard let isRecordingActive = callingContext?.isRecordingActive,
+              let isTranscriptionActive = callingContext?.isTranscriptionActive else {
+            return
+        }
+
+        let notificationText: NSAttributedString = {
+            switch (isRecordingActive, isTranscriptionActive) {
+            case (false, true):
+                return meetingTranscriptionActiveText
+            case (true, true):
+                return meetingRecordingAndTranscriptionActiveText
+            case (true, false):
+                return meetingRecordingActiveTranscriptionStopText
+            default:
+                return meetingTranscriptionStopText
+            }
+        }()
+
         messageBannerView.showBannerMessage(notificationText)
     }
 
@@ -593,8 +630,8 @@ extension CallViewController: HangupConfirmationViewControllerDelegate {
 
 extension CallViewController {
     var meetingRecordingActiveText: NSAttributedString {
-        return AttributedStringFactory.customizedString(title: "Recording and transcription have started. ",
-                                                        body: "By attending this meeting, you consent to being included. ",
+        return AttributedStringFactory.customizedString(title: "Recording has started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be recorded. ",
                                                         linkDisplay: "Privacy policy",
                                                         link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
     }
@@ -606,4 +643,38 @@ extension CallViewController {
                                                         link: "https://support.microsoft.com/en-us/office/record-a-meeting-in-teams-34dfbe7f-b07d-4a27-b4c6-de62f1348c24")
     }
 
+    var meetingTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription has started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be transcribed. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingTranscriptionStopText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription is being saved. ",
+                                                        body: "Transcription has stopped. ",
+                                                        linkDisplay: "Learn more",
+                                                        link: "https://support.microsoft.com/en-us/office/record-a-meeting-in-teams-34dfbe7f-b07d-4a27-b4c6-de62f1348c24")
+    }
+
+    var meetingRecordingAndTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording and transcription have started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be recorded and transcribed. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingRecordingStopTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording has stopped. ",
+                                                        body: "You're now only transcribing this meeting. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingRecordingActiveTranscriptionStopText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription has stopped. ",
+                                                        body: "You're now only recording this meeting. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
 }
