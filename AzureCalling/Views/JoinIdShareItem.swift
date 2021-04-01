@@ -6,13 +6,14 @@
 import UIKit
 import LinkPresentation
 
-class GroupIdShareItem: NSObject, UIActivityItemSource {
-    private static let shareTitle: String = "Share Group Call ID"
+class JoinIdShareItem: NSObject, UIActivityItemSource {
 
-    private var groupId: String
+    private var joinId: String
+    private var shareTitle: String
 
-    init(groupId: String) {
-        self.groupId = groupId
+    init(joinId: String, shareTitle: String) {
+        self.joinId = joinId
+        self.shareTitle = shareTitle
     }
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
@@ -20,12 +21,12 @@ class GroupIdShareItem: NSObject, UIActivityItemSource {
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        return groupId
+        return joinId
     }
 
     func activityViewControllerLinkMetadata(_: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
-        metadata.title = GroupIdShareItem.shareTitle
+        metadata.title = shareTitle
         return metadata
     }
 }

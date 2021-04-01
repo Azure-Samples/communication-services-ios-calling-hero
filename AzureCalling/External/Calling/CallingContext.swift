@@ -14,7 +14,7 @@ class CallingContext: NSObject {
     private static let remoteParticipantsDisplayed: Int = 3
 
     // MARK: Properties
-    private (set) var groupId: String!
+    private (set) var joinId: String!
     private (set) var displayName: String!
     private (set) var isCameraPreferredOn: Bool = false
     private (set) var displayedRemoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
@@ -28,6 +28,8 @@ class CallingContext: NSObject {
     private var call: Call?
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
+
+    var callType: JoinCallType = .groupCall
 
     var participantCount: Int {
         let remoteParticipantCount = call?.remoteParticipants?.count ?? 0
@@ -83,12 +85,19 @@ class CallingContext: NSObject {
             joinCallOptions!.audioOptions = AudioOptions()
             joinCallOptions!.audioOptions.muted = joinConfig.isMicrophoneMuted
 
-            let groupCallContext = GroupCallLocator(groupId: UUID(uuidString: joinConfig.groupId!)!)
+            var joinLocator: JoinMeetingLocator!
+            let joinIdStr = joinConfig.joinId?.trimmingCharacters(in: .whitespacesAndNewlines) ?? UUID().uuidString
+            switch joinConfig.callType {
+            case .groupCall:
+                let groupId = UUID(uuidString: joinIdStr) ?? UUID()
+                joinLocator = GroupCallLocator(groupId: groupId)!
+            }
 
-            self.call = self.callAgent?.join(with: groupCallContext, joinCallOptions: joinCallOptions)
+            self.call = self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions)
             self.call?.delegate = self
 
-            self.groupId = joinConfig.groupId!
+            self.joinId = joinIdStr
+            self.callType = joinConfig.callType
             self.displayName = joinConfig.displayName
             self.isCameraPreferredOn = joinConfig.isCameraOn
             completionHandler(.success(()))
@@ -377,11 +386,4 @@ extension CallingContext: CallDelegate {
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
-}
-
-class JoinCallConfig {
-    var groupId: String?
-    var isMicrophoneMuted: Bool! = false
-    var isCameraOn: Bool! = false
-    var displayName: String!
 }

@@ -43,6 +43,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var localVideoViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: UIViewController events
 
@@ -183,7 +184,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onShare(_ sender: UIButton) {
-        let shareItems = [GroupIdShareItem(groupId: (callingContext.groupId)!)]
+        let shareTitle = "Share Group Call ID"
+        let shareItems = [JoinIdShareItem(joinId: callingContext.joinId, shareTitle: shareTitle)]
         let activityController = UIActivityViewController(activityItems: shareItems as [Any], applicationActivities: nil)
 
         // The UIActivityViewController's has non-null popoverPresentationController property when running on iPad
@@ -251,6 +253,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.toggleDisplay()
         meetingInfoViewUpdate()
         initParticipantViews()
+        activityIndicator.stopAnimating()
     }
 
     private func updateToggleVideoButtonState() {

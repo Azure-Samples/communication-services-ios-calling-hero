@@ -559,6 +559,9 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="lg0-tM-d4x">
+                                        <rect key="frame" x="188.5" y="379.5" width="37" height="37"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="7vP-e8-B0s"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -566,8 +569,10 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="0pb-xG-5G6" secondAttribute="trailing" id="1Pt-GZ-lLl"/>
                                     <constraint firstItem="0pb-xG-5G6" firstAttribute="leading" secondItem="0Uf-h4-faT" secondAttribute="leading" id="C2d-ws-LsE"/>
+                                    <constraint firstItem="lg0-tM-d4x" firstAttribute="centerY" secondItem="0Uf-h4-faT" secondAttribute="centerY" id="S4B-Po-Gda"/>
                                     <constraint firstAttribute="bottom" secondItem="jhS-S6-A9U" secondAttribute="bottom" constant="8" id="pTn-uN-fdj"/>
                                     <constraint firstAttribute="trailing" secondItem="jhS-S6-A9U" secondAttribute="trailing" constant="8" id="zAm-e2-11L"/>
+                                    <constraint firstItem="lg0-tM-d4x" firstAttribute="centerX" secondItem="0Uf-h4-faT" secondAttribute="centerX" id="zHv-S4-emR"/>
                                     <constraint firstItem="0pb-xG-5G6" firstAttribute="top" secondItem="0Uf-h4-faT" secondAttribute="top" id="zZN-8U-evs"/>
                                 </constraints>
                                 <connections>
@@ -772,6 +777,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="wWt-8f-KsL"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="lg0-tM-d4x" id="ntP-cV-e3H"/>
                         <outlet property="bottomControlBar" destination="eoL-Sb-q33" id="ahH-AE-jbv"/>
                         <outlet property="contentViewBottomConstraint" destination="8wi-xl-yt3" id="WNc-3s-tXE"/>
                         <outlet property="contentViewTrailingContraint" destination="dAf-Y3-TMm" id="sth-wC-t4j"/>

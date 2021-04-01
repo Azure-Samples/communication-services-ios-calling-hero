@@ -14,7 +14,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     var callingContext: CallingContext!
     var previewRenderer: VideoStreamRenderer?
     var rendererView: RendererView?
-    var groupId: String?
+    var joinInput: String?
+    var joinCallType: JoinCallType = .groupCall
 
     private var displayName: String = ""
 
@@ -75,8 +76,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     // MARK: Private Functions
 
     private func setupUI() {
-        let isGroupIdValid = !(groupId?.isEmpty ?? true)
-        let startButtonTitle = isGroupIdValid ? "Join call" : "Start a call"
+        let isJoinInputValid = !(joinInput?.isEmpty ?? true)
+        let startButtonTitle = isJoinInputValid ? "Join call" : "Start a call"
         startCallButton.setTitle(startButtonTitle, for: .normal)
         nameTextField.delegate = self
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
@@ -224,16 +225,12 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
             fatalError("Unexpected destination: \(destination)")
         }
 
-        let isGroupIdValid = !(groupId?.isEmpty ?? true)
-        let validGroupId = isGroupIdValid ? groupId! : UUID().uuidString
-
         cleanRenderView()
-
-        let joinCallConfig = JoinCallConfig()
-        joinCallConfig.groupId = validGroupId
-        joinCallConfig.isMicrophoneMuted = toggleMicrophoneButton.isSelected
-        joinCallConfig.isCameraOn = !toggleVideoButton.isSelected
-        joinCallConfig.displayName = displayName
+        let joinCallConfig = JoinCallConfig(joinId: joinInput,
+                                            isMicrophoneMuted: toggleMicrophoneButton.isSelected,
+                                            isCameraOn: !toggleVideoButton.isSelected,
+                                            displayName: displayName,
+                                            callType: joinCallType)
 
         callViewController.joinCallConfig = joinCallConfig
         callViewController.callingContext = callingContext

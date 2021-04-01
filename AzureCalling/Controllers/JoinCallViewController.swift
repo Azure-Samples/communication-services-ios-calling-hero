@@ -15,18 +15,20 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     var callingContext: CallingContext!
 
+    private var joinCallType: JoinCallType = .groupCall
+
     // MARK: IBOutlets
 
     @IBOutlet weak var joinCallButton: UIRoundedButton!
-    @IBOutlet weak var groupInputTextField: UITextField!
+    @IBOutlet weak var joinIdTextField: UITextField!
 
     // MARK: UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        groupInputTextField.delegate = self
-        groupInputTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
+        joinIdTextField.delegate = self
+        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
                                                                    attributes: [.foregroundColor: UIColor.systemGray])
         updateJoinCallButton(forInput: nil)
 
@@ -58,7 +60,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     // MARK: Navigation
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        let joinId = groupInputTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let joinId = joinIdTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         guard UUID(uuidString: joinId) != nil else {
             promptInvalidJoinIdInput()
             return false
@@ -83,9 +85,8 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         }
 
         lobbyViewController.callingContext = callingContext
-
-        let groupId = UUID(uuidString: groupInputTextField.text!)?.uuidString
-        lobbyViewController.groupId = groupId
+        lobbyViewController.joinInput = joinIdTextField.text!
+        lobbyViewController.joinCallType = joinCallType
     }
 
       private func promptInvalidJoinIdInput() {
