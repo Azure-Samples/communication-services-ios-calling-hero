@@ -521,7 +521,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    @objc func recordingActiveChangeUpdated(_ notification: Notification) {
+    private func toggleMeetingCaptureNotification(recording: NSAttributedString, transcribing: NSAttributedString, stopped: NSAttributedString) {
         guard let isRecordingActive = callingContext?.isRecordingActive,
               let isTranscriptionActive = callingContext?.isTranscriptionActive else {
             return
@@ -530,39 +530,31 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let notificationText: NSAttributedString = {
             switch (isRecordingActive, isTranscriptionActive) {
             case (true, false):
-                return meetingRecordingActiveText
+                return recording
+            case (false, true):
+                return transcribing
             case (true, true):
                 return meetingRecordingAndTranscriptionActiveText
-            case (false, true):
-                return meetingRecordingStopTranscriptionActiveText
-            default:
-                return meetingRecordingStopText
+            case (false, false):
+                return stopped
             }
         }()
 
         messageBannerView.showBannerMessage(notificationText)
     }
 
+    @objc func recordingActiveChangeUpdated(_ notification: Notification) {
+        toggleMeetingCaptureNotification(
+            recording: meetingRecordingActiveText,
+            transcribing: meetingRecordingStopTranscriptionActiveText,
+            stopped: meetingRecordingStopText)
+    }
+
     @objc func transcriptionActiveChangeUpdated(_ notification: Notification) {
-        guard let isRecordingActive = callingContext?.isRecordingActive,
-              let isTranscriptionActive = callingContext?.isTranscriptionActive else {
-            return
-        }
-
-        let notificationText: NSAttributedString = {
-            switch (isRecordingActive, isTranscriptionActive) {
-            case (false, true):
-                return meetingTranscriptionActiveText
-            case (true, true):
-                return meetingRecordingAndTranscriptionActiveText
-            case (true, false):
-                return meetingRecordingActiveTranscriptionStopText
-            default:
-                return meetingTranscriptionStopText
-            }
-        }()
-
-        messageBannerView.showBannerMessage(notificationText)
+        toggleMeetingCaptureNotification(
+            recording: meetingRecordingActiveTranscriptionStopText,
+            transcribing: meetingTranscriptionActiveText,
+            stopped: meetingTranscriptionStopText)
     }
 
     @objc func onCallStateUpdated(_ notification: Notification? = nil) {
