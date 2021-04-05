@@ -35,8 +35,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
-    @IBOutlet weak var messageBannerView: MessageBannerStackView!
-    @IBOutlet weak var waitAdmissionView: UIView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
     @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
@@ -186,15 +184,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onShare(_ sender: UIButton) {
-        var shareTitle: String!
-        switch callingContext.callType {
-        case .groupCall:
-            shareTitle = "Share Group Call ID"
-        case .teamsMeeting:
-            shareTitle = "Share Meeting Link"
-        }
+        let shareTitle = "Share Group Call ID"
         let shareItems = [JoinIdShareItem(joinId: callingContext.joinId, shareTitle: shareTitle)]
-
         let activityController = UIActivityViewController(activityItems: shareItems as [Any], applicationActivities: nil)
 
         // The UIActivityViewController's has non-null popoverPresentationController property when running on iPad
@@ -253,18 +244,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func contentViewDidTapped(_ sender: UITapGestureRecognizer) {
-        if callingContext.callingInterfaceState == .connected {
-            infoHeaderView.toggleDisplay()
-        }
+        infoHeaderView.toggleDisplay()
     }
 
     private func onJoinCall() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(recordingActiveChangeUpdated(_:)), name: .onRecordingActiveChangeUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: NSNotification.Name(rawValue: "RemoteParticipantsUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appOutOfFocus(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appIntoFocus(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
-        onCallStateUpdated()
+
+        infoHeaderView.toggleDisplay()
         meetingInfoViewUpdate()
         initParticipantViews()
         activityIndicator.stopAnimating()
@@ -522,30 +510,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    @objc func recordingActiveChangeUpdated(_ notification: Notification) {
-        guard let isRecordingActive = callingContext?.isRecordingActive else {
-            return
-        }
-        let notificationText = isRecordingActive ? meetingRecordingActiveText : meetingRecordingStopText
-        messageBannerView.showBannerMessage(notificationText)
-    }
-
-    @objc func onCallStateUpdated(_ notification: Notification? = nil) {
-        switch callingContext.callingInterfaceState {
-        case .connected:
-            waitAdmissionView.isHidden = true
-            infoHeaderView.toggleDisplay()
-        case .waitingAdmission:
-            waitAdmissionView.isHidden = false
-        case .removed:
-            promptForTeamsBeenRemoved()
-        case .admissionDenied:
-            promptForTeamsAdmissionDenied()
-        default:
-            break
-        }
-    }
-
     @objc func appOutOfFocus(_ notification: Notification) {
         print("appOutOfFocus")
         callingContext.pauseVideo()
@@ -555,7 +519,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         print("appIntoFocus")
         callingContext.resumeVideo()
     }
-
+    
     func promptForFeedback() {
         let feedbackViewController = FeedbackViewController()
         feedbackViewController.onDoneBlock = { [weak self] didTapFeedback in
@@ -566,33 +530,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         navigationController?.pushViewController(feedbackViewController, animated: true)
     }
-
-    private func promptForTeamsAdmissionDenied() {
-        presentAlert(title: "Sorry, you were denied access to the meeting") { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-    }
-
-    private func promptForTeamsBeenRemoved() {
-        presentAlert(title: "You've been removed from this meeting") { [weak self] in
-            self?.promptForFeedback()
-        }
-    }
-
-    private func presentAlert(title: String, dismissHandler: @escaping (() -> Void)) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default) { _ in
-            dismissHandler()
-        })
-
-        if presentedViewController != nil {
-            dismiss(animated: false) { [weak self] in
-                self?.present(alertController, animated: true, completion: nil)
-            }
-        } else {
-            present(alertController, animated: true, completion: nil)
-        }
-    }
 }
 
 extension CallViewController: HangupConfirmationViewControllerDelegate {
@@ -601,21 +538,4 @@ extension CallViewController: HangupConfirmationViewControllerDelegate {
         promptForFeedback()
         cleanViewRendering()
     }
-}
-
-extension CallViewController {
-    var meetingRecordingActiveText: NSAttributedString {
-        return AttributedStringFactory.customizedString(title: "Recording and transcription have started. ",
-                                                        body: "By attending this meeting, you consent to being included. ",
-                                                        linkDisplay: "Privacy policy",
-                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
-    }
-
-    var meetingRecordingStopText: NSAttributedString {
-        return AttributedStringFactory.customizedString(title: "Recording is being saved. ",
-                                                        body: "Recording has stopped. ",
-                                                        linkDisplay: "Learn more",
-                                                        link: "https://support.microsoft.com/en-us/office/record-a-meeting-in-teams-34dfbe7f-b07d-4a27-b4c6-de62f1348c24")
-    }
-
 }
