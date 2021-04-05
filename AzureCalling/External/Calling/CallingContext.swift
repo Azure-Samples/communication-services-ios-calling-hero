@@ -134,7 +134,7 @@ class CallingContext: NSObject {
         }
     }
 
-    func startVideo(completionHandler: @escaping (LocalVideoStream?) -> Void) {
+    func startLocalVideoStream(completionHandler: @escaping (LocalVideoStream?) -> Void) {
         isCameraPreferredOn = true
         withLocalVideoStream { [weak self] localVideoStream in
             guard let self = self else {
@@ -158,19 +158,26 @@ class CallingContext: NSObject {
         }
     }
 
-    func resumeVideo() {
+    func resumeLocalVideoStream(completionHandler: @escaping (LocalVideoStream?) -> Void) {
         if isVideoOnHold {
-            startVideo { [weak self] _ in
+            startLocalVideoStream { [weak self] localVideoStream in
                 guard let self = self else {
                     return
                 }
+
+                guard localVideoStream != nil else {
+                    completionHandler(nil)
+                    return
+                }
+
                 self.isVideoOnHold = false
                 print("Local video resumed successfully")
+                completionHandler(self.localVideoStream)
             }
         }
     }
 
-    func stopVideo(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    func stopLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         isCameraPreferredOn = false
         self.call?.stopVideo(stream: self.localVideoStream) { (error) in
             if error != nil {
@@ -183,14 +190,20 @@ class CallingContext: NSObject {
         }
     }
 
-    func pauseVideo() {
+    func pauseLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         if isCameraPreferredOn {
-            stopVideo { [weak self] _ in
+            self.stopLocalVideoStream { [weak self] result in
                 guard let self = self else {
+                    return
+                }
+                if case .failure(let error) = result {
+                    print("ERROR: Local video failed to pause. \(error)")
+                    completionHandler(.failure(error))
                     return
                 }
                 self.isVideoOnHold = true
                 print("Local video paused successfully")
+                completionHandler(.success(()))
             }
         }
     }

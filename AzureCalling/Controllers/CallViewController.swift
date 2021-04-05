@@ -202,7 +202,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func onToggleVideo(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            callingContext.stopVideo { [weak self] _ in
+            callingContext.stopLocalVideoStream { [weak self] _ in
                 guard let self = self else {
                     return
                 }
@@ -215,7 +215,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
         } else {
-            callingContext.startVideo { [weak self] localVideoStream in
+            callingContext.startLocalVideoStream { [weak self] localVideoStream in
                 guard let self = self else {
                     return
                 }
@@ -249,8 +249,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: NSNotification.Name(rawValue: "RemoteParticipantsUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appOutOfFocus(_:)), name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appIntoFocus(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
         infoHeaderView.toggleDisplay()
         meetingInfoViewUpdate()
@@ -510,16 +510,14 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    @objc func appOutOfFocus(_ notification: Notification) {
-        print("appOutOfFocus")
-        callingContext.pauseVideo()
+    @objc func appResignActive(_ notification: Notification) {
+        callingContext.pauseLocalVideoStream { _ in }
     }
 
-    @objc func appIntoFocus(_ notification: Notification) {
-        print("appIntoFocus")
-        callingContext.resumeVideo()
+    @objc func appAssignActive(_ notification: Notification) {
+        callingContext.resumeLocalVideoStream { _ in }
     }
-    
+
     func promptForFeedback() {
         let feedbackViewController = FeedbackViewController()
         feedbackViewController.onDoneBlock = { [weak self] didTapFeedback in
