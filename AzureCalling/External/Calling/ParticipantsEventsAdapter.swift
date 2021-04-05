@@ -6,8 +6,13 @@
 import AzureCommunicationCalling
 
 class ParticipantsEventsAdapter: NSObject, RemoteParticipantDelegate {
+    var onStateChanged: ((RemoteParticipant) -> Void) = {_ in }
     var onVideoStreamsUpdated: ((RemoteParticipant) -> Void) = {_ in }
     var onIsSpeakingChanged: ((RemoteParticipant) -> Void) = {_ in }
+
+    func onStateChanged(_ remoteParticipant: RemoteParticipant!, args: PropertyChangedEventArgs!) {
+        onStateChanged(remoteParticipant)
+    }
 
     func onVideoStreamsUpdated(_ remoteParticipant: RemoteParticipant, args: RemoteVideoStreamsEventArgs) {
         onVideoStreamsUpdated(remoteParticipant)
