@@ -3,16 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>communicationTokenFetchUrl</key>
-	<string></string>
+	<string>https://wamo-demo-acs-tokenservice.azurewebsites.net/userToken</string>
 	<key>isAADAuthEnabled</key>
 	<false/>
 	<key>aadClientId</key>
-	<string></string>
+	<string>4165a581-6134-4585-babc-beea5647754a</string>
 	<key>aadTenantId</key>
-	<string></string>
+	<string>7bcd2220-f576-41b0-b47a-de4b6f2ebac1</string>
 	<key>aadRedirectURI</key>
-	<string></string>
+	<string>msauth.com.azure.samples.communication.calling://auth</string>
 	<key>aadScopes</key>
-	<array/>
+	<array>
+		<string>https://acsuidev.onmicrosoft.com/sample-apps-apis/user_impersonation</string>
+	</array>
 </dict>
 </plist>
