@@ -521,7 +521,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    private func toggleMeetingCaptureNotification(recording: NSAttributedString, transcribing: NSAttributedString, stopped: NSAttributedString) {
+    private func toggleMeetingCaptureNotification(recording: NSAttributedString, transcribing: NSAttributedString, bothActive: NSAttributedString, stopped: NSAttributedString) {
         guard let isRecordingActive = callingContext?.isRecordingActive,
               let isTranscriptionActive = callingContext?.isTranscriptionActive else {
             return
@@ -534,7 +534,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             case (false, true):
                 return transcribing
             case (true, true):
-                return meetingRecordingAndTranscriptionActiveText
+                return bothActive
             case (false, false):
                 return stopped
             }
@@ -547,6 +547,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMeetingCaptureNotification(
             recording: meetingRecordingActiveText,
             transcribing: meetingRecordingStopTranscriptionActiveText,
+            bothActive: meetingRecordingAndTranscriptionActiveText,
             stopped: meetingRecordingStopText)
     }
 
@@ -554,6 +555,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMeetingCaptureNotification(
             recording: meetingRecordingActiveTranscriptionStopText,
             transcribing: meetingTranscriptionActiveText,
+            bothActive: meetingRecordingAndTranscriptionActiveText,
             stopped: meetingTranscriptionStopText)
     }
 
