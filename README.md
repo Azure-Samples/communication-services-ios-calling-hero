@@ -17,7 +17,6 @@ Additional documentation for this sample can be found on [Microsoft Docs](https:
 
 - Start a new group call
 - Join an existing group call
-- Join an existing Teams Meeting (For instructions: [Teams Tenant Interoperability](https://docs.microsoft.com/azure/communication-services/concepts/teams-interop))
 - Render remote participant video streams
 - Turning local video stream from camera on/off
 - Mute/unmute local microphone audio
