@@ -7,6 +7,14 @@ import Foundation
 import AzureCommunicationCalling
 import AVFoundation
 
+enum CallingInterfaceState {
+    case connecting
+    case waitingAdmission
+    case admissionDenied
+    case connected
+    case removed
+}
+
 public typealias TokenFetcher = (@escaping (String?, Error?) -> Void) -> Void
 
 class CallingContext: NSObject {
@@ -29,8 +37,9 @@ class CallingContext: NSObject {
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
 
+    var callingInterfaceState: CallingInterfaceState = .connecting
     var callType: JoinCallType = .groupCall
-
+    var isRecordingActive: Bool = false
     var participantCount: Int {
         let remoteParticipantCount = call?.remoteParticipants?.count ?? 0
         return remoteParticipantCount + 1
@@ -70,6 +79,7 @@ class CallingContext: NSObject {
 
     func joinCall(_ joinConfig: JoinCallConfig, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.callAgent = nil
+        self.callingInterfaceState = .connecting
         self.setupCallAgent(displayName: joinConfig.displayName) { [weak self] _ in
             guard let self = self else {
                 return
@@ -91,6 +101,9 @@ class CallingContext: NSObject {
             case .groupCall:
                 let groupId = UUID(uuidString: joinIdStr) ?? UUID()
                 joinLocator = GroupCallLocator(groupId: groupId)!
+            case .teamsMeeting:
+                joinLocator = TeamsMeetingLinkLocator(meetingLink: joinIdStr)
+                self.callingInterfaceState = .waitingAdmission
             }
 
             self.call = self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions)
@@ -295,6 +308,18 @@ class CallingContext: NSObject {
 
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
+        participantsEventsAdapter?.onStateChanged = { [weak self] remoteParticipant in
+            guard let self = self else {
+                return
+            }
+            guard self.displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
+                  remoteParticipant.state == .connected,
+                  let userIdentifier = remoteParticipant.identifier.stringValue else {
+                return
+            }
+            self.displayedRemoteParticipants.append(forKey: userIdentifier, value: remoteParticipant)
+            self.notifyRemoteParticipantsUpdated()
+        }
 
         participantsEventsAdapter?.onIsSpeakingChanged = { [weak self] remoteParticipant in
             guard let self = self else {
@@ -323,13 +348,21 @@ class CallingContext: NSObject {
 extension CallingContext: CallDelegate {
     func onStateChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
         switch call.state {
+        case .none:
+            if callType == .teamsMeeting {
+                callingInterfaceState = callingInterfaceState == .connected ? .removed : .admissionDenied
+            }
         case .connected:
+            callingInterfaceState = .connected
             addRemoteParticipants(call.remoteParticipants)
             updateDisplayedRemoteParticipants()
             notifyRemoteParticipantsUpdated()
+        case .inLobby:
+            callingInterfaceState = .waitingAdmission
         default:
             break
         }
+        notifyOnCallStateUpdated()
     }
 
     func onRemoteParticipantsUpdated(_ call: Call, args: ParticipantsUpdatedEventArgs) {
@@ -337,6 +370,14 @@ extension CallingContext: CallDelegate {
         addRemoteParticipants(args.addedParticipants)
         updateDisplayedRemoteParticipants()
         notifyRemoteParticipantsUpdated()
+    }
+
+    func onIsRecordingActiveChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
+        let newRecordingActive = call.isRecordingActive
+        if newRecordingActive != isRecordingActive {
+            isRecordingActive = newRecordingActive
+            notifyOnRecordingActiveChangeUpdated()
+        }
     }
 
     private func findInactiveSpeakerToSwap(with remoteParticipant: RemoteParticipant, id: String) {
@@ -371,6 +412,7 @@ extension CallingContext: CallDelegate {
 
     private func updateDisplayedRemoteParticipants() {
         for remoteParticipant in remoteParticipants {
+            //if a remote participant is waiting permission to join a Teams meeting, his state is .idle
             if displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
                remoteParticipant.state != .idle,
                let userIdentifier = remoteParticipant.identifier.stringValue {
@@ -382,8 +424,18 @@ extension CallingContext: CallDelegate {
     private func notifyRemoteParticipantsUpdated() {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
     }
+
+    private func notifyOnRecordingActiveChangeUpdated() {
+        NotificationCenter.default.post(name: .onRecordingActiveChangeUpdated, object: nil)
+    }
+
+    private func notifyOnCallStateUpdated() {
+        NotificationCenter.default.post(name: .onCallStateUpdated, object: nil)
+    }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
+    static let onCallStateUpdated = Notification.Name("OnCallStateUpdated")
+    static let onRecordingActiveChangeUpdated = Notification.Name("OnRecordingActiveChangeUpdated")
 }
