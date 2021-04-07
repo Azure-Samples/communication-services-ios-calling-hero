@@ -16,6 +16,7 @@ class CallingContext: NSObject {
     // MARK: Properties
     private (set) var joinId: String!
     private (set) var displayName: String!
+    private (set) var isMuted: Bool = false
     private (set) var isCameraPreferredOn: Bool = false
     private (set) var isVideoOnHold: Bool = false
     private (set) var displayedRemoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
@@ -230,6 +231,7 @@ class CallingContext: NSObject {
                 completionHandler(.failure(error!))
                 return
             }
+            self.isMuted = true
             print("Mute successful")
             completionHandler(.success(()))
         })
@@ -242,6 +244,7 @@ class CallingContext: NSObject {
                 completionHandler(.failure(error!))
                 return
             }
+            self.isMuted = false
             print("Unmute successful")
             completionHandler(.success(()))
         })
@@ -348,6 +351,13 @@ class CallingContext: NSObject {
 
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
+
+        participantsEventsAdapter?.onIsMutedChanged = { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.notifyRemoteParticipantsUpdated()
+        }
 
         participantsEventsAdapter?.onIsSpeakingChanged = { [weak self] remoteParticipant in
             guard let self = self else {

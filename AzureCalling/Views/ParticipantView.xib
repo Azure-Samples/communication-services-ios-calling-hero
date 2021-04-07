@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="CallingSampleApp" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="AzureCalling" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
                 <outlet property="participantLabel" destination="O96-SG-7gC" id="Agj-1s-1Mq"/>
@@ -34,8 +34,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQU-ZL-awr" userLabel="Video View Container">
                             <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O96-SG-7gC" customClass="ParticipantLabel" customModule="CallingSampleApp" customModuleProvider="target">
-                            <rect key="frame" x="8" y="898.5" width="96.5" height="19.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O96-SG-7gC" customClass="ParticipantLabel" customModule="AzureCalling" customModuleProvider="target">
+                            <rect key="frame" x="8" y="896.5" width="96.5" height="21.5"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,7 +45,7 @@
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
-                                    <real key="value" value="3"/>
+                                    <integer key="value" value="5"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
                                     <real key="value" value="4"/>
@@ -88,7 +88,7 @@
     </objects>
     <designables>
         <designable name="O96-SG-7gC">
-            <size key="intrinsicContentSize" width="96.5" height="19.5"/>
+            <size key="intrinsicContentSize" width="96.5" height="21.5"/>
         </designable>
     </designables>
     <resources>

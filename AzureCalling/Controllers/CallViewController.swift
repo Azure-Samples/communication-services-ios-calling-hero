@@ -235,8 +235,22 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onToggleMute(_ sender: UIButton) {
+        let updateLocalDisplayName: (Result<Void, Error>) -> Void = { [weak self] toggleMuteResult in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                switch toggleMuteResult {
+                case .success:
+                    self.localParticipantView.updateDisplayName(displayName: self.callingContext.displayName + " (Me)", isMuted: self.callingContext.isMuted)
+                case .failure:
+                    return
+                }
+            }
+        }
+
         sender.isSelected = !sender.isSelected
-        sender.isSelected ? callingContext.mute { _ in} : callingContext.unmute { _ in}
+        sender.isSelected ? callingContext.mute(completionHandler: updateLocalDisplayName) : callingContext.unmute(completionHandler: updateLocalDisplayName)
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {
@@ -297,7 +311,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Remote participants
         for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
             let remoteParticipantView = ParticipantView()
-            remoteParticipantView.updateDisplayName(displayName: participant.displayName)
+            remoteParticipantView.updateDisplayName(displayName: participant.displayName, isMuted: participant.isMuted)
 
             if let remoteVideoStream = participant.videoStreams.first {
                 remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
@@ -311,7 +325,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
 
         // Local participant
-        localParticipantView.updateDisplayName(displayName: callingContext.displayName + " (Me)")
+        localParticipantView.updateDisplayName(displayName: callingContext.displayName + " (Me)", isMuted: callingContext.isMuted)
         localParticipantView.updateVideoDisplayed(isDisplayVideo: callingContext.isCameraPreferredOn)
 
         if callingContext.isCameraPreferredOn {
@@ -415,7 +429,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 insertIndexPaths.append(indexPath)
             }
 
-            participantView.updateDisplayName(displayName: participant.displayName)
+            participantView.updateDisplayName(displayName: participant.displayName, isMuted: participant.isMuted)
             participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
 
             participantIdIndexPathMap[userIdentifier] = indexPath
