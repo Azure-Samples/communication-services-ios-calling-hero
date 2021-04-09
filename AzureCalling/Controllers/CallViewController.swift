@@ -7,6 +7,11 @@ import UIKit
 import AVFoundation
 import AzureCommunicationCalling
 
+enum NoticeBannerType {
+    case recording
+    case transcription
+}
+
 class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: Constants
@@ -521,22 +526,28 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    private func toggleMeetingCaptureNotification(recording: NSAttributedString, transcribing: NSAttributedString, bothActive: NSAttributedString, stopped: NSAttributedString) {
+    private func toggleMeetingCaptureNotification(mode: NoticeBannerType) {
         guard let isRecordingActive = callingContext?.isRecordingActive,
               let isTranscriptionActive = callingContext?.isTranscriptionActive else {
             return
         }
 
         let notificationText: NSAttributedString = {
-            switch (isRecordingActive, isTranscriptionActive) {
-            case (true, false):
-                return recording
-            case (false, true):
-                return transcribing
-            case (true, true):
-                return bothActive
-            case (false, false):
-                return stopped
+            switch (mode, isRecordingActive, isTranscriptionActive) {
+            case (_, true, true):
+                return meetingRecordingAndTranscriptionActiveText
+            case (.recording, true, false):
+                return meetingRecordingActiveText
+            case (.recording, false, true):
+                return meetingRecordingStopTranscriptionActiveText
+            case (.recording, false, false):
+                return meetingRecordingStopText
+            case (.transcription, true, false):
+                return meetingRecordingActiveTranscriptionStopText
+            case (.transcription, false, true):
+                return meetingTranscriptionActiveText
+            case (.transcription, false, false):
+                return meetingTranscriptionStopText
             }
         }()
 
@@ -544,19 +555,11 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func recordingActiveChangeUpdated(_ notification: Notification) {
-        toggleMeetingCaptureNotification(
-            recording: meetingRecordingActiveText,
-            transcribing: meetingRecordingStopTranscriptionActiveText,
-            bothActive: meetingRecordingAndTranscriptionActiveText,
-            stopped: meetingRecordingStopText)
+        toggleMeetingCaptureNotification(mode: NoticeBannerType.recording)
     }
 
     @objc func transcriptionActiveChangeUpdated(_ notification: Notification) {
-        toggleMeetingCaptureNotification(
-            recording: meetingRecordingActiveTranscriptionStopText,
-            transcribing: meetingTranscriptionActiveText,
-            bothActive: meetingRecordingAndTranscriptionActiveText,
-            stopped: meetingTranscriptionStopText)
+        toggleMeetingCaptureNotification(mode: NoticeBannerType.transcription)
     }
 
     @objc func onCallStateUpdated(_ notification: Notification? = nil) {
