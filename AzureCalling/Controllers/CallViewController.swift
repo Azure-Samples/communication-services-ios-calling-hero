@@ -40,7 +40,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
-    @IBOutlet weak var messageBannerView: MessageBannerStackView!
+    @IBOutlet weak var messageBannerStackView: MessageBannerStackView!
     @IBOutlet weak var waitAdmissionView: UIView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
@@ -551,7 +551,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
         }()
 
-        messageBannerView.showBannerMessage(notificationText)
+        messageBannerStackView.showBannerMessage(notificationText)
     }
 
     @objc func recordingActiveChangeUpdated(_ notification: Notification) {

@@ -950,7 +950,7 @@
                         <outlet property="localVideoViewContainer" destination="jhS-S6-A9U" id="YmI-Fm-3Et"/>
                         <outlet property="localVideoViewHeightConstraint" destination="bhY-Xf-FCz" id="Eui-rd-X4r"/>
                         <outlet property="localVideoViewWidthConstraint" destination="aSW-ZL-A4e" id="40F-6r-bUe"/>
-                        <outlet property="messageBannerView" destination="PMu-WF-6b2" id="ldX-6G-rvP"/>
+                        <outlet property="messageBannerStackView" destination="PMu-WF-6b2" id="ldX-6G-rvP"/>
                         <outlet property="participantsView" destination="0pb-xG-5G6" id="TMt-7B-rPs"/>
                         <outlet property="rightControlBar" destination="pmS-8P-vNV" id="peb-Yi-uhE"/>
                         <outlet property="toggleMuteButton" destination="h1w-2p-ooa" id="bx6-az-aob"/>
