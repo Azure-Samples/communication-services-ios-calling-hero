@@ -210,7 +210,7 @@
                                         <attributedString key="attributedText">
                                             <fragment content="Learn more">
                                                 <attributes>
-                                                    <color key="NSColor" systemColor="linkColor"/>
+                                                    <color key="NSColor" red="0.22745098039215686" green="0.62745098039215685" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <font key="NSFont" metaFont="system" size="17"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
@@ -229,7 +229,7 @@
                                                 </attributes>
                                             </fragment>
                                         </attributedString>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" name="PrimaryColor"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="Z2O-xe-qta" appends="YES" id="lpg-xm-vhq"/>
                                         </connections>
@@ -845,7 +845,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="sMD-yp-j0r"/>
+        <segue reference="l4x-m1-4xa"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" name="PrimaryColor"/>
     <resources>
@@ -869,9 +869,6 @@
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

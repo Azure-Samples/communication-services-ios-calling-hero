@@ -38,7 +38,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNameTextField()
         showSetupLoadingView()
 
         // Setup calling context asynchronously so that navigation is not blocked
@@ -77,10 +76,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     // MARK: Private Functions
 
     private func setupUI() {
-        let isJoinInputValid = !(joinInput?.isEmpty ?? true)
-        let startButtonTitle = isJoinInputValid ? "Join call" : "Start a call"
-        startCallButton.setTitle(startButtonTitle, for: .normal)
-        nameTextField.delegate = self
+        setupStartCallButton()
+        setupNameTextField()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -170,9 +167,21 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewRenderer?.dispose()
     }
 
+    private func setupStartCallButton() {
+        let isJoinInputValid = !(joinInput?.isEmpty ?? true)
+        let startButtonTitle = isJoinInputValid ? "Join call" : "Start a call"
+        startCallButton.setTitle(startButtonTitle, for: .normal)
+        if let icon = UIImage(named: "ic_fluent_meet_now_24_regular") {
+            let buttonIcon = icon.withRenderingMode(.alwaysTemplate)
+            startCallButton.tintColor = UIColor.systemBackground
+            startCallButton.setImage(buttonIcon, for: .normal)
+        }
+    }
+
     private func setupNameTextField() {
         let placeJHolder = "John Smith"
         let placeHolderColor = UIColor(named: "gray300") ?? UIColor.systemGray
+        nameTextField.delegate = self
         nameTextField.attributedPlaceholder = NSAttributedString(string: placeJHolder,
                                                                  attributes: [.foregroundColor: placeHolderColor])
     }
