@@ -27,9 +27,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        joinIdTextField.delegate = self
-        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
-                                                                   attributes: [.foregroundColor: UIColor.systemGray])
+        setupJoinIdTextField()
         updateJoinCallButton(forInput: nil)
 
         // Dismiss keyboard if tapping outside
@@ -51,6 +49,13 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: Private Functions
+
+    private func setupJoinIdTextField() {
+        joinIdTextField.delegate = self
+        let placeHolderColor = UIColor(named: "gray300") ?? UIColor.systemGray
+        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
+                                                                   attributes: [.foregroundColor: placeHolderColor])
+    }
 
     private func updateJoinCallButton(forInput string: String?) {
         let isEmpty = string?.isEmpty ?? true

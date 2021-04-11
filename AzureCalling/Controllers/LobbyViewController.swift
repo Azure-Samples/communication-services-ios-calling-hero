@@ -38,6 +38,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupNameTextField()
         showSetupLoadingView()
 
         // Setup calling context asynchronously so that navigation is not blocked
@@ -167,6 +168,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     private func cleanRenderView() {
         rendererView?.dispose()
         previewRenderer?.dispose()
+    }
+
+    private func setupNameTextField() {
+        let placeJHolder = "John Smith"
+        let placeHolderColor = UIColor(named: "gray300") ?? UIColor.systemGray
+        nameTextField.attributedPlaceholder = NSAttributedString(string: placeJHolder,
+                                                                 attributes: [.foregroundColor: placeHolderColor])
     }
 
     private func showSetupLoadingView() {
