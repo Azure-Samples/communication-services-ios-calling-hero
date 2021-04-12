@@ -33,7 +33,6 @@ class AADAuthHandler {
         guard appSettings.isAADAuthEnabled,
               !appSettings.aadClientId.isEmpty,
               let authUrl = URL(string: kAADAuthority) else {
-            print("MSALAuth hasn't been initialized.")
             return
         }
 

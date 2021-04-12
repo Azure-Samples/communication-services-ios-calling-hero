@@ -211,7 +211,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func onToggleVideo(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            callingContext.stopVideo { [weak self] _ in
+            callingContext.stopLocalVideoStream { [weak self] _ in
                 guard let self = self else {
                     return
                 }
@@ -224,7 +224,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
         } else {
-            callingContext.startVideo { [weak self] localVideoStream in
+            callingContext.startLocalVideoStream { [weak self] localVideoStream in
                 guard let self = self else {
                     return
                 }
@@ -263,6 +263,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(recordingActiveChangeUpdated(_:)), name: .onRecordingActiveChangeUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
         onCallStateUpdated()
+        NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+
         meetingInfoViewUpdate()
         initParticipantViews()
         activityIndicator.stopAnimating()
@@ -542,6 +545,14 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         default:
             break
         }
+    }
+
+    @objc func appResignActive(_ notification: Notification) {
+        callingContext.pauseLocalVideoStream { _ in }
+    }
+
+    @objc func appAssignActive(_ notification: Notification) {
+        callingContext.resumeLocalVideoStream { _ in }
     }
 
     func promptForFeedback() {
