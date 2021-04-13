@@ -124,7 +124,7 @@
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zL-5k-pzo" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="328" height="0.0"/>
-                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="backgroundColor" name="PrimaryColor"/>
                                         <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                         <state key="normal" title="Sign in to Microsoft account">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -199,7 +199,9 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="3cG-1P-o0y"/>
                                         </constraints>
-                                        <state key="normal" title="Sign out"/>
+                                        <state key="normal" title="Sign out">
+                                            <color key="titleColor" name="PrimaryColor"/>
+                                        </state>
                                         <connections>
                                             <action selector="signOutButtonPressed:" destination="8Wu-qd-2zg" eventType="touchUpInside" id="owZ-gW-zVJ"/>
                                         </connections>
@@ -210,7 +212,7 @@
                                         <attributedString key="attributedText">
                                             <fragment content="Learn more">
                                                 <attributes>
-                                                    <color key="NSColor" red="0.22745098039215686" green="0.62745098039215685" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="NSColor" red="0.0" green="0.47058823529411764" blue="0.83137254901960778" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" metaFont="system" size="17"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
@@ -335,7 +337,7 @@
                                                                 <real key="value" value="1"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                <color key="value" name="AccentColor"/>
+                                                                <color key="value" name="PrimaryColor"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -858,11 +860,8 @@
         <image name="ic_fluent_video_28_filled" width="28" height="28"/>
         <image name="ic_fluent_video_off_28_filled" width="28" height="28"/>
         <image name="videoOff" width="79" height="80"/>
-        <namedColor name="AccentColor">
-            <color red="0.22745098039215686" green="0.62745098039215685" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="PrimaryColor">
-            <color red="0.22745098039215686" green="0.62745098039215685" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47058823529411764" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="gray300">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
