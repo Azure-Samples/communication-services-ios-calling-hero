@@ -12,7 +12,7 @@
 		1F5FAD8E25FAC62900E2365F /* CommunicationIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */; };
 		1F5FADB225FFC76A00E2365F /* ParticipantsEventsAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */; };
 		1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AFED225D5A71C00E0029C /* JoinCallConfig.swift */; };
-		1F7AFEE125D6F35800E0029C /* MessageBannerStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AFEE025D6F35800E0029C /* MessageBannerStackView.swift */; };
+		1F7AFEE125D6F35800E0029C /* NoticeBannerStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AFEE025D6F35800E0029C /* NoticeBannerStackView.swift */; };
 		1F7CD3FB25C1E9E80081D8F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3DC25C1E9E80081D8F1 /* LaunchScreen.storyboard */; };
 		1F7CD3FC25C1E9E80081D8F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3DE25C1E9E80081D8F1 /* Main.storyboard */; };
 		1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */; };
@@ -60,7 +60,7 @@
 		1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationIdentifierExtension.swift; sourceTree = "<group>"; };
 		1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsEventsAdapter.swift; sourceTree = "<group>"; };
 		1F7AFED225D5A71C00E0029C /* JoinCallConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCallConfig.swift; sourceTree = "<group>"; };
-		1F7AFEE025D6F35800E0029C /* MessageBannerStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerStackView.swift; sourceTree = "<group>"; };
+		1F7AFEE025D6F35800E0029C /* NoticeBannerStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBannerStackView.swift; sourceTree = "<group>"; };
 		1F7CD3DD25C1E9E80081D8F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F7CD3DF25C1E9E80081D8F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -166,7 +166,7 @@
 				1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */,
 				21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */,
 				21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */,
-				1F7AFEE025D6F35800E0029C /* MessageBannerStackView.swift */,
+				1F7AFEE025D6F35800E0029C /* NoticeBannerStackView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -397,7 +397,7 @@
 				1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */,
 				1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */,
 				1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */,
-				1F7AFEE125D6F35800E0029C /* MessageBannerStackView.swift in Sources */,
+				1F7AFEE125D6F35800E0029C /* NoticeBannerStackView.swift in Sources */,
 				1F7CD40F25C1E9E80081D8F1 /* InfoHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -41,6 +41,7 @@ class CallingContext: NSObject {
     var callingInterfaceState: CallingInterfaceState = .connecting
     var callType: JoinCallType = .groupCall
     var isRecordingActive: Bool = false
+    var isTranscriptionActive: Bool = false
     var participantCount: Int {
         let remoteParticipantCount = call?.remoteParticipants?.count ?? 0
         return remoteParticipantCount + 1
@@ -418,6 +419,14 @@ extension CallingContext: CallDelegate {
         }
     }
 
+    func onIsTranscriptionActiveChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
+        let newTranscriptionActive = call.isTranscriptionActive
+        if newTranscriptionActive != isTranscriptionActive {
+            isTranscriptionActive = newTranscriptionActive
+            notifyOnTranscriptionActiveChangeUpdated()
+        }
+    }
+
     private func findInactiveSpeakerToSwap(with remoteParticipant: RemoteParticipant, id: String) {
         for displayedRemoteParticipant in displayedRemoteParticipants {
             if !displayedRemoteParticipant.isSpeaking,
@@ -467,6 +476,10 @@ extension CallingContext: CallDelegate {
         NotificationCenter.default.post(name: .onRecordingActiveChangeUpdated, object: nil)
     }
 
+    private func notifyOnTranscriptionActiveChangeUpdated() {
+        NotificationCenter.default.post(name: .onTranscriptionActiveChangeUpdated, object: nil)
+    }
+
     private func notifyOnCallStateUpdated() {
         NotificationCenter.default.post(name: .onCallStateUpdated, object: nil)
     }
@@ -476,4 +489,5 @@ extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
     static let onCallStateUpdated = Notification.Name("OnCallStateUpdated")
     static let onRecordingActiveChangeUpdated = Notification.Name("OnRecordingActiveChangeUpdated")
+    static let onTranscriptionActiveChangeUpdated = Notification.Name("OnTranscriptionActiveChangeUpdated")
 }
