@@ -9,13 +9,6 @@ import UIKit
 class ParticipantLabel: UILabel {
     var insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
-    @IBInspectable var cornerRadius: CGFloat = 0 {
-        didSet {
-            layer.cornerRadius = cornerRadius
-            layer.masksToBounds = cornerRadius > 0
-        }
-    }
-
     @IBInspectable var paddingTop: CGFloat = 0 {
         didSet {
             insets.top = paddingTop

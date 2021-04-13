@@ -22,6 +22,7 @@ class ParticipantView: UIView {
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
     @IBOutlet weak var participantLabel: ParticipantLabel!
+    @IBOutlet weak var participantMuteIndicator: UIView!
 
     // MARK: Constructors
 
@@ -37,22 +38,13 @@ class ParticipantView: UIView {
 
     // MARK: Operation methods
 
-    func updateDisplayName(displayName: String, isMuted: Bool) {
-        if isMuted {
-            let completeText = NSMutableAttributedString(string: displayName + " ")
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.image = UIImage(named: "ic_fluent_mic_off_28_filled")
-            imageAttachment.bounds = CGRect(x: 0, y: -1.5, width: 14, height: 14)
-            completeText.append(NSAttributedString(attachment: imageAttachment))
-
-            participantLabel.paddingTop = 3
-            participantLabel.attributedText = completeText
-        } else {
-            participantLabel.paddingTop = 5
-            participantLabel.text = displayName
-        }
-
+    func updateDisplayName(displayName: String) {
+        participantLabel.text = displayName
         participantLabel.isHidden = displayName.isEmpty
+    }
+
+    func updateMuteIndicator(isMuted: Bool) {
+        participantMuteIndicator.isHidden = !isMuted
     }
 
     func updateVideoStream(localVideoStream: LocalVideoStream?) {
