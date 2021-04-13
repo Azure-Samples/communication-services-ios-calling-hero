@@ -5,7 +5,7 @@
 
 import UIKit
 
-class MessageBannerStackView: UIStackView {
+class NoticeBannerStackView: UIStackView {
 
     @IBOutlet weak var textField: UITextView!
     @IBOutlet weak var dismissButton: UIButton!
