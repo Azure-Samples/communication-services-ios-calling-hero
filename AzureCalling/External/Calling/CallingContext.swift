@@ -25,6 +25,7 @@ class CallingContext: NSObject {
     private (set) var joinId: String!
     private (set) var displayName: String!
     private (set) var isCameraPreferredOn: Bool = false
+    private (set) var isVideoOnHold: Bool = false
     private (set) var displayedRemoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private (set) var remoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private var localVideoStream: LocalVideoStream?
@@ -147,7 +148,7 @@ class CallingContext: NSObject {
         }
     }
 
-    func startVideo(completionHandler: @escaping (LocalVideoStream?) -> Void) {
+    func startLocalVideoStream(completionHandler: @escaping (LocalVideoStream?) -> Void) {
         isCameraPreferredOn = true
         withLocalVideoStream { [weak self] localVideoStream in
             guard let self = self else {
@@ -171,7 +172,26 @@ class CallingContext: NSObject {
         }
     }
 
-    func stopVideo(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    func resumeLocalVideoStream(completionHandler: @escaping (LocalVideoStream?) -> Void) {
+        if isVideoOnHold {
+            startLocalVideoStream { [weak self] localVideoStream in
+                guard let self = self else {
+                    return
+                }
+
+                guard localVideoStream != nil else {
+                    completionHandler(nil)
+                    return
+                }
+
+                self.isVideoOnHold = false
+                print("Local video resumed successfully")
+                completionHandler(self.localVideoStream)
+            }
+        }
+    }
+
+    func stopLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         isCameraPreferredOn = false
         self.call?.stopVideo(stream: self.localVideoStream) { (error) in
             if error != nil {
@@ -181,6 +201,24 @@ class CallingContext: NSObject {
             }
             print("Local video stopped successfully")
             completionHandler(.success(()))
+        }
+    }
+
+    func pauseLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        if isCameraPreferredOn {
+            self.stopLocalVideoStream { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                if case .failure(let error) = result {
+                    print("ERROR: Local video failed to pause. \(error)")
+                    completionHandler(.failure(error))
+                    return
+                }
+                self.isVideoOnHold = true
+                print("Local video paused successfully")
+                completionHandler(.success(()))
+            }
         }
     }
 
