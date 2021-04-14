@@ -541,7 +541,7 @@
 			baseConfigurationReference = 6D911F99B1E08BC60AF9272D /* Pods-AzureCalling.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = PrimaryColor;
 				CODE_SIGN_ENTITLEMENTS = AzureCalling/AzureCalling.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -567,7 +567,7 @@
 			baseConfigurationReference = 6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = PrimaryColor;
 				CODE_SIGN_ENTITLEMENTS = AzureCalling/AzureCalling.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
