@@ -95,7 +95,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     }
 
       private func promptInvalidJoinIdInput() {
-        let alertMessgae = "The meeting ID entered is invalid. Please try again."
+        let alertMessgae = "The meeting ID you entered is invalid. Please try again."
         let alert = UIAlertController(title: "Unable to join", message: alertMessgae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
         self.present(alert, animated: true, completion: nil)
