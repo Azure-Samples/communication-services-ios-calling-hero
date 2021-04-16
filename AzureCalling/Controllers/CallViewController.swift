@@ -530,7 +530,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
-        guard let participant = notification.object as? RemoteParticipant else {
+        guard let participant = notification.userInfo?["participant"] as? RemoteParticipant else {
             return
         }
 

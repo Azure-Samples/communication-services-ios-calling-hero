@@ -450,7 +450,7 @@ extension CallingContext: CallDelegate {
     }
 
     private func notifyRemoteParticipantIsMutedChanged(_ participant: RemoteParticipant) {
-        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: participant)
+        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil, userInfo: ["participant": participant])
     }
 }
 
