@@ -7,12 +7,21 @@ import UIKit
 
 @IBDesignable
 class ParticipantLabelView: UIStackView {
-    var insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    @IBOutlet weak var participantLabel: UILabel!
+    @IBOutlet weak var participantMuteIndicator: UIView!
 
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
-            layer.masksToBounds = cornerRadius > 0
         }
+    }
+
+    func updateDisplayName(displayName: String) {
+        participantLabel.text = displayName
+        participantLabel.isHidden = displayName.isEmpty
+    }
+
+    func updateMuteIndicator(isMuted: Bool) {
+        participantMuteIndicator.isHidden = !isMuted
     }
 }

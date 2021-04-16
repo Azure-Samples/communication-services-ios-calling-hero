@@ -11,8 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="AzureCalling" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
-                <outlet property="participantLabel" destination="O96-SG-7gC" id="zR4-ce-Lbf"/>
-                <outlet property="participantMuteIndicator" destination="lfg-wa-At3" id="u9a-9D-jVT"/>
+                <outlet property="participantLabelView" destination="4tW-72-meb" id="pYy-VX-THl"/>
                 <outlet property="placeholderImage" destination="wyD-Dr-0Cm" id="yQT-C8-AHL"/>
                 <outlet property="videoViewContainer" destination="iQU-ZL-awr" id="aPd-w3-oFY"/>
             </connections>
@@ -88,6 +87,10 @@
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="participantLabel" destination="O96-SG-7gC" id="BmU-ck-MJ1"/>
+                                <outlet property="participantMuteIndicator" destination="lfg-wa-At3" id="uCl-KA-EMs"/>
+                            </connections>
                         </stackView>
                     </subviews>
                     <constraints>
