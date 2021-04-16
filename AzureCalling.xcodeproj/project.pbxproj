@@ -36,6 +36,11 @@
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
+		8DBE32B12620D90500A7A5F3 /* BottomDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B02620D90500A7A5F3 /* BottomDrawerView.swift */; };
+		8DBE32B326210D8E00A7A5F3 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */; };
+		8DBE32BA2624C2BC00A7A5F3 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B82624C2BC00A7A5F3 /* CellView.swift */; };
+		8DBE32BB2624C2BC00A7A5F3 /* CellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8DBE32B92624C2BC00A7A5F3 /* CellView.xib */; };
+		8DBE32BD2624EC1300A7A5F3 /* CellViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32BC2624EC1300A7A5F3 /* CellViewData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,6 +92,11 @@
 		6D911F99B1E08BC60AF9272D /* Pods-AzureCalling.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.debug.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.debug.xcconfig"; sourceTree = "<group>"; };
 		6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.release.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.release.xcconfig"; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
+		8DBE32B02620D90500A7A5F3 /* BottomDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDrawerView.swift; sourceTree = "<group>"; };
+		8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
+		8DBE32B82624C2BC00A7A5F3 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		8DBE32B92624C2BC00A7A5F3 /* CellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellView.xib; sourceTree = "<group>"; };
+		8DBE32BC2624EC1300A7A5F3 /* CellViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewData.swift; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -159,9 +169,12 @@
 				1F7CD3F625C1E9E80081D8F1 /* InfoHeaderView.swift */,
 				1F7CD3F325C1E9E80081D8F1 /* ParticipantLabel.swift */,
 				1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */,
+				8DBE32B82624C2BC00A7A5F3 /* CellView.swift */,
+				8DBE32B92624C2BC00A7A5F3 /* CellView.xib */,
 				1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */,
 				21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */,
 				21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */,
+				8DBE32B02620D90500A7A5F3 /* BottomDrawerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -186,6 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				1FC8820A261663DD002B1947 /* JoinCallType.swift */,
+				8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */,
+				8DBE32BC2624EC1300A7A5F3 /* CellViewData.swift */,
 				1FC8820826165A5D002B1947 /* JoinCallConfig.swift */,
 				1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */,
 				1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */,
@@ -295,6 +310,7 @@
 			files = (
 				1F7CD3FB25C1E9E80081D8F1 /* LaunchScreen.storyboard in Resources */,
 				1F7CD40325C1E9E80081D8F1 /* AppSettings.plist in Resources */,
+				8DBE32BB2624C2BC00A7A5F3 /* CellView.xib in Resources */,
 				1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */,
 				1F7CD40D25C1E9E80081D8F1 /* ParticipantView.xib in Resources */,
 				1F7CD3FC25C1E9E80081D8F1 /* Main.storyboard in Resources */,
@@ -374,8 +390,12 @@
 				1F7CD40A25C1E9E80081D8F1 /* JoinCallViewController.swift in Sources */,
 				1F7CD40525C1E9E80081D8F1 /* IntroViewController.swift in Sources */,
 				1F7CD40725C1E9E80081D8F1 /* CallViewController.swift in Sources */,
+				8DBE32BA2624C2BC00A7A5F3 /* CellView.swift in Sources */,
+				8DBE32B12620D90500A7A5F3 /* BottomDrawerView.swift in Sources */,
+				8DBE32B326210D8E00A7A5F3 /* TableViewDataSource.swift in Sources */,
 				1F7CD40825C1E9E80081D8F1 /* HangupConfirmationViewController.swift in Sources */,
 				1F5FAD8E25FAC62900E2365F /* CommunicationIdentifierExtension.swift in Sources */,
+				8DBE32BD2624EC1300A7A5F3 /* CellViewData.swift in Sources */,
 				1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */,
 				1FC8820926165A5D002B1947 /* JoinCallConfig.swift in Sources */,
 				1F7CD3FF25C1E9E80081D8F1 /* CallingContext.swift in Sources */,

@@ -7,7 +7,7 @@ import UIKit
 import AVFoundation
 import AzureCommunicationCalling
 
-class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate {
 
     // MARK: Constants
 
@@ -34,6 +34,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var participantsView: UICollectionView!
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
+    @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
@@ -44,6 +45,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var deviceDrawer: UITableView!
+    var datasource: TableViewDataSource?
 
     // MARK: UIViewController events
 
@@ -237,6 +240,62 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func onToggleMute(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         sender.isSelected ? callingContext.mute { _ in} : callingContext.unmute { _ in}
+    }
+
+    @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
+        print("Audio selection pressed")
+        let audioSession = AVAudioSession.sharedInstance()
+        let inputs = audioSession.availableInputs
+        print("There are \(inputs!.count) inputs available")
+
+        for input in inputs! {
+            print("Port name: \(input.portName)")
+            print("Port type: \(input.portType)")
+        }
+
+        let audioDeviceCell = UINib(nibName: "CellView",
+                                      bundle: nil)
+        deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "CellView")
+        deviceDrawer.isHidden = false
+        //deviceDrawer.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
+        let iPhoneDevice = CellViewData(avatar: UIImage(named: "ic_fluent_mic_on_28_filled")!, title: "iPhone", statusImage: UIImage.init(systemName: "checkmark")!, shouldDisplayStatus: true)
+        let speakerPhone = CellViewData(avatar: UIImage(named: "ic_fluent_speaker_2_28_filled")!, title: "Speaker", statusImage: UIImage.init(systemName: "checkmark")!, shouldDisplayStatus: false)
+
+        let audioDevices = [iPhoneDevice, speakerPhone]
+        datasource = TableViewDataSource(cellViewData: audioDevices)
+        deviceDrawer.dataSource = datasource
+        deviceDrawer.delegate = self
+        deviceDrawer.reloadData()
+    }
+
+    func tableView(_ tableView: UITableView,
+                   willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        print("Selected table row: \(indexPath.row)")
+        let audioSession = AVAudioSession.sharedInstance()
+
+        switch indexPath.row {
+        case 0:
+            print("iPhone Audio selected")
+            do {
+                try audioSession.overrideOutputAudioPort(.none)
+            } catch _ {
+                print("iPhone Audio selected exception")
+            }
+        case 1:
+            print("Speaker Audio selected")
+            do {
+                try audioSession.overrideOutputAudioPort(.speaker)
+            } catch _ {
+                print("Speaker Audio selected exception")
+            }
+        default:
+            print("default")
+        }
+
+        tableView.deselectRow(at: indexPath, animated: false)
+        tableView.isHidden = true
+
+        return indexPath
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {
