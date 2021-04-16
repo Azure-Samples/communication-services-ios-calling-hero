@@ -21,7 +21,7 @@ class ParticipantView: UIView {
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
-    @IBOutlet weak var participantLabel: ParticipantLabel!
+    @IBOutlet weak var participantLabel: UITextView!
     @IBOutlet weak var participantMuteIndicator: UIView!
 
     // MARK: Constructors

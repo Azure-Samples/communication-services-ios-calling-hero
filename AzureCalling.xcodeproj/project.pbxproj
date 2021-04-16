@@ -27,7 +27,6 @@
 		1F7CD40925C1E9E80081D8F1 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */; };
 		1F7CD40A25C1E9E80081D8F1 /* JoinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */; };
 		1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */; };
-		1F7CD40C25C1E9E80081D8F1 /* ParticipantLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F325C1E9E80081D8F1 /* ParticipantLabel.swift */; };
 		1F7CD40D25C1E9E80081D8F1 /* ParticipantView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */; };
 		1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F525C1E9E80081D8F1 /* JoinIdShareItem.swift */; };
 		1F7CD40F25C1E9E80081D8F1 /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F625C1E9E80081D8F1 /* InfoHeaderView.swift */; };
@@ -76,7 +75,6 @@
 		1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinCallViewController.swift; sourceTree = "<group>"; };
 		1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
-		1F7CD3F325C1E9E80081D8F1 /* ParticipantLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantLabel.swift; sourceTree = "<group>"; };
 		1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantView.xib; sourceTree = "<group>"; };
 		1F7CD3F525C1E9E80081D8F1 /* JoinIdShareItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinIdShareItem.swift; sourceTree = "<group>"; };
 		1F7CD3F625C1E9E80081D8F1 /* InfoHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 				1F7CD3F525C1E9E80081D8F1 /* JoinIdShareItem.swift */,
 				1F7CD3F625C1E9E80081D8F1 /* InfoHeaderView.swift */,
 				987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */,
-				1F7CD3F325C1E9E80081D8F1 /* ParticipantLabel.swift */,
 				1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */,
 				1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */,
 				21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */,
@@ -386,7 +383,6 @@
 				1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */,
 				1FC8820926165A5D002B1947 /* JoinCallConfig.swift in Sources */,
 				1F7CD3FF25C1E9E80081D8F1 /* CallingContext.swift in Sources */,
-				1F7CD40C25C1E9E80081D8F1 /* ParticipantLabel.swift in Sources */,
 				21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
