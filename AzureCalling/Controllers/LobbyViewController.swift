@@ -180,7 +180,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func setupNameTextField() {
         let placeHolder = "John Smith"
-        let placeHolderColor = UIColor(named: "gray300") ?? UIColor.systemGray
+        let placeHolderColor = ThemeColor.gray300
         nameTextField.delegate = self
         nameTextField.attributedPlaceholder = NSAttributedString(string: placeHolder,
                                                                  attributes: [.foregroundColor: placeHolderColor])

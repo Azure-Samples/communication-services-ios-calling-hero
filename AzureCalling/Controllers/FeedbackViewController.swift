@@ -52,7 +52,7 @@ class FeedbackViewController: UIViewController {
 
         let feedbackButton = UIRoundedButton()
         feedbackButton.titleLabel?.font = .systemFont(ofSize: 15)
-        feedbackButton.backgroundColor = UIColor(named: "PrimaryColor")
+        feedbackButton.backgroundColor = ThemeColor.primary
         feedbackButton.cornerRadius = 8
         feedbackButton.setTitle("Provide Feedback", for: .normal)
         feedbackButton.setTitleColor(UIColor.systemBackground, for: .normal)
@@ -64,7 +64,7 @@ class FeedbackViewController: UIViewController {
         returnHomeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         returnHomeButton.translatesAutoresizingMaskIntoConstraints = false
         returnHomeButton.setTitle("Return to home screen", for: .normal)
-        returnHomeButton.setTitleColor(UIColor(named: "PrimaryColor"), for: .normal)
+        returnHomeButton.setTitleColor(ThemeColor.primary, for: .normal)
         returnHomeButton.titleLabel?.font = .systemFont(ofSize: 15)
         view.addSubview(returnHomeButton)
 

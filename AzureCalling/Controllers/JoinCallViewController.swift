@@ -52,7 +52,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     private func setupJoinIdTextField() {
         joinIdTextField.delegate = self
-        let placeHolderColor = UIColor(named: "gray300") ?? UIColor.systemGray
+        let placeHolderColor = ThemeColor.gray300
         joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
                                                                    attributes: [.foregroundColor: placeHolderColor])
     }
