@@ -21,14 +21,14 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwl-9h-PR7" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
                                 <rect key="frame" x="43" y="450" width="328" height="50"/>
-                                <color key="backgroundColor" name="AccentColor"/>
+                                <color key="backgroundColor" name="primaryColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="700" constant="328" id="QNH-h0-J0i"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                 <state key="normal" title="Join">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
                                 </state>
                                 <state key="disabled">
                                     <color key="titleColor" systemColor="systemBackgroundColor"/>
@@ -51,7 +51,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter group ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vwy-MK-yLN">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" name="gray300"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ex. 409 304 3300" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TwH-Ic-aMc">
@@ -124,7 +124,7 @@
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zL-5k-pzo" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="328" height="0.0"/>
-                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="backgroundColor" name="primaryColor"/>
                                         <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                         <state key="normal" title="Sign in to Microsoft account">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -140,10 +140,10 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZFZ-dJ-kd6" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="328" height="50"/>
-                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="backgroundColor" name="primaryColor"/>
                                         <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                         <state key="normal" title="Start new call">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" systemColor="systemBackgroundColor"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -166,7 +166,7 @@
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="AccentColor"/>
+                                                <color key="value" name="primaryColor"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -199,7 +199,9 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="3cG-1P-o0y"/>
                                         </constraints>
-                                        <state key="normal" title="Sign out"/>
+                                        <state key="normal" title="Sign out">
+                                            <color key="titleColor" name="primaryColor"/>
+                                        </state>
                                         <connections>
                                             <action selector="signOutButtonPressed:" destination="8Wu-qd-2zg" eventType="touchUpInside" id="owZ-gW-zVJ"/>
                                         </connections>
@@ -210,7 +212,7 @@
                                         <attributedString key="attributedText">
                                             <fragment content="Learn more">
                                                 <attributes>
-                                                    <color key="NSColor" systemColor="linkColor"/>
+                                                    <color key="NSColor" red="0.0" green="0.47058823529411764" blue="0.83137254901960778" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" metaFont="system" size="17"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
@@ -229,7 +231,7 @@
                                                 </attributes>
                                             </fragment>
                                         </attributedString>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" name="primaryColor"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="Z2O-xe-qta" appends="YES" id="lpg-xm-vhq"/>
                                         </connections>
@@ -335,7 +337,7 @@
                                                                 <real key="value" value="1"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                <color key="value" name="AccentColor"/>
+                                                                <color key="value" name="primaryColor"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -431,7 +433,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLo-Pg-iSt">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="14.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" name="gray300"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="John Smith" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xwG-Km-Cx9">
@@ -446,18 +448,18 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Vm-we-mGV" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
                                                 <rect key="frame" x="27" y="0.0" width="328" height="52"/>
-                                                <color key="backgroundColor" name="AccentColor"/>
+                                                <color key="backgroundColor" name="primaryColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="700" constant="328" id="ciH-cK-fJV"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
-                                                <state key="normal" title="Start a Call" image="ic_fluent_meet_now_24_regular">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Start a Call">
+                                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
                                                 </state>
                                                 <state key="disabled">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -826,7 +828,7 @@
     </scenes>
     <designables>
         <designable name="2Vm-we-mGV">
-            <size key="intrinsicContentSize" width="112" height="24"/>
+            <size key="intrinsicContentSize" width="76" height="30"/>
         </designable>
         <designable name="9zL-5k-pzo">
             <size key="intrinsicContentSize" width="225" height="50"/>
@@ -845,12 +847,12 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="sMD-yp-j0r"/>
+        <segue reference="l4x-m1-4xa"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" name="primaryColor"/>
     <resources>
         <image name="IntroGraphic" width="1191" height="712"/>
         <image name="ic_fluent_call_end_28_filled" width="28" height="28"/>
-        <image name="ic_fluent_meet_now_24_regular" width="24" height="24"/>
         <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_mic_on_28_filled" width="28" height="28"/>
         <image name="ic_fluent_people_add_24_regular" width="24" height="24"/>
@@ -858,14 +860,14 @@
         <image name="ic_fluent_video_28_filled" width="28" height="28"/>
         <image name="ic_fluent_video_off_28_filled" width="28" height="28"/>
         <image name="videoOff" width="79" height="80"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="gray300">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="primaryColor">
+            <color red="0.0" green="0.47058823529411764" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

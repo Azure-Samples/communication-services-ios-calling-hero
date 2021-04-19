@@ -19,12 +19,16 @@ class HangupConfirmationViewController: UIViewController {
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         view.isOpaque = false
 
+        let primaryColor = ThemeColor.primary
         let hangupButton = createButton(title: "Leave Call", action: #selector(endCall))
+        hangupButton.setTitleColor(UIColor.systemBackground, for: .normal)
+        hangupButton.backgroundColor = primaryColor
         view.addSubview(hangupButton)
         hangupButton.translatesAutoresizingMaskIntoConstraints = false
 
         let cancelButton = createButton(title: "Cancel", action: #selector(dismissSelf))
-        cancelButton.borderColor = .white
+        cancelButton.borderColor = primaryColor
+        cancelButton.setTitleColor(primaryColor, for: .normal)
         cancelButton.backgroundColor = .clear
         cancelButton.borderWidth = 1
         view.addSubview(cancelButton)
