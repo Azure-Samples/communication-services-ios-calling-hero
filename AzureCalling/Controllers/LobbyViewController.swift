@@ -89,7 +89,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
             do {
                 loadingView.startAnimating()
                 previewRenderer = try VideoStreamRenderer(localVideoStream: localVideoStream)
-                rendererView = try previewRenderer!.createView(with: RenderingOptions(scalingMode: .crop))
+                rendererView = try previewRenderer!.createView(withOptions: CreateViewOptions(scalingMode: .crop))
                 rendererView!.translatesAutoresizingMaskIntoConstraints = false
                 previewView.insertSubview(rendererView!, belowSubview: permissionWarningView)
                 rendererView!.topAnchor.constraint(equalTo: previewView.topAnchor).isActive = true
