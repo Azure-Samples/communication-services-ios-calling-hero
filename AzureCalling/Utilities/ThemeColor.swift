@@ -9,5 +9,5 @@ import UIKit
 enum ThemeColor {
     static var primary = UIColor(named: "PrimaryColor")!
 
-    static var gray300 = UIColor(named: "Gray300")!
+    static var gray300 = UIColor(named: "gray300")!
 }
