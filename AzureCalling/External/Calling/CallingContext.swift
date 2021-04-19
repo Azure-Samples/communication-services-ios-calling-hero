@@ -33,7 +33,7 @@ class CallingContext: NSObject {
     var callType: JoinCallType = .groupCall
 
     var participantCount: Int {
-        let remoteParticipantCount = call?.remoteParticipants?.count ?? 0
+        let remoteParticipantCount = call?.remoteParticipants.count ?? 0
         return remoteParticipantCount + 1
     }
 
@@ -79,29 +79,39 @@ class CallingContext: NSObject {
             let joinCallOptions = JoinCallOptions()
 
             if joinConfig.isCameraOn && self.localVideoStream != nil {
-                let videoOptions = VideoOptions(localVideoStream: self.localVideoStream)
-                joinCallOptions!.videoOptions = videoOptions
+                let localVideoStreamArray = [self.localVideoStream!]
+                let videoOptions = VideoOptions(localVideoStreams: localVideoStreamArray)
+                joinCallOptions.videoOptions = videoOptions
             }
 
-            joinCallOptions!.audioOptions = AudioOptions()
-            joinCallOptions!.audioOptions.muted = joinConfig.isMicrophoneMuted
+            joinCallOptions.audioOptions = AudioOptions()
+            joinCallOptions.audioOptions?.muted = joinConfig.isMicrophoneMuted
 
             var joinLocator: JoinMeetingLocator!
             let joinIdStr = joinConfig.joinId?.trimmingCharacters(in: .whitespacesAndNewlines) ?? UUID().uuidString
             switch joinConfig.callType {
             case .groupCall:
                 let groupId = UUID(uuidString: joinIdStr) ?? UUID()
-                joinLocator = GroupCallLocator(groupId: groupId)!
+                joinLocator = GroupCallLocator(groupId: groupId)
             }
 
-            self.call = self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions)
-            self.call?.delegate = self
+            self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions) { [weak self] (call, error) in
+                guard let self = self,
+                    let call = call,
+                    error == nil else {
+                    print("Join call failed")
+                    completionHandler(.failure(error!))
+                    return
+                }
 
-            self.joinId = joinIdStr
-            self.callType = joinConfig.callType
-            self.displayName = joinConfig.displayName
-            self.isCameraPreferredOn = joinConfig.isCameraOn
-            completionHandler(.success(()))
+                call.delegate = self
+                self.call = call
+                self.joinId = joinIdStr
+                self.callType = joinConfig.callType
+                self.displayName = joinConfig.displayName
+                self.isCameraPreferredOn = joinConfig.isCameraOn
+                completionHandler(.success(()))
+            }
         }
     }
 
@@ -179,7 +189,12 @@ class CallingContext: NSObject {
 
     func stopLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         isCameraPreferredOn = false
-        self.call?.stopVideo(stream: self.localVideoStream) { (error) in
+        guard let videoStream = self.localVideoStream else {
+            print("Local video has already stopoed")
+            completionHandler(.success(()))
+            return
+        }
+        self.call?.stopVideo(stream: videoStream) { (error) in
             if error != nil {
                 print("ERROR: Local video failed to stop. \(error!)")
                 completionHandler(.failure(error!))
@@ -248,11 +263,11 @@ class CallingContext: NSObject {
     }
 
     private func setupCallAgent(displayName: String, completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        var tokenCredential: CommunicationTokenCredential?
+        var tokenCredential: CommunicationTokenCredential
         let tokenCredentialOptions = CommunicationTokenRefreshOptions(initialToken: nil, refreshProactively: true, tokenRefresher: tokenFetcher)
 
         do {
-            tokenCredential = try CommunicationTokenCredential(with: tokenCredentialOptions)
+            tokenCredential = try CommunicationTokenCredential(withOptions: tokenCredentialOptions)
         } catch {
             print("ERROR: It was not possible to create user credential.")
             completionHandler(.failure(error))
@@ -260,7 +275,7 @@ class CallingContext: NSObject {
         }
 
         let options = CallAgentOptions()
-        options?.displayName = displayName
+        options.displayName = displayName
 
         callClient?.createCallAgent(userCredential: tokenCredential, options: options) { [weak self] (agent, error) in
             guard let self = self else {
@@ -326,7 +341,7 @@ class CallingContext: NSObject {
         guard let deviceManager = deviceManager else {
             return
         }
-        let camera = deviceManager.cameras![0]
+        let camera = deviceManager.cameras[0]
         localVideoStream = LocalVideoStream(camera: camera)
         completionHandler(localVideoStream)
     }
@@ -359,7 +374,7 @@ class CallingContext: NSObject {
 }
 
 extension CallingContext: CallDelegate {
-    func onStateChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
+    func call(_ call: Call, didChangeState args: PropertyChangedEventArgs) {
         switch call.state {
         case .connected:
             addRemoteParticipants(call.remoteParticipants)
@@ -370,7 +385,7 @@ extension CallingContext: CallDelegate {
         }
     }
 
-    func onRemoteParticipantsUpdated(_ call: Call, args: ParticipantsUpdatedEventArgs) {
+    func call(_ call: Call, didUpdateRemoteParticipant args: ParticipantsUpdatedEventArgs) {
         removeRemoteParticipants(args.removedParticipants)
         addRemoteParticipants(args.addedParticipants)
         updateDisplayedRemoteParticipants()
@@ -410,7 +425,7 @@ extension CallingContext: CallDelegate {
     private func updateDisplayedRemoteParticipants() {
         for remoteParticipant in remoteParticipants {
             if displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
-               remoteParticipant.state != .idle,
+               remoteParticipant.state != .inLobby,
                let userIdentifier = remoteParticipant.identifier.stringValue {
                 displayedRemoteParticipants.append(forKey: userIdentifier, value: remoteParticipant)
             }

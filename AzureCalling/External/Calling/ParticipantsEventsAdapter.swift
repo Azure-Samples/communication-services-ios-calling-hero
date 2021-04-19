@@ -9,11 +9,11 @@ class ParticipantsEventsAdapter: NSObject, RemoteParticipantDelegate {
     var onVideoStreamsUpdated: ((RemoteParticipant) -> Void) = {_ in }
     var onIsSpeakingChanged: ((RemoteParticipant) -> Void) = {_ in }
 
-    func onVideoStreamsUpdated(_ remoteParticipant: RemoteParticipant, args: RemoteVideoStreamsEventArgs) {
+    func remoteParticipant(_ remoteParticipant: RemoteParticipant, didUpdateVideoStreams args: RemoteVideoStreamsEventArgs) {
         onVideoStreamsUpdated(remoteParticipant)
     }
 
-    func onIsSpeakingChanged(_ remoteParticipant: RemoteParticipant, args: PropertyChangedEventArgs) {
+    func remoteParticipant(_ remoteParticipant: RemoteParticipant, didChangeSpeakingState args: PropertyChangedEventArgs) {
         onIsSpeakingChanged(remoteParticipant)
     }
 }
