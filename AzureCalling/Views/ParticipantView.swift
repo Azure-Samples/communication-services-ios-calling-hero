@@ -114,7 +114,7 @@ class ParticipantView: UIView {
     }
 
     private func updateRendering(newRenderer: VideoStreamRenderer) throws {
-        let newRendererView: RendererView = try newRenderer.createView(with: RenderingOptions(scalingMode: .crop))
+        let newRendererView: RendererView = try newRenderer.createView(withOptions: CreateViewOptions(scalingMode: .crop))
 
         attachRendererView(rendererView: newRendererView)
 
