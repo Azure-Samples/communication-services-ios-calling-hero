@@ -16,7 +16,6 @@ class CallingContext: NSObject {
     // MARK: Properties
     private (set) var joinId: String!
     private (set) var displayName: String!
-    private (set) var isMuted: Bool = false
     private (set) var isCameraPreferredOn: Bool = false
     private (set) var isVideoOnHold: Bool = false
     private (set) var displayedRemoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
@@ -224,29 +223,27 @@ class CallingContext: NSObject {
         }
     }
 
-    func mute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    func mute(completionHandler: @escaping (Result<Call?, Error>) -> Void) {
         self.call?.mute(completionHandler: { (error) in
             if error != nil {
                 print("ERROR: It was not possible to mute. \(error!)")
                 completionHandler(.failure(error!))
                 return
             }
-            self.isMuted = true
             print("Mute successful")
-            completionHandler(.success(()))
+            completionHandler(.success(self.call))
         })
     }
 
-    func unmute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    func unmute(completionHandler: @escaping (Result<Call?, Error>) -> Void) {
         self.call?.unmute(completionHandler: { (error) in
             if error != nil {
                 print("ERROR: It was not possible to unmute. \(error!)")
                 completionHandler(.failure(error!))
                 return
             }
-            self.isMuted = false
             print("Unmute successful")
-            completionHandler(.success(()))
+            completionHandler(.success(self.call))
         })
     }
 
@@ -358,7 +355,7 @@ class CallingContext: NSObject {
             }
             if let userIdentifier = remoteParticipant.identifier.stringValue,
                self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
-                self.notifyRemoteParticipantIsMutedChanged(remoteParticipant)
+                self.notifyRemoteParticipantIsMutedChanged()
             }
         }
 
@@ -449,8 +446,8 @@ extension CallingContext: CallDelegate {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
     }
 
-    private func notifyRemoteParticipantIsMutedChanged(_ participant: RemoteParticipant) {
-        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil, userInfo: ["participant": participant])
+    private func notifyRemoteParticipantIsMutedChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil)
     }
 }
 

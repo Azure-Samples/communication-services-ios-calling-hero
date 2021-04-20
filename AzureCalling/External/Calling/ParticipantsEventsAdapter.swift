@@ -18,7 +18,7 @@ class ParticipantsEventsAdapter: NSObject, RemoteParticipantDelegate {
         onIsSpeakingChanged(remoteParticipant)
     }
 
-    func onIsMutedChanged(_ remoteParticipant: RemoteParticipant!, args: PropertyChangedEventArgs!) {
+    func remoteParticipant(_ remoteParticipant: RemoteParticipant, didChangeMuteState args: PropertyChangedEventArgs) {
         onIsMutedChanged(remoteParticipant)
     }
 }

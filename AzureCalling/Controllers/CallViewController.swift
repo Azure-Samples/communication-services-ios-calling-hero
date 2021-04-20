@@ -236,20 +236,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func onToggleMute(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        sender.isSelected ? callingContext.mute(completionHandler: updateMuteIndicator) : callingContext.unmute(completionHandler: updateMuteIndicator)
-    }
-
-    private func updateMuteIndicator(_ result: Result<Void, Error>) {
-        DispatchQueue.main.async { [weak self] in
+        (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
             guard let self = self else {
                 return
             }
-
-            switch result {
-            case .success:
-                self.localParticipantView.updateMuteIndicator(isMuted: self.callingContext.isMuted)
-            case .failure:
-                return
+            if case .success(let call) = result,
+               let isMuted = call?.isMuted {
+                DispatchQueue.main.async {
+                    self.localParticipantView.updateMuteIndicator(isMuted: isMuted)
+                }
             }
         }
     }
@@ -329,7 +324,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         // Local participant
         localParticipantView.updateDisplayName(displayName: callingContext.displayName + " (Me)")
-        localParticipantView.updateMuteIndicator(isMuted: callingContext.isMuted)
+        localParticipantView.updateMuteIndicator(isMuted: joinCallConfig.isMicrophoneMuted)
         localParticipantView.updateVideoDisplayed(isDisplayVideo: callingContext.isCameraPreferredOn)
 
         if callingContext.isCameraPreferredOn {
@@ -530,14 +525,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
-        guard let participant = notification.userInfo?["participant"] as? RemoteParticipant else {
-            return
-        }
-
-        if let userIdentifier = participant.identifier.stringValue,
-           let indexPath = participantIdIndexPathMap[userIdentifier],
-           let participantView = participantIndexPathViewMap[indexPath] {
-            participantView.updateMuteIndicator(isMuted: participant.isMuted)
+        for participant in callingContext.displayedRemoteParticipants {
+            if let userIdentifier = participant.identifier.stringValue,
+               let indexPath = participantIdIndexPathMap[userIdentifier],
+               let participantView = participantIndexPathViewMap[indexPath] {
+                participantView.updateMuteIndicator(isMuted: participant.isMuted)
+            }
         }
     }
 
