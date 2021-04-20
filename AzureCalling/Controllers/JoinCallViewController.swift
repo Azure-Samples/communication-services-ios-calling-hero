@@ -31,9 +31,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        joinIdTextField.delegate = self
-        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
-                                                                   attributes: [.foregroundColor: UIColor.systemGray])
+        setupJoinIdTextField()
         updateJoinCallButton(forInput: nil)
 
         // Dismiss keyboard if tapping outside
@@ -55,6 +53,13 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: Private Functions
+
+    private func setupJoinIdTextField() {
+        joinIdTextField.delegate = self
+        let placeHolderColor = ThemeColor.gray300
+        joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
+                                                                   attributes: [.foregroundColor: placeHolderColor])
+    }
 
     private func updateJoinCallButton(forInput string: String?) {
         let isEmpty = string?.isEmpty ?? true
@@ -105,9 +110,9 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         var alertMessgae = ""
         switch joinCallType {
         case .groupCall:
-            alertMessgae = "The meeting ID entered is invalid. Please try again."
+            alertMessgae = "The meeting ID you entered is invalid. Please try again."
         case .teamsMeeting:
-            alertMessgae = "The meeting link entered is invalid. Please try again."
+            alertMessgae = "The meeting link you entered is invalid. Please try again."
         }
         let alert = UIAlertController(title: "Unable to join", message: alertMessgae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
