@@ -11,7 +11,7 @@ class CellView: UITableViewCell {
 
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var statusImage: UIImageView!
+    var enabled: Bool = false
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -24,19 +24,20 @@ class CellView: UITableViewCell {
     public func updateCellViewData(cellViewData: CellViewData) {
         self.title.text = cellViewData.title
         self.avatar.image = cellViewData.avatar
-        self.statusImage.image = cellViewData.statusImage
-        self.statusImage.isHidden = !cellViewData.shouldDisplayStatus
+        if cellViewData.enabled {
+            enabled = true
+            self.accessoryType = .checkmark
+        } else {
+            enabled = false
+            self.accessoryType = .none
+        }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-
 }

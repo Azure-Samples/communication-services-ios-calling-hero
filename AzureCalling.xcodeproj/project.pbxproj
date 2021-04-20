@@ -37,6 +37,8 @@
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
+		8D743121262DF868000D0BCE /* AudioDeviceSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743120262DF868000D0BCE /* AudioDeviceSelectionManager.swift */; };
+		8D743135262E3EEC000D0BCE /* AudioDeviceDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743134262E3EEC000D0BCE /* AudioDeviceDataModel.swift */; };
 		8DBE32B12620D90500A7A5F3 /* BottomDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B02620D90500A7A5F3 /* BottomDrawerView.swift */; };
 		8DBE32B326210D8E00A7A5F3 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */; };
 		8DBE32BA2624C2BC00A7A5F3 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE32B82624C2BC00A7A5F3 /* CellView.swift */; };
@@ -94,6 +96,8 @@
 		6D911F99B1E08BC60AF9272D /* Pods-AzureCalling.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.debug.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.debug.xcconfig"; sourceTree = "<group>"; };
 		6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.release.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.release.xcconfig"; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
+		8D743120262DF868000D0BCE /* AudioDeviceSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelectionManager.swift; sourceTree = "<group>"; };
+		8D743134262E3EEC000D0BCE /* AudioDeviceDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceDataModel.swift; sourceTree = "<group>"; };
 		8DBE32B02620D90500A7A5F3 /* BottomDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDrawerView.swift; sourceTree = "<group>"; };
 		8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		8DBE32B82624C2BC00A7A5F3 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -202,8 +206,10 @@
 			isa = PBXGroup;
 			children = (
 				1FC8820A261663DD002B1947 /* JoinCallType.swift */,
+				8D743120262DF868000D0BCE /* AudioDeviceSelectionManager.swift */,
 				8DBE32B226210D8E00A7A5F3 /* TableViewDataSource.swift */,
 				8DBE32BC2624EC1300A7A5F3 /* CellViewData.swift */,
+				8D743134262E3EEC000D0BCE /* AudioDeviceDataModel.swift */,
 				1FC8820826165A5D002B1947 /* JoinCallConfig.swift */,
 				1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */,
 				1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */,
@@ -388,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F7CD40425C1E9E80081D8F1 /* AppDelegate.swift in Sources */,
+				8D743121262DF868000D0BCE /* AudioDeviceSelectionManager.swift in Sources */,
 				21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */,
 				1F7CD40025C1E9E80081D8F1 /* AADAuthHandler.swift in Sources */,
 				1F7CD40A25C1E9E80081D8F1 /* JoinCallViewController.swift in Sources */,
@@ -403,6 +410,7 @@
 				1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */,
 				1FC8820926165A5D002B1947 /* JoinCallConfig.swift in Sources */,
 				1F7CD3FF25C1E9E80081D8F1 /* CallingContext.swift in Sources */,
+				8D743135262E3EEC000D0BCE /* AudioDeviceDataModel.swift in Sources */,
 				1F7CD40C25C1E9E80081D8F1 /* ParticipantLabel.swift in Sources */,
 				21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,

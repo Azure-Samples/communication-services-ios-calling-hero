@@ -18,6 +18,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var joinCallConfig: JoinCallConfig!
     var callingContext: CallingContext!
 
+    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
+    var datasource: TableViewDataSource?
+    var deviceDrawerConstraint: NSLayoutConstraint?
+
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
     private var isParticipantViewsUpdatePending: Bool = false
@@ -30,6 +34,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     // MARK: IBOutlets
 
+    @IBOutlet weak var audioDeviceSelectionOverlayView: UIView!
     @IBOutlet weak var localVideoViewContainer: UIRoundedView!
     @IBOutlet weak var participantsView: UICollectionView!
     @IBOutlet weak var toggleVideoButton: UIButton!
@@ -46,7 +51,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var deviceDrawer: UITableView!
-    var datasource: TableViewDataSource?
 
     // MARK: UIViewController events
 
@@ -258,8 +262,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "CellView")
         deviceDrawer.isHidden = false
         //deviceDrawer.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
-        let iPhoneDevice = CellViewData(avatar: UIImage(named: "ic_fluent_mic_on_28_filled")!, title: "iPhone", statusImage: UIImage.init(systemName: "checkmark")!, shouldDisplayStatus: true)
-        let speakerPhone = CellViewData(avatar: UIImage(named: "ic_fluent_speaker_2_28_filled")!, title: "Speaker", statusImage: UIImage.init(systemName: "checkmark")!, shouldDisplayStatus: false)
+        let iPhoneDevice = CellViewData(avatar: UIImage(named: "ic_fluent_mic_on_28_filled")!, title: "iPhone", enabled: true)
+        let speakerPhone = CellViewData(avatar: UIImage(named: "ic_fluent_speaker_2_28_filled")!, title: "Speaker", enabled: false)
 
         let audioDevices = [iPhoneDevice, speakerPhone]
         datasource = TableViewDataSource(cellViewData: audioDevices)

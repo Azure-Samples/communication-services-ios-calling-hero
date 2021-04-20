@@ -8,6 +8,11 @@ import UIKit
 struct CellViewData {
     let avatar: UIImage
     let title: String
-    let statusImage: UIImage
-    let shouldDisplayStatus: Bool
+    let enabled: Bool
+}
+
+extension CellViewData {
+    func convertToAudioDeviceDataModel() -> AudioDeviceDataModel {
+        return AudioDeviceDataModel(image: avatar, name: title, enabled: enabled)
+    }
 }
