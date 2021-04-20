@@ -307,7 +307,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func onJoinCall() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: NSNotification.Name(rawValue: "RemoteParticipantsUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 

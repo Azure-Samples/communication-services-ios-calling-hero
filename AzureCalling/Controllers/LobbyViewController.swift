@@ -81,10 +81,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     // MARK: Private Functions
 
     private func setupUI() {
-        let isJoinInputValid = !(joinInput?.isEmpty ?? true)
-        let startButtonTitle = isJoinInputValid ? "Join call" : "Start a call"
-        startCallButton.setTitle(startButtonTitle, for: .normal)
-        nameTextField.delegate = self
+        setupStartCallButton()
+        setupNameTextField()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -97,7 +95,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
             do {
                 loadingView.startAnimating()
                 previewRenderer = try VideoStreamRenderer(localVideoStream: localVideoStream)
-                rendererView = try previewRenderer!.createView(with: RenderingOptions(scalingMode: .crop))
+                rendererView = try previewRenderer!.createView(withOptions: CreateViewOptions(scalingMode: .crop))
                 rendererView!.translatesAutoresizingMaskIntoConstraints = false
                 previewView.insertSubview(rendererView!, belowSubview: permissionWarningView)
                 rendererView!.topAnchor.constraint(equalTo: previewView.topAnchor).isActive = true
@@ -173,6 +171,25 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     private func cleanRenderView() {
         rendererView?.dispose()
         previewRenderer?.dispose()
+    }
+
+    private func setupStartCallButton() {
+        let isJoinInputValid = !(joinInput?.isEmpty ?? true)
+        let startButtonTitle = isJoinInputValid ? "Join call" : "Start a call"
+        startCallButton.setTitle(startButtonTitle, for: .normal)
+        if let icon = UIImage(named: "ic_fluent_meet_now_24_regular") {
+            let buttonIcon = icon.withRenderingMode(.alwaysTemplate)
+            startCallButton.tintColor = UIColor.systemBackground
+            startCallButton.setImage(buttonIcon, for: .normal)
+        }
+    }
+
+    private func setupNameTextField() {
+        let placeHolder = "John Smith"
+        let placeHolderColor = ThemeColor.gray300
+        nameTextField.delegate = self
+        nameTextField.attributedPlaceholder = NSAttributedString(string: placeHolder,
+                                                                 attributes: [.foregroundColor: placeHolderColor])
     }
 
     private func showSetupLoadingView() {
