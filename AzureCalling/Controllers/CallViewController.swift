@@ -524,13 +524,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
-        for participant in callingContext.displayedRemoteParticipants {
-            if let userIdentifier = participant.identifier.stringValue,
-               let indexPath = participantIdIndexPathMap[userIdentifier],
-               let participantView = participantIndexPathViewMap[indexPath] {
-                participantView.updateMuteIndicator(isMuted: participant.isMuted)
-            }
-        }
+        queueParticipantViewsUpdate()
     }
 
     @objc func appResignActive(_ notification: Notification) {
