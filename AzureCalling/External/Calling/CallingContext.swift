@@ -223,7 +223,7 @@ class CallingContext: NSObject {
         }
     }
 
-    func mute(completionHandler: @escaping (Result<Call?, Error>) -> Void) {
+    func mute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.mute(completionHandler: { (error) in
             if error != nil {
                 print("ERROR: It was not possible to mute. \(error!)")
@@ -231,11 +231,11 @@ class CallingContext: NSObject {
                 return
             }
             print("Mute successful")
-            completionHandler(.success(self.call))
+            completionHandler(.success(()))
         })
     }
 
-    func unmute(completionHandler: @escaping (Result<Call?, Error>) -> Void) {
+    func unmute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.unmute(completionHandler: { (error) in
             if error != nil {
                 print("ERROR: It was not possible to unmute. \(error!)")
@@ -243,7 +243,7 @@ class CallingContext: NSObject {
                 return
             }
             print("Unmute successful")
-            completionHandler(.success(self.call))
+            completionHandler(.success(()))
         })
     }
 

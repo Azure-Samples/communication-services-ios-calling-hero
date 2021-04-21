@@ -240,10 +240,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let self = self else {
                 return
             }
-            if case .success(let call) = result,
-               let isMuted = call?.isMuted {
+            if case .success = result {
                 DispatchQueue.main.async {
-                    self.localParticipantView.updateMuteIndicator(isMuted: isMuted)
+                    self.localParticipantView.updateMuteIndicator(isMuted: sender.isSelected)
                 }
             }
         }
