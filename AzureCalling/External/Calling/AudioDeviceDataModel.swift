@@ -12,7 +12,7 @@ struct AudioDeviceDataModel {
 }
 
 extension AudioDeviceDataModel {
-    func convertToCellViewData() -> CellViewData {
-        return CellViewData(avatar: image, title: name, enabled: enabled)
+    func convertToCellViewModel() -> BottomDrawerCellViewModel {
+        return BottomDrawerCellViewModel(avatar: image, title: name, enabled: enabled)
     }
 }

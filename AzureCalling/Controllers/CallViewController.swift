@@ -17,10 +17,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     var joinCallConfig: JoinCallConfig!
     var callingContext: CallingContext!
-
     var audioDeviceSelectionManager: AudioDeviceSelectionManager!
-    var datasource: TableViewDataSource?
-    var deviceDrawerConstraint: NSLayoutConstraint?
+    var audioDeviceTableDataSource: TableViewDataSource!
 
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
@@ -34,7 +32,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     // MARK: IBOutlets
 
-    @IBOutlet weak var audioDeviceSelectionOverlayView: UIView!
     @IBOutlet weak var localVideoViewContainer: UIRoundedView!
     @IBOutlet weak var participantsView: UICollectionView!
     @IBOutlet weak var toggleVideoButton: UIButton!
@@ -50,7 +47,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var deviceDrawer: UITableView!
 
     // MARK: UIViewController events
 
@@ -136,6 +132,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     deinit {
         cleanViewRendering()
+    }
+
+    private func showDeviceDrawer() {
+        let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
+        audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
+        audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
+        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
+        audioDeviceSelectionViewController.modalTransitionStyle = .crossDissolve
+        present(audioDeviceSelectionViewController, animated: false, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -247,59 +252,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
-        print("Audio selection pressed")
-        let audioSession = AVAudioSession.sharedInstance()
-        let inputs = audioSession.availableInputs
-        print("There are \(inputs!.count) inputs available")
-
-        for input in inputs! {
-            print("Port name: \(input.portName)")
-            print("Port type: \(input.portType)")
-        }
-
-        let audioDeviceCell = UINib(nibName: "CellView",
-                                      bundle: nil)
-        deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "CellView")
-        deviceDrawer.isHidden = false
-        //deviceDrawer.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
-        let iPhoneDevice = CellViewData(avatar: UIImage(named: "ic_fluent_mic_on_28_filled")!, title: "iPhone", enabled: true)
-        let speakerPhone = CellViewData(avatar: UIImage(named: "ic_fluent_speaker_2_28_filled")!, title: "Speaker", enabled: false)
-
-        let audioDevices = [iPhoneDevice, speakerPhone]
-        datasource = TableViewDataSource(cellViewData: audioDevices)
-        deviceDrawer.dataSource = datasource
-        deviceDrawer.delegate = self
-        deviceDrawer.reloadData()
-    }
-
-    func tableView(_ tableView: UITableView,
-                   willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        print("Selected table row: \(indexPath.row)")
-        let audioSession = AVAudioSession.sharedInstance()
-
-        switch indexPath.row {
-        case 0:
-            print("iPhone Audio selected")
-            do {
-                try audioSession.overrideOutputAudioPort(.none)
-            } catch _ {
-                print("iPhone Audio selected exception")
-            }
-        case 1:
-            print("Speaker Audio selected")
-            do {
-                try audioSession.overrideOutputAudioPort(.speaker)
-            } catch _ {
-                print("Speaker Audio selected exception")
-            }
-        default:
-            print("default")
-        }
-
-        tableView.deselectRow(at: indexPath, animated: false)
-        tableView.isHidden = true
-
-        return indexPath
+        showDeviceDrawer()
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {

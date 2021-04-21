@@ -7,24 +7,22 @@ import UIKit
 import AzureCommunicationCalling
 import AVFoundation
 
-class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
+class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: Properties
 
     var callingContext: CallingContext!
-    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
     var previewRenderer: VideoStreamRenderer?
     var rendererView: RendererView?
     var joinInput: String?
     var joinCallType: JoinCallType = .groupCall
-    var datasource: TableViewDataSource?
-    var deviceDrawerConstraint: NSLayoutConstraint?
+    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
+    var audioDeviceTableDataSource: TableViewDataSource?
 
     private var displayName: String = ""
 
     // MARK: IBOutlets
 
-    @IBOutlet weak var audioDeviceSelectionOverlayView: UIView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var previewCenterImageView: UIImageView!
     @IBOutlet weak var permissionWarningView: UIView!
@@ -37,7 +35,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var startCallButton: UIButton!
-    @IBOutlet weak var deviceDrawer: UITableView!
 
     // MARK: UIViewController events
 
@@ -58,7 +55,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
                 self.updateStartCallButtonState()
             }
         }
-        audioDeviceSelectionManager = AudioDeviceSelectionManager(view: self)
+        audioDeviceSelectionManager = AudioDeviceSelectionManager()
+        let audioDevices = audioDeviceSelectionManager.initAudioDevicess()
+        var audioDeviceCellViewModels = [BottomDrawerCellViewModel]()
+        for audioDevice in audioDevices {
+            audioDeviceCellViewModels.append(audioDevice.convertToCellViewModel())
+        }
+        audioDeviceTableDataSource = TableViewDataSource(cellViewDataModel: audioDeviceCellViewModels)
         setupUI()
     }
 
@@ -89,10 +92,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let audioDeviceCell = UINib(nibName: "CellView",
-                                      bundle: nil)
-        deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "CellView")
-        hideDeviceDrawer()
     }
 
     private func setupPreviewView(localVideoStream: LocalVideoStream) {
@@ -126,42 +125,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         previewCenterImageView.isHidden = true
     }
 
-    private func hideDeviceDrawer() {
-        if deviceDrawerConstraint != nil {
-            self.view.removeConstraint(deviceDrawerConstraint!)
-        }
-        let hideConstraint = NSLayoutConstraint(item: deviceDrawer!,
-                attribute: .top,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1,
-                constant: 0)
-        self.view.addConstraint(hideConstraint)
-        deviceDrawerConstraint = hideConstraint
-        self.view.layoutIfNeeded()
-        self.audioDeviceSelectionOverlayView.isHidden = true
-        deviceDrawer.isHidden = true
-    }
-
     private func showDeviceDrawer() {
-        if deviceDrawerConstraint != nil {
-            self.view.removeConstraint(deviceDrawerConstraint!)
-        }
-        deviceDrawer.isHidden = false
-        let centerYConstraint = NSLayoutConstraint(item: self.deviceDrawer!,
-                attribute: .bottom,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottomMargin,
-                multiplier: 1,
-                constant: 0)
-        self.view.addConstraint(centerYConstraint)
-        deviceDrawerConstraint = centerYConstraint
-        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState, animations: {
-            self.audioDeviceSelectionOverlayView.isHidden = false
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+        let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
+        audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
+        audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
+        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
+        audioDeviceSelectionViewController.modalTransitionStyle = .crossDissolve
+        present(audioDeviceSelectionViewController, animated: false, completion: nil)
     }
 
     private func updateCameraDisabledPermissionWarning() {
@@ -273,25 +243,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
 
-    func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
-        print("Selected table row: \(indexPath.row)")
-        let cell = tableView.cellForRow(at: indexPath) as! CellView
-        let audioDeviceDataModel = AudioDeviceDataModel(image: cell.avatar.image!, name: cell.title.text!, enabled: false)
-        audioDeviceSelectionManager.switchAudioDevice(audioDeviceDataModel: audioDeviceDataModel)
-        tableView.deselectRow(at: indexPath, animated: false)
-        hideDeviceDrawer()
-        cell.accessoryType = .checkmark
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        print("Deselected table row: \(indexPath.row)")
-        let cell = tableView.cellForRow(at: indexPath) as! CellView
-        if !cell.enabled {
-            cell.accessoryType = .none
-        }
-    }
-
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -319,6 +270,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
 
         callViewController.joinCallConfig = joinCallConfig
         callViewController.callingContext = callingContext
+        callViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
+        callViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
     }
 
     // MARK: Actions
@@ -348,20 +301,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
-        let audioDevices = audioDeviceSelectionManager.getAudioDevicess()
-        var audioDeviceCellViews = [CellViewData]()
-        for audioDevice in audioDevices {
-            audioDeviceCellViews.append(audioDevice.convertToCellViewData())
-        }
-        datasource = TableViewDataSource(cellViewData: audioDeviceCellViews)
-        deviceDrawer.dataSource = datasource
-        deviceDrawer.delegate = self
-        deviceDrawer.reloadData()
         showDeviceDrawer()
-    }
-
-    @IBAction func overLayViewDidTapped(_ sender: UITapGestureRecognizer) {
-        hideDeviceDrawer()
     }
 
     @IBAction func goToSettingsButtonPressed(_ sender: UIButton) {

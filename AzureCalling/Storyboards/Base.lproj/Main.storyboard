@@ -360,10 +360,10 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-tE-txc">
-                                                <rect key="frame" x="91" y="531.5" width="200" height="50"/>
+                                                <rect key="frame" x="41" y="531.5" width="300" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="gSY-SK-FFx">
-                                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="u2z-po-x3k"/>
                                                         </constraints>
@@ -380,7 +380,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ueH-21-TCG">
-                                                        <rect key="frame" x="66.5" y="0.0" width="67" height="50"/>
+                                                        <rect key="frame" x="100" y="0.0" width="100" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="sQV-t0-qGe"/>
                                                         </constraints>
@@ -397,7 +397,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NlG-FZ-0Ip">
-                                                        <rect key="frame" x="133.5" y="0.0" width="66.5" height="50"/>
+                                                        <rect key="frame" x="200" y="0.0" width="100" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="Exw-29-wHh"/>
                                                         </constraints>
@@ -412,7 +412,7 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="200" id="8Oe-bO-EZZ"/>
+                                                    <constraint firstAttribute="width" constant="300" id="8Oe-bO-EZZ"/>
                                                     <constraint firstAttribute="height" constant="50" id="tp1-FD-2Rv"/>
                                                 </constraints>
                                             </stackView>
@@ -497,58 +497,18 @@
                                     </view>
                                 </subviews>
                             </stackView>
-                            <view hidden="YES" alpha="0.75" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="UlS-lc-vqV" userLabel="Overlay View">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Hyk-RN-tdd" appends="YES" id="kh3-Ih-HjZ"/>
-                                </connections>
-                            </view>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="idG-S4-Qb0" userLabel="Device List">
-                                <rect key="frame" x="0.0" y="398" width="414" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="rDF-zJ-AQk"/>
-                                </constraints>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ACl-Rh-M0a">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ACl-Rh-M0a" id="ql4-HR-sbQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="PEv-2r-X0z">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PEv-2r-X0z" id="OEW-Uu-Zvl">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="IUQ-yT-P2k"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="UlS-lc-vqV" firstAttribute="trailing" secondItem="IUQ-yT-P2k" secondAttribute="trailing" id="4XO-ro-9h1"/>
-                            <constraint firstItem="UlS-lc-vqV" firstAttribute="leading" secondItem="IUQ-yT-P2k" secondAttribute="leading" id="64T-SJ-E0w"/>
-                            <constraint firstItem="idG-S4-Qb0" firstAttribute="trailing" secondItem="IUQ-yT-P2k" secondAttribute="trailing" id="9W7-0V-K6a"/>
                             <constraint firstItem="C2c-VH-7rN" firstAttribute="top" secondItem="IUQ-yT-P2k" secondAttribute="top" constant="16" id="B42-fj-Tir"/>
                             <constraint firstItem="C2c-VH-7rN" firstAttribute="leading" secondItem="IUQ-yT-P2k" secondAttribute="leading" constant="16" id="Q48-uH-B5e"/>
-                            <constraint firstItem="idG-S4-Qb0" firstAttribute="leading" secondItem="IUQ-yT-P2k" secondAttribute="leading" id="Sju-fy-tr6"/>
                             <constraint firstItem="IUQ-yT-P2k" firstAttribute="bottom" secondItem="C2c-VH-7rN" secondAttribute="bottom" constant="16" id="ha1-mT-X8y"/>
-                            <constraint firstItem="UlS-lc-vqV" firstAttribute="top" secondItem="IUQ-yT-P2k" secondAttribute="top" id="jqP-sD-tjp"/>
                             <constraint firstItem="IUQ-yT-P2k" firstAttribute="trailing" secondItem="C2c-VH-7rN" secondAttribute="trailing" constant="16" id="nyA-13-CY0"/>
-                            <constraint firstItem="UlS-lc-vqV" firstAttribute="bottom" secondItem="IUQ-yT-P2k" secondAttribute="bottom" id="rie-P7-2Q9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Lobby" id="vIN-Zu-r9E"/>
                     <connections>
-                        <outlet property="audioDeviceSelectionOverlayView" destination="UlS-lc-vqV" id="VMu-yN-bBK"/>
-                        <outlet property="deviceDrawer" destination="idG-S4-Qb0" id="rMY-z9-TiY"/>
                         <outlet property="loadingView" destination="hlG-7A-Jed" id="aGq-bf-BlX"/>
                         <outlet property="nameTextField" destination="xwG-Km-Cx9" id="7of-iT-yRp"/>
                         <outlet property="permissionIconView" destination="qd7-er-QBW" id="gRn-9R-g2v"/>
@@ -564,11 +524,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="new-GI-hh0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Hyk-RN-tdd">
-                    <connections>
-                        <action selector="overLayViewDidTapped:" destination="go2-tU-kve" id="3Et-iW-3gT"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1371.0144927536232" y="124.55357142857142"/>
         </scene>
@@ -824,37 +779,6 @@
                                     <outlet property="infoLabel" destination="pIY-qA-W2e" id="jgc-7P-Efk"/>
                                 </connections>
                             </view>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZGo-E5-dej" userLabel="Audio Device Table">
-                                <rect key="frame" x="0.0" y="203" width="414" height="188"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="esT-zD-IMt">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="esT-zD-IMt" id="Qyd-3Y-0HZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="RCo-De-x4u">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RCo-De-x4u" id="Tt5-g7-30l">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="fwm-Lu-nE7">
-                                        <rect key="frame" x="0.0" y="115" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fwm-Lu-nE7" id="7vm-Fz-z8o">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <sections/>
-                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bVb-Hb-wd5"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -880,7 +804,6 @@
                         <outlet property="bottomControlBar" destination="eoL-Sb-q33" id="ahH-AE-jbv"/>
                         <outlet property="contentViewBottomConstraint" destination="8wi-xl-yt3" id="WNc-3s-tXE"/>
                         <outlet property="contentViewTrailingContraint" destination="dAf-Y3-TMm" id="sth-wC-t4j"/>
-                        <outlet property="deviceDrawer" destination="ZGo-E5-dej" id="cyd-7m-y2S"/>
                         <outlet property="infoHeaderView" destination="Rfn-CZ-Xnd" id="agj-bl-KdI"/>
                         <outlet property="localVideoViewContainer" destination="jhS-S6-A9U" id="YmI-Fm-3Et"/>
                         <outlet property="localVideoViewHeightConstraint" destination="bhY-Xf-FCz" id="Eui-rd-X4r"/>
@@ -900,7 +823,7 @@
                 <exit id="Tk0-qe-n8C" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="oaY-Mp-Stc">
                     <connections>
-                        <action selector="contentViewDidTapped:" destination="xT5-r8-X8c" id="6XG-Fo-c9N"/>
+                        <action selector="contentViewDidTapped:" destination="xT5-r8-X8c" id="PXG-lB-Cor"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -923,6 +846,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="og0-Id-3GX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="620" y="-631"/>
+        </scene>
+        <!--Audio Device Selection View Controller-->
+        <scene sceneID="qT5-T0-Xkc">
+            <objects>
+                <viewController storyboardIdentifier="AudioDeviceSelectionViewController" id="tcQ-Q1-DsE" customClass="AudioDeviceSelectionViewController" customModule="AzureCalling" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QCu-fC-QMA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dmT-pb-bIt" userLabel="Device List">
+                                <rect key="frame" x="0.0" y="398" width="414" height="100"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="LFD-r6-IGe"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="pXt-8n-xb3">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pXt-8n-xb3" id="FVc-VV-3UL">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MLw-ZS-80C">
+                                        <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MLw-ZS-80C" id="M4e-e2-sHC">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ik7-6E-Hxr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dmT-pb-bIt" firstAttribute="leading" secondItem="Ik7-6E-Hxr" secondAttribute="leading" id="0gP-ia-JAj"/>
+                            <constraint firstItem="dmT-pb-bIt" firstAttribute="trailing" secondItem="Ik7-6E-Hxr" secondAttribute="trailing" id="peC-k3-Rth"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="FTU-Pd-guv" appends="YES" id="7w2-Yx-CYj"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="deviceDrawer" destination="dmT-pb-bIt" id="kPg-PJ-zdM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DQl-KB-7ot" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="FTU-Pd-guv">
+                    <connections>
+                        <action selector="overLayViewDidTapped:" destination="tcQ-Q1-DsE" id="qf9-H5-tyA"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-57" y="-2526"/>
         </scene>
     </scenes>
     <designables>

@@ -5,22 +5,36 @@
 
 import UIKit
 
-class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
-    private var cellViewDataArray: [CellViewData]
+class TableViewDataSource: NSObject, UITableViewDataSource {
+    private var cellViewModelDataArray: [BottomDrawerCellViewModel]
 
-    init(cellViewData: [CellViewData]) {
-        self.cellViewDataArray = cellViewData
+    init(cellViewDataModel: [BottomDrawerCellViewModel]) {
+        self.cellViewModelDataArray = cellViewDataModel
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellViewDataArray.count
+        return cellViewModelDataArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellView", for: indexPath) as? CellView
-        cell?.updateCellViewData(cellViewData: cellViewDataArray[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BottomDrawerCellView", for: indexPath) as? BottomDrawerCellView
+        cell?.updateCellView(cellViewModel: cellViewModelDataArray[indexPath.row])
 
         return cell ?? UITableViewCell()
+    }
+
+    func selectRow(indexPathRow: Int) {
+        cellViewModelDataArray[indexPathRow].enabled = true
+    }
+
+    func deselectRow(indexPathRow: Int) {
+        cellViewModelDataArray[indexPathRow].enabled = false
+    }
+
+    func deselectAllRows() {
+        for index in cellViewModelDataArray.indices {
+            cellViewModelDataArray[index].enabled = false
+        }
     }
 
 }
