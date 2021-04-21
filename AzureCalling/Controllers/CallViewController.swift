@@ -7,7 +7,7 @@ import UIKit
 import AVFoundation
 import AzureCommunicationCalling
 
-class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate {
+class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: Constants
 
@@ -134,7 +134,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         cleanViewRendering()
     }
 
-    private func showDeviceDrawer() {
+    private func openAudioDeviceDrawer() {
         let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
         audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
         audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
@@ -252,7 +252,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
-        showDeviceDrawer()
+        openAudioDeviceDrawer()
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {

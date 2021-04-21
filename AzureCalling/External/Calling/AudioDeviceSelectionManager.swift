@@ -9,6 +9,13 @@ import AVFoundation
 class AudioDeviceSelectionManager {
 
     func initAudioDevicess() -> [AudioDeviceDataModel] {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.overrideOutputAudioPort(.speaker)
+        } catch _ {
+            print("Speaker Audio selected exception")
+        }
+
         let iPhoneDevice = AudioDeviceDataModel(image: UIImage(named: "ic_fluent_mic_on_28_filled")!, name: "iPhone", enabled: false)
         let speakerPhone = AudioDeviceDataModel(image: UIImage(named: "ic_fluent_speaker_2_28_filled")!, name: "Speaker", enabled: true)
 

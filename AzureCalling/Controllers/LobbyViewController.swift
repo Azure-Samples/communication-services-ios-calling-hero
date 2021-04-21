@@ -125,7 +125,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = true
     }
 
-    private func showDeviceDrawer() {
+    private func openAudioDeviceDrawer() {
         let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
         audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
         audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
@@ -301,7 +301,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
-        showDeviceDrawer()
+        openAudioDeviceDrawer()
     }
 
     @IBAction func goToSettingsButtonPressed(_ sender: UIButton) {
