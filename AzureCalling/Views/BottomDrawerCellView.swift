@@ -23,10 +23,6 @@ class BottomDrawerCellView: UITableViewCell {
     public func updateCellView(cellViewModel: BottomDrawerCellViewModel) {
         self.title.text = cellViewModel.title
         self.avatar.image = cellViewModel.avatar
-        if cellViewModel.enabled {
-            self.accessoryType = .checkmark
-        } else {
-            self.accessoryType = .none
-        }
+        self.accessoryType = cellViewModel.enabled ? .checkmark : .none
     }
 }
