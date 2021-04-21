@@ -70,7 +70,6 @@ class CallingContext: NSObject {
     }
 
     func joinCall(_ joinConfig: JoinCallConfig, completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        self.callAgent = nil
         self.setupCallAgent(displayName: joinConfig.displayName) { [weak self] _ in
             guard let self = self else {
                 return
@@ -249,17 +248,7 @@ class CallingContext: NSObject {
 
     private func setupCalling(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         callClient = CallClient()
-        setupCallAgent(displayName: "") { [weak self] result in
-            guard let self = self else {
-                return
-            }
-
-            if case .failure(let error) = result {
-                completionHandler(.failure(error))
-                return
-            }
-            self.setupDeviceManager(completionHandler: completionHandler)
-        }
+        self.setupDeviceManager(completionHandler: completionHandler)
     }
 
     private func setupCallAgent(displayName: String, completionHandler: @escaping (Result<Void, Error>) -> Void) {
