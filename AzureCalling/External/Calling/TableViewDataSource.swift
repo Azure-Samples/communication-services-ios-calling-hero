@@ -23,6 +23,12 @@ class TableViewDataSource: NSObject, UITableViewDataSource {
         cellViewModelDataArray[indexPathRow].enabled = true
     }
 
+    public func selectRow(title: String) {
+        if let rowIndex = cellViewModelDataArray.firstIndex(where: {$0.title == title}) {
+            cellViewModelDataArray[rowIndex].enabled = true
+        }
+    }
+
     public func deselectRow(indexPathRow: Int) {
         cellViewModelDataArray[indexPathRow].enabled = false
     }

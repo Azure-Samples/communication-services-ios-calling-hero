@@ -34,6 +34,9 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
         deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "BottomDrawerCellView")
         deviceDrawer.dataSource = audioDeviceTableDataSource
         deviceDrawer.delegate = self
+        audioDeviceTableDataSource?.deselectAllRows()
+        let currentAudioDevice = audioDeviceSelectionManager.getCurrentAudioDevice()
+        audioDeviceTableDataSource?.selectRow(title: currentAudioDevice.name)
         deviceDrawer.reloadData()
         hideDeviceDrawer()
         showDeviceDrawer()
@@ -79,12 +82,9 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        print("Selected table row: \(indexPath.row)")
         let cell = tableView.cellForRow(at: indexPath) as! BottomDrawerCellView
         let audioDeviceDataModel = AudioDeviceDataModel(image: cell.avatar.image!, name: cell.title.text!, enabled: false)
         audioDeviceSelectionManager.switchAudioDevice(audioDeviceDataModel: audioDeviceDataModel)
-        audioDeviceTableDataSource?.deselectAllRows()
-        audioDeviceTableDataSource?.selectRow(indexPathRow: indexPath.row)
         dismiss(animated: true, completion: nil)
     }
 

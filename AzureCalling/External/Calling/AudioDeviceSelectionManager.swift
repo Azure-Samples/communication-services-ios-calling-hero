@@ -14,6 +14,7 @@ class AudioDeviceSelectionManager {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.overrideOutputAudioPort(.speaker)
+            try audioSession.setActive(true)
         } catch _ {
             print("Speaker Audio selected exception")
         }
@@ -23,6 +24,16 @@ class AudioDeviceSelectionManager {
 
         let audioDevices = [iPhoneDevice, speakerPhone]
         return audioDevices
+    }
+
+    public func getCurrentAudioDevice() -> AudioDeviceDataModel {
+        let route = AVAudioSession.sharedInstance().currentRoute
+        for desc in route.outputs {
+            if desc.portType == .builtInSpeaker {
+                return AudioDeviceDataModel(image: UIImage(named: "ic_fluent_speaker_2_28_filled")!, name: "Speaker", enabled: true)
+            }
+        }
+        return AudioDeviceDataModel(image: UIImage(named: "ic_fluent_speaker_2_28_regular")!, name: "iPhone", enabled: true)
     }
 
     public func switchAudioDevice(audioDeviceDataModel: AudioDeviceDataModel) {
