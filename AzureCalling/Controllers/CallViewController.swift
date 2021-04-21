@@ -46,6 +46,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var localVideoViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
+    @IBOutlet weak var verticalSelectAudioDeviceButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: UIViewController events
