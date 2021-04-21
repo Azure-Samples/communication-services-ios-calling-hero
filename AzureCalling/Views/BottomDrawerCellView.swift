@@ -12,13 +12,13 @@ class BottomDrawerCellView: UITableViewCell {
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var title: UILabel!
 
+    // MARK: UITableViewCell events
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
+    // MARK: Public Functions
 
     public func updateCellView(cellViewModel: BottomDrawerCellViewModel) {
         self.title.text = cellViewModel.title
@@ -28,13 +28,5 @@ class BottomDrawerCellView: UITableViewCell {
         } else {
             self.accessoryType = .none
         }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
     }
 }

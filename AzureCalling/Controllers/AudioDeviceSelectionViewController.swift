@@ -6,7 +6,9 @@
 import UIKit
 
 class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate {
+
     // MARK: Properties
+
     var audioDeviceSelectionManager: AudioDeviceSelectionManager!
     var audioDeviceTableDataSource: TableViewDataSource!
     var deviceDrawerConstraint: NSLayoutConstraint?
@@ -15,9 +17,10 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
 
     @IBOutlet weak var deviceDrawer: UITableView!
 
+    // MARK: UIViewController events
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -35,6 +38,8 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
         hideDeviceDrawer()
         showDeviceDrawer()
     }
+
+    // MARK: Private Functions
 
     private func hideDeviceDrawer() {
         if deviceDrawerConstraint != nil {

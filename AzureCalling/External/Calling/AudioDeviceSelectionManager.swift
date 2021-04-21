@@ -8,7 +8,9 @@ import AVFoundation
 
 class AudioDeviceSelectionManager {
 
-    func initAudioDevicess() -> [AudioDeviceDataModel] {
+    // MARK: Public Functions
+
+    public func initAudioDevicess() -> [AudioDeviceDataModel] {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.overrideOutputAudioPort(.speaker)
@@ -23,7 +25,7 @@ class AudioDeviceSelectionManager {
         return audioDevices
     }
 
-    func switchAudioDevice(audioDeviceDataModel: AudioDeviceDataModel) {
+    public func switchAudioDevice(audioDeviceDataModel: AudioDeviceDataModel) {
         let audioSession = AVAudioSession.sharedInstance()
         switch audioDeviceDataModel.name {
         case "iPhone":
