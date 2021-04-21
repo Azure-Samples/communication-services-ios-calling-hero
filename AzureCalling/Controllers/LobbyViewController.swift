@@ -210,6 +210,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = true
         toggleVideoButton.isEnabled = false
         toggleMicrophoneButton.isEnabled = false
+        selectAudioDeviceButton.isEnabled = false
         startCallButton.isEnabled = false
         permissionWarningView.isHidden = true
     }
@@ -219,6 +220,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = false
         toggleVideoButton.isEnabled = true
         toggleMicrophoneButton.isEnabled = true
+        selectAudioDeviceButton.isEnabled = true
         startCallButton.isEnabled = true
         permissionWarningView.isHidden = false
     }

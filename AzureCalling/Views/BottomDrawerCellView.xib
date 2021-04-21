@@ -38,6 +38,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="tintColor" systemColor="labelColor"/>
+            <inset key="separatorInset" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="avatar" destination="jEw-ie-KT0" id="nrM-z7-4e8"/>
                 <outlet property="title" destination="O7a-gZ-UgH" id="hYY-3G-btA"/>

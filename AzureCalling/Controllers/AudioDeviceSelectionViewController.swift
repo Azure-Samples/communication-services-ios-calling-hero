@@ -27,6 +27,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
 
         let audioDeviceCell = UINib(nibName: "BottomDrawerCellView",
                                       bundle: nil)
+        deviceDrawer.layer.cornerRadius = 8
         deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "BottomDrawerCellView")
         deviceDrawer.dataSource = audioDeviceTableDataSource
         deviceDrawer.delegate = self
@@ -59,7 +60,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate 
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: self.view,
-                attribute: .bottomMargin,
+                attribute: .bottom,
                 multiplier: 1,
                 constant: 0)
         self.view.addConstraint(centerYConstraint)

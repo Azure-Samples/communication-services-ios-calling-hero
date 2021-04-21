@@ -16,7 +16,7 @@ class AudioDeviceSelectionManager {
             print("Speaker Audio selected exception")
         }
 
-        let iPhoneDevice = AudioDeviceDataModel(image: UIImage(named: "ic_fluent_mic_on_28_filled")!, name: "iPhone", enabled: false)
+        let iPhoneDevice = AudioDeviceDataModel(image: UIImage(named: "ic_fluent_speaker_2_28_regular")!, name: "iPhone", enabled: false)
         let speakerPhone = AudioDeviceDataModel(image: UIImage(named: "ic_fluent_speaker_2_28_filled")!, name: "Speaker", enabled: true)
 
         let audioDevices = [iPhoneDevice, speakerPhone]
