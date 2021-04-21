@@ -426,7 +426,7 @@ extension CallingContext: CallDelegate {
         notifyRemoteParticipantsUpdated()
     }
 
-    func onIsRecordingActiveChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
+    func call(_ call: Call, didChangeRecordingState args: PropertyChangedEventArgs) {
         let newRecordingActive = call.isRecordingActive
         if newRecordingActive != isRecordingActive {
             isRecordingActive = newRecordingActive
@@ -434,7 +434,7 @@ extension CallingContext: CallDelegate {
         }
     }
 
-    func onIsTranscriptionActiveChanged(_ call: Call!, args: PropertyChangedEventArgs!) {
+    func call(_ call: Call, didChangeTranscriptionState args: PropertyChangedEventArgs) {
         let newTranscriptionActive = call.isTranscriptionActive
         if newTranscriptionActive != isTranscriptionActive {
             isTranscriptionActive = newTranscriptionActive
