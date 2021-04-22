@@ -361,6 +361,7 @@ class CallingContext: NSObject {
                     }
                 }
             }
+            self.notifyRemoteParticipantIsSpeakingChanged()
         }
 
         participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] _ in
@@ -438,9 +439,14 @@ extension CallingContext: CallDelegate {
     private func notifyRemoteParticipantIsMutedChanged() {
         NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil)
     }
+
+    private func notifyRemoteParticipantIsSpeakingChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantIsSpeakingChanged, object: nil)
+    }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
     static let remoteParticipantIsMutedChanged = Notification.Name("RemoteParticipantIsMutedChanged")
+    static let remoteParticipantIsSpeakingChanged = Notification.Name("RemoteParticipantIsSpeakingChanged")
 }

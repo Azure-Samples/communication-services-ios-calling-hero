@@ -21,6 +21,7 @@ class ParticipantView: UIView {
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
+    @IBOutlet weak var activeSpeakerView: ActiveSpeakerView!
     @IBOutlet weak var participantLabelView: ParticipantLabelView!
 
     // MARK: Constructors
@@ -43,6 +44,10 @@ class ParticipantView: UIView {
 
     func updateMuteIndicator(isMuted: Bool) {
         participantLabelView.updateMuteIndicator(isMuted: isMuted)
+    }
+
+    func updateActiveSpeaker(isSpeaking: Bool) {
+        activeSpeakerView.isHidden = !isSpeaking
     }
 
     func updateVideoStream(localVideoStream: LocalVideoStream?) {
