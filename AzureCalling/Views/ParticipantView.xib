@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="CallingSampleApp" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="AzureCalling" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
-                <outlet property="participantLabel" destination="O96-SG-7gC" id="Agj-1s-1Mq"/>
+                <outlet property="participantLabelView" destination="4tW-72-meb" id="pYy-VX-THl"/>
                 <outlet property="placeholderImage" destination="wyD-Dr-0Cm" id="yQT-C8-AHL"/>
                 <outlet property="videoViewContainer" destination="iQU-ZL-awr" id="aPd-w3-oFY"/>
             </connections>
@@ -34,38 +34,72 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQU-ZL-awr" userLabel="Video View Container">
                             <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O96-SG-7gC" customClass="ParticipantLabel" customModule="CallingSampleApp" customModuleProvider="target">
-                            <rect key="frame" x="8" y="898.5" width="96.5" height="19.5"/>
+                        <stackView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-72-meb" customClass="ParticipantLabelView" customModule="AzureCalling" customModuleProvider="target">
+                            <rect key="frame" x="8" y="898" width="114.5" height="20"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O96-SG-7gC">
+                                    <rect key="frame" x="4" y="2" width="88.5" height="16"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfg-wa-At3">
+                                    <rect key="frame" x="96.5" y="2" width="14" height="16"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_fluent_mic_off_28_filled" translatesAutoresizingMaskIntoConstraints="NO" id="Tu9-XX-Gam">
+                                            <rect key="frame" x="0.0" y="1" width="14" height="14"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="14" id="14b-WU-g6A"/>
+                                                <constraint firstAttribute="height" constant="14" id="luI-k4-qBa"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
+                                                    <real key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
+                                                    <real key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
+                                                    <real key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="paddingRight">
+                                                    <real key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="14" id="3Gt-jV-k2f"/>
+                                        <constraint firstItem="Tu9-XX-Gam" firstAttribute="centerX" secondItem="lfg-wa-At3" secondAttribute="centerX" id="fnD-zq-Rsq"/>
+                                        <constraint firstAttribute="height" constant="16" id="gmM-sk-leY"/>
+                                        <constraint firstItem="Tu9-XX-Gam" firstAttribute="centerY" secondItem="lfg-wa-At3" secondAttribute="centerY" id="uB2-py-Cbv"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
+                            <directionalEdgeInsets key="directionalLayoutMargins" top="2" leading="4" bottom="2" trailing="4"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
-                                    <real key="value" value="3"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
-                                    <real key="value" value="4"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
-                                    <real key="value" value="3"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="paddingRight">
-                                    <real key="value" value="4"/>
-                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                        </label>
+                            <connections>
+                                <outlet property="participantLabel" destination="O96-SG-7gC" id="BmU-ck-MJ1"/>
+                                <outlet property="participantMuteIndicator" destination="lfg-wa-At3" id="uCl-KA-EMs"/>
+                            </connections>
+                        </stackView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="4tW-72-meb" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" constant="8" id="02v-ij-sHT"/>
                         <constraint firstItem="wyD-Dr-0Cm" firstAttribute="centerX" secondItem="9aZ-5g-VOP" secondAttribute="centerX" id="JOW-q7-9Xa"/>
                         <constraint firstItem="iQU-ZL-awr" firstAttribute="top" secondItem="9aZ-5g-VOP" secondAttribute="top" id="NoH-hu-tPy"/>
-                        <constraint firstItem="O96-SG-7gC" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" constant="8" id="QHc-Q5-hX8"/>
+                        <constraint firstAttribute="bottom" secondItem="4tW-72-meb" secondAttribute="bottom" constant="8" id="Ug8-05-Te3"/>
                         <constraint firstAttribute="trailing" secondItem="iQU-ZL-awr" secondAttribute="trailing" id="W3V-cn-qjw"/>
                         <constraint firstAttribute="bottom" secondItem="iQU-ZL-awr" secondAttribute="bottom" id="glg-La-xgf"/>
-                        <constraint firstAttribute="bottom" secondItem="O96-SG-7gC" secondAttribute="bottom" constant="8" id="mu2-X4-fTX"/>
                         <constraint firstItem="iQU-ZL-awr" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" id="rUl-V0-byP"/>
                         <constraint firstItem="wyD-Dr-0Cm" firstAttribute="centerY" secondItem="9aZ-5g-VOP" secondAttribute="centerY" id="yaX-F1-RcL"/>
                     </constraints>
@@ -86,12 +120,8 @@
             <point key="canvasLocation" x="56.521739130434788" y="-4.0178571428571423"/>
         </view>
     </objects>
-    <designables>
-        <designable name="O96-SG-7gC">
-            <size key="intrinsicContentSize" width="96.5" height="19.5"/>
-        </designable>
-    </designables>
     <resources>
+        <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_person_48_filled" width="48" height="48"/>
     </resources>
 </document>
