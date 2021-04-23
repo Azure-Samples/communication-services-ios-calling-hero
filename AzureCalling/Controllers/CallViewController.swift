@@ -17,8 +17,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     var joinCallConfig: JoinCallConfig!
     var callingContext: CallingContext!
-    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
-    var audioDeviceTableDataSource: TableViewDataSource!
 
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
@@ -136,11 +134,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openAudioDeviceDrawer() {
-        let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
-        audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
-        audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
+        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
         audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
-        audioDeviceSelectionViewController.modalTransitionStyle = .crossDissolve
         present(audioDeviceSelectionViewController, animated: false, completion: nil)
     }
 

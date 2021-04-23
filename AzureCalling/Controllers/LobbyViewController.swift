@@ -16,8 +16,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     var rendererView: RendererView?
     var joinInput: String?
     var joinCallType: JoinCallType = .groupCall
-    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
-    var audioDeviceTableDataSource: TableViewDataSource?
 
     private var displayName: String = ""
 
@@ -55,13 +53,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
                 self.updateStartCallButtonState()
             }
         }
-        audioDeviceSelectionManager = AudioDeviceSelectionManager()
-        let audioDevices = audioDeviceSelectionManager.initAudioDevicess()
-        var audioDeviceCellViewModels = [BottomDrawerCellViewModel]()
-        for audioDevice in audioDevices {
-            audioDeviceCellViewModels.append(audioDevice.convertToCellViewModel())
-        }
-        audioDeviceTableDataSource = TableViewDataSource(cellViewDataModel: audioDeviceCellViewModels)
         setupUI()
     }
 
@@ -88,7 +79,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         setupStartCallButton()
         setupNameTextField()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
-        tap.cancelsTouchesInView = false
+        //tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -126,11 +117,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func openAudioDeviceDrawer() {
-        let audioDeviceSelectionViewController = storyboard?.instantiateViewController(withIdentifier: "AudioDeviceSelectionViewController") as! AudioDeviceSelectionViewController
-        audioDeviceSelectionViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
-        audioDeviceSelectionViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
+        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
         audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
-        audioDeviceSelectionViewController.modalTransitionStyle = .crossDissolve
         present(audioDeviceSelectionViewController, animated: false, completion: nil)
     }
 
@@ -272,8 +260,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
         callViewController.joinCallConfig = joinCallConfig
         callViewController.callingContext = callingContext
-        callViewController.audioDeviceSelectionManager = audioDeviceSelectionManager
-        callViewController.audioDeviceTableDataSource = audioDeviceTableDataSource
     }
 
     // MARK: Actions

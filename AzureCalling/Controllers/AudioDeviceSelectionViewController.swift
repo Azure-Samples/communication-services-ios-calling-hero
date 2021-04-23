@@ -5,92 +5,127 @@
 
 import UIKit
 
-class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate {
+class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
 
-    var audioDeviceSelectionManager: AudioDeviceSelectionManager!
-    var audioDeviceTableDataSource: TableViewDataSource!
-    var deviceDrawerConstraint: NSLayoutConstraint?
-
-    // MARK: IBOutlets
-
-    @IBOutlet weak var deviceDrawer: UITableView!
+    private var audioDeviceOptions: [AudioDeviceOption] = [AudioDeviceOption]()
+    var deviceTable: UITableView!
 
     // MARK: UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.modalTransitionStyle = .crossDissolve
+
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        view.isOpaque = false
+
+        // tapping anywhere on the view is the same as tapping cancel
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
+
+        createAudioDeviceOptions()
+        createDeviceTable()
+    }
+
+    @objc func dismissSelf(sender: NSObject) {
+        dismiss(animated: true, completion: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-        view.isOpaque = false
 
+        openDeviceTable()
+    }
+
+    func createDeviceTable() {
+        deviceTable = UITableView()
+        deviceTable.isHidden = true
+        deviceTable.allowsSelection = true
+        deviceTable.isScrollEnabled = false
+        deviceTable.layer.cornerRadius = 8
+        deviceTable.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(deviceTable)
         let audioDeviceCell = UINib(nibName: "BottomDrawerCellView",
                                       bundle: nil)
-        deviceDrawer.layer.cornerRadius = 8
-        deviceDrawer.register(audioDeviceCell, forCellReuseIdentifier: "BottomDrawerCellView")
-        deviceDrawer.dataSource = audioDeviceTableDataSource
-        deviceDrawer.delegate = self
-        audioDeviceTableDataSource?.deselectAllRows()
-        let currentAudioDevice = audioDeviceSelectionManager.getCurrentAudioDevice()
-        audioDeviceTableDataSource?.selectRow(title: currentAudioDevice.name)
-        deviceDrawer.reloadData()
-        hideDeviceDrawer()
-        showDeviceDrawer()
+        deviceTable.register(audioDeviceCell, forCellReuseIdentifier: "BottomDrawerCellView")
+        deviceTable.dataSource = self
+        deviceTable.delegate = self
+        deviceTable.reloadData()
+
+        var deviceTableConstraints = [
+        deviceTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        deviceTable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        deviceTable.heightAnchor.constraint(equalToConstant: 100)
+        ]
+
+        let hideConstraint = deviceTable.topAnchor.constraint(equalTo: view.bottomAnchor)
+        hideConstraint.priority = .defaultLow
+        deviceTableConstraints.append(hideConstraint)
+
+        NSLayoutConstraint.activate(deviceTableConstraints)
     }
 
-    // MARK: Private Functions
+    func openDeviceTable() {
+        deviceTable.isHidden = false
 
-    private func hideDeviceDrawer() {
-        if deviceDrawerConstraint != nil {
-            self.view.removeConstraint(deviceDrawerConstraint!)
-        }
-        let hideConstraint = NSLayoutConstraint(item: deviceDrawer!,
-                attribute: .top,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1,
-                constant: 0)
-        self.view.addConstraint(hideConstraint)
-        deviceDrawerConstraint = hideConstraint
-        self.view.layoutIfNeeded()
-    }
-
-    private func showDeviceDrawer() {
-        if deviceDrawerConstraint != nil {
-            self.view.removeConstraint(deviceDrawerConstraint!)
-        }
-        let centerYConstraint = NSLayoutConstraint(item: deviceDrawer!,
+        let centerYConstraint = NSLayoutConstraint(item: deviceTable!,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: self.view,
                 attribute: .bottom,
                 multiplier: 1,
                 constant: 0)
+        centerYConstraint.priority = .required
         self.view.addConstraint(centerYConstraint)
-        deviceDrawerConstraint = centerYConstraint
-        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState, animations: {
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
 
-    // MARK: UITableViewDelegate
+    func createAudioDeviceOptions() {
+        let audioDeviceTypes = AudioSessionManager.getAllAudioDeviceTypes()
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
+
+        for audioDeviceType in audioDeviceTypes {
+            let audioDeviceOption = AudioDeviceOption(image: audioDeviceType.image, name: audioDeviceType.name, accessoryImage: audioDeviceType.accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
+            audioDeviceOptions.append(audioDeviceOption)
+        }
+    }
+
+    // MARK: UITableViewDelegate events
 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! BottomDrawerCellView
-        let audioDeviceDataModel = AudioDeviceDataModel(image: cell.avatar.image!, name: cell.title.text!, enabled: false)
-        audioDeviceSelectionManager.switchAudioDevice(audioDeviceDataModel: audioDeviceDataModel)
-        dismiss(animated: true, completion: nil)
+        let audioDeviceType = AudioDeviceType(rawValue: cell.title.text)!
+        AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
+        dismissSelf(sender: self)
     }
 
-    // MARK: Actions
+    // MARK: UITableViewDataSource events
 
-    @IBAction func overLayViewDidTapped(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return audioDeviceOptions.count
     }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BottomDrawerCellView", for: indexPath) as? BottomDrawerCellView
+        let audioOption = audioDeviceOptions[indexPath.row]
+        let bottomDrawerCellViewModel = BottomDrawerCellViewModel(avatar: audioOption.image, title: audioOption.name, accessoryImage: audioOption.accessoryImage, enabled: audioOption.enabled)
+        cell?.updateCellView(cellViewModel: bottomDrawerCellViewModel)
+
+        return cell ?? UITableViewCell()
+    }
+
+}
+
+struct AudioDeviceOption {
+    let image: UIImage
+    let name: String
+    let accessoryImage: UIImage
+    let enabled: Bool
 }

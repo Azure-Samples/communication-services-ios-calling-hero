@@ -8,11 +8,6 @@ import UIKit
 struct BottomDrawerCellViewModel {
     let avatar: UIImage
     let title: String
-    var enabled: Bool
-}
-
-extension BottomDrawerCellViewModel {
-    func convertToAudioDeviceDataModel() -> AudioDeviceDataModel {
-        return AudioDeviceDataModel(image: avatar, name: title, enabled: enabled)
-    }
+    let accessoryImage: UIImage
+    let enabled: Bool
 }

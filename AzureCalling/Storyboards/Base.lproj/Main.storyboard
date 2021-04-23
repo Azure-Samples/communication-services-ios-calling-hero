@@ -858,63 +858,6 @@
             </objects>
             <point key="canvasLocation" x="620" y="-631"/>
         </scene>
-        <!--Audio Device Selection View Controller-->
-        <scene sceneID="qT5-T0-Xkc">
-            <objects>
-                <viewController storyboardIdentifier="AudioDeviceSelectionViewController" id="tcQ-Q1-DsE" customClass="AudioDeviceSelectionViewController" customModule="AzureCalling" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="QCu-fC-QMA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dmT-pb-bIt" userLabel="Device List">
-                                <rect key="frame" x="0.0" y="398" width="414" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="LFD-r6-IGe"/>
-                                </constraints>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="pXt-8n-xb3">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pXt-8n-xb3" id="FVc-VV-3UL">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MLw-ZS-80C">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MLw-ZS-80C" id="M4e-e2-sHC">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Ik7-6E-Hxr"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="dmT-pb-bIt" firstAttribute="leading" secondItem="Ik7-6E-Hxr" secondAttribute="leading" id="0gP-ia-JAj"/>
-                            <constraint firstItem="dmT-pb-bIt" firstAttribute="trailing" secondItem="Ik7-6E-Hxr" secondAttribute="trailing" id="peC-k3-Rth"/>
-                        </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="FTU-Pd-guv" appends="YES" id="7w2-Yx-CYj"/>
-                        </connections>
-                    </view>
-                    <connections>
-                        <outlet property="deviceDrawer" destination="dmT-pb-bIt" id="kPg-PJ-zdM"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DQl-KB-7ot" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="FTU-Pd-guv">
-                    <connections>
-                        <action selector="overLayViewDidTapped:" destination="tcQ-Q1-DsE" id="qf9-H5-tyA"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="-57" y="-2526"/>
-        </scene>
     </scenes>
     <designables>
         <designable name="2Vm-we-mGV">

@@ -11,11 +11,15 @@ class BottomDrawerCellView: UITableViewCell {
 
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var accessoryImage: UIImageView!
 
     // MARK: UITableViewCell events
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        super.init(coder: coder)    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
 
     // MARK: Public Functions
@@ -23,6 +27,7 @@ class BottomDrawerCellView: UITableViewCell {
     public func updateCellView(cellViewModel: BottomDrawerCellViewModel) {
         self.title.text = cellViewModel.title
         self.avatar.image = cellViewModel.avatar
-        self.accessoryType = cellViewModel.enabled ? .checkmark : .none
+        self.accessoryImage.image = cellViewModel.accessoryImage
+        self.accessoryImage.isHidden = !cellViewModel.enabled
     }
 }
