@@ -338,6 +338,16 @@ class CallingContext: NSObject {
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
 
+        participantsEventsAdapter?.onIsMutedChanged = { [weak self] remoteParticipant in
+            guard let self = self else {
+                return
+            }
+            if let userIdentifier = remoteParticipant.identifier.stringValue,
+               self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
+                self.notifyRemoteParticipantIsMutedChanged()
+            }
+        }
+
         participantsEventsAdapter?.onIsSpeakingChanged = { [weak self] remoteParticipant in
             guard let self = self else {
                 return
@@ -424,8 +434,13 @@ extension CallingContext: CallDelegate {
     private func notifyRemoteParticipantsUpdated() {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
     }
+
+    private func notifyRemoteParticipantIsMutedChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil)
+    }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
+    static let remoteParticipantIsMutedChanged = Notification.Name("RemoteParticipantIsMutedChanged")
 }

@@ -182,7 +182,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         showConfirmHangupModal()
     }
 
-    func showConfirmHangupModal() {
+    private func showConfirmHangupModal() {
         let hangupConfirmationViewController = HangupConfirmationViewController()
         hangupConfirmationViewController.callingContext = callingContext
         hangupConfirmationViewController.modalPresentationStyle = .overCurrentContext
@@ -244,7 +244,16 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func onToggleMute(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        sender.isSelected ? callingContext.mute { _ in} : callingContext.unmute { _ in}
+        (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            if case .success = result {
+                DispatchQueue.main.async {
+                    self.localParticipantView.updateMuteIndicator(isMuted: sender.isSelected)
+                }
+            }
+        }
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
@@ -261,6 +270,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantIsMutedChanged(_:)), name: .remoteParticipantIsMutedChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
@@ -310,6 +320,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
             let remoteParticipantView = ParticipantView()
             remoteParticipantView.updateDisplayName(displayName: participant.displayName)
+            remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
 
             if let remoteVideoStream = participant.videoStreams.first {
                 remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
@@ -324,6 +335,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         // Local participant
         localParticipantView.updateDisplayName(displayName: callingContext.displayName + " (Me)")
+        localParticipantView.updateMuteIndicator(isMuted: joinCallConfig.isMicrophoneMuted)
         localParticipantView.updateVideoDisplayed(isDisplayVideo: callingContext.isCameraPreferredOn)
 
         if callingContext.isCameraPreferredOn {
@@ -428,6 +440,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             participantView.updateDisplayName(displayName: participant.displayName)
+            participantView.updateMuteIndicator(isMuted: participant.isMuted)
             participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
 
             participantIdIndexPathMap[userIdentifier] = indexPath
@@ -520,6 +533,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
         queueParticipantViewsUpdate()
         meetingInfoViewUpdate()
+    }
+
+    @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
+        queueParticipantViewsUpdate()
     }
 
     @objc func appResignActive(_ notification: Notification) {

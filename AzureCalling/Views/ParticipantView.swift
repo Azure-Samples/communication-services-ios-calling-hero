@@ -21,7 +21,7 @@ class ParticipantView: UIView {
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
-    @IBOutlet weak var participantLabel: ParticipantLabel!
+    @IBOutlet weak var participantLabelView: ParticipantLabelView!
 
     // MARK: Constructors
 
@@ -38,8 +38,11 @@ class ParticipantView: UIView {
     // MARK: Operation methods
 
     func updateDisplayName(displayName: String) {
-        participantLabel.text = displayName
-        participantLabel.isHidden = displayName.isEmpty
+        participantLabelView.updateDisplayName(displayName: displayName)
+    }
+
+    func updateMuteIndicator(isMuted: Bool) {
+        participantLabelView.updateMuteIndicator(isMuted: isMuted)
     }
 
     func updateVideoStream(localVideoStream: LocalVideoStream?) {
@@ -83,7 +86,7 @@ class ParticipantView: UIView {
     }
 
     func updateDisplayNameVisible(isDisplayNameVisible: Bool) {
-        guard let view = participantLabel else {
+        guard let view = participantLabelView else {
             return
         }
 
