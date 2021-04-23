@@ -13,15 +13,6 @@ class BottomDrawerCellView: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var accessoryImage: UIImageView!
 
-    // MARK: UITableViewCell events
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-
     // MARK: Public Functions
 
     public func updateCellView(cellViewModel: BottomDrawerCellViewModel) {
