@@ -352,16 +352,17 @@ class CallingContext: NSObject {
             guard let self = self else {
                 return
             }
-            if remoteParticipant.isSpeaking,
-               let userIdentifier = remoteParticipant.identifier.stringValue {
-                // Swap in speaking participant if not currently displayed
+            if let userIdentifier = remoteParticipant.identifier.stringValue {
                 if self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
-                    if self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed {
+                    // Swap in speaking participant if not currently displayed
+                    if remoteParticipant.isSpeaking,
+                       self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed {
                         self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
                     }
+                } else {
+                    self.notifyRemoteParticipantViewChanged()
                 }
             }
-            self.notifyRemoteParticipantViewChanged()
         }
 
         participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] _ in
