@@ -53,6 +53,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
                 self.updateStartCallButtonState()
             }
         }
+
         setupUI()
     }
 
@@ -79,7 +80,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         setupStartCallButton()
         setupNameTextField()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
-        //tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
