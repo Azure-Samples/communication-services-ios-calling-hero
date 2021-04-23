@@ -258,8 +258,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantIsMutedChanged(_:)), name: .remoteParticipantIsMutedChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantIsSpeakingChanged(_:)), name: .remoteParticipantIsSpeakingChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantViewChanged(_:)), name: .remoteParticipantViewChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
@@ -526,11 +525,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
-        queueParticipantViewsUpdate()
-    }
-
-    @objc func onRemoteParticipantIsSpeakingChanged(_ notification: Notification) {
+    @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
     }
 

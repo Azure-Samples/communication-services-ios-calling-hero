@@ -344,7 +344,7 @@ class CallingContext: NSObject {
             }
             if let userIdentifier = remoteParticipant.identifier.stringValue,
                self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
-                self.notifyRemoteParticipantIsMutedChanged()
+                self.notifyRemoteParticipantViewChanged()
             }
         }
 
@@ -361,7 +361,7 @@ class CallingContext: NSObject {
                     }
                 }
             }
-            self.notifyRemoteParticipantIsSpeakingChanged()
+            self.notifyRemoteParticipantViewChanged()
         }
 
         participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] _ in
@@ -436,17 +436,12 @@ extension CallingContext: CallDelegate {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
     }
 
-    private func notifyRemoteParticipantIsMutedChanged() {
-        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil)
-    }
-
-    private func notifyRemoteParticipantIsSpeakingChanged() {
-        NotificationCenter.default.post(name: .remoteParticipantIsSpeakingChanged, object: nil)
+    private func notifyRemoteParticipantViewChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantViewChanged, object: nil)
     }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
-    static let remoteParticipantIsMutedChanged = Notification.Name("RemoteParticipantIsMutedChanged")
-    static let remoteParticipantIsSpeakingChanged = Notification.Name("RemoteParticipantIsSpeakingChanged")
+    static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
 }
