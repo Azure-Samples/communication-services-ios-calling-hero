@@ -353,13 +353,13 @@ class CallingContext: NSObject {
                 return
             }
             if let userIdentifier = remoteParticipant.identifier.stringValue {
-                if self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
+                if remoteParticipant.isSpeaking,
+                   self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed,
+                   self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
                     // Swap in speaking participant if not currently displayed
-                    if remoteParticipant.isSpeaking,
-                       self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed {
-                        self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
-                    }
-                } else {
+                    self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
+                } else if self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
+                    // Highlight active speaker
                     self.notifyRemoteParticipantViewChanged()
                 }
             }
