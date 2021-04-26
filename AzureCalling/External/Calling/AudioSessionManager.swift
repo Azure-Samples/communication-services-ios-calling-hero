@@ -11,7 +11,7 @@ class AudioSessionManager {
     // MARK: Public Functions
 
     public static func getAllAudioDeviceTypes() -> [AudioDeviceType] {
-        let audioDevices = [AudioDeviceType.receiver, AudioDeviceType.speaker]
+        let audioDevices: [AudioDeviceType] = [.receiver, .speaker]
         return audioDevices
     }
 
@@ -19,10 +19,10 @@ class AudioSessionManager {
         let route = AVAudioSession.sharedInstance().currentRoute
         for desc in route.outputs {
             if desc.portType == .builtInSpeaker {
-                return AudioDeviceType.speaker
+                return .speaker
             }
         }
-        return AudioDeviceType.receiver
+        return .receiver
     }
 
     public static func switchAudioDeviceType(audioDeviceType: AudioDeviceType) {

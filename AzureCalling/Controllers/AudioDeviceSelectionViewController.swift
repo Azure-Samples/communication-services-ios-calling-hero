@@ -9,7 +9,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
 
     // MARK: Properties
 
-    private var audioDeviceOptions: [AudioDeviceOption] = [AudioDeviceOption]()
+    private var audioDeviceOptions: [BottomDrawerCellViewModel] = [BottomDrawerCellViewModel]()
     var deviceTable: UITableView!
 
     // MARK: UIViewController events
@@ -56,10 +56,13 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         deviceTable.delegate = self
         deviceTable.reloadData()
 
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
+
         var deviceTableConstraints = [
         deviceTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         deviceTable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        deviceTable.heightAnchor.constraint(equalToConstant: 100)
+        deviceTable.heightAnchor.constraint(equalToConstant: deviceTable.contentSize.height + bottomPadding)
         ]
 
         let hideConstraint = deviceTable.topAnchor.constraint(equalTo: view.bottomAnchor)
@@ -72,15 +75,15 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
     func openDeviceTable() {
         deviceTable.isHidden = false
 
-        let centerYConstraint = NSLayoutConstraint(item: deviceTable!,
+        let showConstraint = NSLayoutConstraint(item: deviceTable!,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: self.view,
                 attribute: .bottom,
                 multiplier: 1,
                 constant: 0)
-        centerYConstraint.priority = .required
-        self.view.addConstraint(centerYConstraint)
+        showConstraint.priority = .required
+        self.view.addConstraint(showConstraint)
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -91,7 +94,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
 
         for audioDeviceType in audioDeviceTypes {
-            let audioDeviceOption = AudioDeviceOption(image: audioDeviceType.image, name: audioDeviceType.name, accessoryImage: audioDeviceType.accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
+            let audioDeviceOption = BottomDrawerCellViewModel(avatar: audioDeviceType.image, title: audioDeviceType.name, accessoryImage: audioDeviceType.accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
             audioDeviceOptions.append(audioDeviceOption)
         }
     }
@@ -100,8 +103,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! BottomDrawerCellView
-        let audioDeviceType = AudioDeviceType(rawValue: cell.title.text)!
+        let audioDeviceType = AudioDeviceType(rawValue: audioDeviceOptions[indexPath.row].title)!
         AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
         dismissSelf(sender: self)
     }
@@ -113,19 +115,11 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BottomDrawerCellView", for: indexPath) as? BottomDrawerCellView
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BottomDrawerCellView", for: indexPath) as! BottomDrawerCellView
         let audioOption = audioDeviceOptions[indexPath.row]
-        let bottomDrawerCellViewModel = BottomDrawerCellViewModel(avatar: audioOption.image, title: audioOption.name, accessoryImage: audioOption.accessoryImage, enabled: audioOption.enabled)
-        cell?.updateCellView(cellViewModel: bottomDrawerCellViewModel)
+        cell.updateCellView(cellViewModel: audioOption)
 
-        return cell ?? UITableViewCell()
+        return cell
     }
 
-}
-
-struct AudioDeviceOption {
-    let image: UIImage
-    let name: String
-    let accessoryImage: UIImage
-    let enabled: Bool
 }
