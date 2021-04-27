@@ -258,7 +258,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantIsMutedChanged(_:)), name: .remoteParticipantIsMutedChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantViewChanged(_:)), name: .remoteParticipantViewChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
@@ -309,6 +309,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let remoteParticipantView = ParticipantView()
             remoteParticipantView.updateDisplayName(displayName: participant.displayName)
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
+            remoteParticipantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
 
             if let remoteVideoStream = participant.videoStreams.first {
                 remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
@@ -429,6 +430,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             participantView.updateDisplayName(displayName: participant.displayName)
             participantView.updateMuteIndicator(isMuted: participant.isMuted)
+            participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
             participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
 
             participantIdIndexPathMap[userIdentifier] = indexPath
@@ -523,7 +525,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
-    @objc func onRemoteParticipantIsMutedChanged(_ notification: Notification) {
+    @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
     }
 

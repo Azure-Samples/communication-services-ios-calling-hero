@@ -344,7 +344,7 @@ class CallingContext: NSObject {
             }
             if let userIdentifier = remoteParticipant.identifier.stringValue,
                self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
-                self.notifyRemoteParticipantIsMutedChanged()
+                self.notifyRemoteParticipantViewChanged()
             }
         }
 
@@ -352,13 +352,15 @@ class CallingContext: NSObject {
             guard let self = self else {
                 return
             }
-            if remoteParticipant.isSpeaking,
-               let userIdentifier = remoteParticipant.identifier.stringValue {
-                // Swap in speaking participant if not currently displayed
-                if self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
-                    if self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed {
-                        self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
-                    }
+            if let userIdentifier = remoteParticipant.identifier.stringValue {
+                if remoteParticipant.isSpeaking,
+                   self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed,
+                   self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
+                    // Swap in speaking participant if not currently displayed
+                    self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
+                } else if self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
+                    // Highlight active speaker
+                    self.notifyRemoteParticipantViewChanged()
                 }
             }
         }
@@ -435,12 +437,12 @@ extension CallingContext: CallDelegate {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
     }
 
-    private func notifyRemoteParticipantIsMutedChanged() {
-        NotificationCenter.default.post(name: .remoteParticipantIsMutedChanged, object: nil)
+    private func notifyRemoteParticipantViewChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantViewChanged, object: nil)
     }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
-    static let remoteParticipantIsMutedChanged = Notification.Name("RemoteParticipantIsMutedChanged")
+    static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
 }
