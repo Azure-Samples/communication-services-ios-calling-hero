@@ -9,7 +9,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
 
     // MARK: Properties
 
-    private var audioDeviceOptions: [BottomDrawerCellViewModel] = [BottomDrawerCellViewModel]()
+    private var audioDeviceOptions: [BottomDrawerItem] = [BottomDrawerItem]()
     var deviceTable: UITableView!
 
     // MARK: UIViewController events
@@ -31,7 +31,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         createDeviceTable()
     }
 
-    @objc func dismissSelf(sender: NSObject) {
+    @objc func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
 
@@ -43,8 +43,6 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
 
     func createDeviceTable() {
         deviceTable = UITableView()
-        deviceTable.isHidden = true
-        deviceTable.allowsSelection = true
         deviceTable.isScrollEnabled = false
         deviceTable.layer.cornerRadius = 8
         deviceTable.translatesAutoresizingMaskIntoConstraints = false
@@ -56,13 +54,24 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         deviceTable.delegate = self
         deviceTable.reloadData()
 
+        //view.translatesAutoresizingMaskIntoConstraints = false
         let window = UIApplication.shared.windows[0]
+        let guide = view.safeAreaLayoutGuide
+        //let bottomPadding = guide.bottomAnchor.
+
+        // Option 1: Height of deviceTable is Content plus padding to bottom of true window
         let bottomPadding = window.safeAreaInsets.bottom
 
+        // Option 2: Height of deviceTable is just Content, see Option 2 in openDeviceTable
+        //let bottomPadding = 0
+
+        // Option 3: Height of deviceTable is just Content, see Option 3 in openDeviceTable
+        //let bottomPadding = 0
+
         var deviceTableConstraints = [
-        deviceTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        deviceTable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        deviceTable.heightAnchor.constraint(equalToConstant: deviceTable.contentSize.height + bottomPadding)
+            deviceTable.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            deviceTable.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            deviceTable.heightAnchor.constraint(equalToConstant: deviceTable.contentSize.height + bottomPadding)
         ]
 
         let hideConstraint = deviceTable.topAnchor.constraint(equalTo: view.bottomAnchor)
@@ -73,13 +82,18 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
     }
 
     func openDeviceTable() {
-        deviceTable.isHidden = false
+        // Option 1
+        let anchor = NSLayoutConstraint.Attribute.bottom
+        // Option 2
+        //let anchor = NSLayoutConstraint.Attribute.bottom
+        // Option 3
+        //let anchor = NSLayoutConstraint.Attribute.bottomMargin
 
         let showConstraint = NSLayoutConstraint(item: deviceTable!,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: self.view,
-                attribute: .bottom,
+                attribute: anchor,
                 multiplier: 1,
                 constant: 0)
         showConstraint.priority = .required
@@ -94,7 +108,18 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
 
         for audioDeviceType in audioDeviceTypes {
-            let audioDeviceOption = BottomDrawerCellViewModel(avatar: audioDeviceType.image, title: audioDeviceType.name, accessoryImage: audioDeviceType.accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
+
+            let accessoryImage = UIImage(named: "ic_fluent_checkmark_20_filled")!
+
+            var image: UIImage
+            switch audioDeviceType {
+            case .receiver:
+                image = UIImage(named: "ic_fluent_speaker_2_28_regular")!
+            case .speaker:
+                image = UIImage(named: "ic_fluent_speaker_2_28_filled")!
+            }
+
+            let audioDeviceOption = BottomDrawerItem(avatar: image, title: audioDeviceType.name, accessoryImage: accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
             audioDeviceOptions.append(audioDeviceOption)
         }
     }
@@ -105,7 +130,7 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
                    didSelectRowAt indexPath: IndexPath) {
         let audioDeviceType = AudioDeviceType(rawValue: audioDeviceOptions[indexPath.row].title)!
         AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
-        dismissSelf(sender: self)
+        dismissSelf()
     }
 
     // MARK: UITableViewDataSource events

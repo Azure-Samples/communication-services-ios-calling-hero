@@ -40,7 +40,7 @@
 		8D743155263373E0000D0BCE /* AudioDeviceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743154263373E0000D0BCE /* AudioDeviceSelectionViewController.swift */; };
 		8D743158263373ED000D0BCE /* BottomDrawerCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D743156263373ED000D0BCE /* BottomDrawerCellView.xib */; };
 		8D743159263373ED000D0BCE /* BottomDrawerCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743157263373ED000D0BCE /* BottomDrawerCellView.swift */; };
-		8D74315B263373F9000D0BCE /* BottomDrawerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315A263373F9000D0BCE /* BottomDrawerCellViewModel.swift */; };
+		8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */; };
 		8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315C26337420000D0BCE /* AudioDeviceType.swift */; };
 		987C3DC62624DE6200E296D0 /* ParticipantLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */; };
 /* End PBXBuildFile section */
@@ -98,7 +98,7 @@
 		8D743154263373E0000D0BCE /* AudioDeviceSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelectionViewController.swift; sourceTree = "<group>"; };
 		8D743156263373ED000D0BCE /* BottomDrawerCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BottomDrawerCellView.xib; sourceTree = "<group>"; };
 		8D743157263373ED000D0BCE /* BottomDrawerCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerCellView.swift; sourceTree = "<group>"; };
-		8D74315A263373F9000D0BCE /* BottomDrawerCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerCellViewModel.swift; sourceTree = "<group>"; };
+		8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerItem.swift; sourceTree = "<group>"; };
 		8D74315C26337420000D0BCE /* AudioDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceType.swift; sourceTree = "<group>"; };
 		987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantLabelView.swift; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +119,7 @@
 		1F7CD3DA25C1E9E80081D8F1 /* AzureCalling */ = {
 			isa = PBXGroup;
 			children = (
+				8D6C8A2C2638B6BB00B94DA7 /* ViewModels */,
 				1F7CD3DB25C1E9E80081D8F1 /* Storyboards */,
 				1F7CD3EA25C1E9E80081D8F1 /* Controllers */,
 				1F7CD3F125C1E9E80081D8F1 /* Views */,
@@ -186,6 +187,8 @@
 		21C19BD125C8098F00EB0991 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				8D743152263373C5000D0BCE /* AudioSessionManager.swift */,
+				8D74315C26337420000D0BCE /* AudioDeviceType.swift */,
 				1F2BEA39262A46EC00D98266 /* ThemeColor.swift */,
 				1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */,
 			);
@@ -204,11 +207,8 @@
 			isa = PBXGroup;
 			children = (
 				1FC8820A261663DD002B1947 /* JoinCallType.swift */,
-				8D743152263373C5000D0BCE /* AudioSessionManager.swift */,
-				8D74315C26337420000D0BCE /* AudioDeviceType.swift */,
 				1FC8820826165A5D002B1947 /* JoinCallConfig.swift */,
 				1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */,
-				8D74315A263373F9000D0BCE /* BottomDrawerCellViewModel.swift */,
 				1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */,
 				1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */,
 				1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */,
@@ -240,6 +240,14 @@
 				F538450C6909F619B02539DC /* Pods_AzureCalling.framework */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		8D6C8A2C2638B6BB00B94DA7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		DA170F1F827D779B33F40145 /* Pods */ = {
@@ -415,7 +423,7 @@
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
 				1FC8820B261663DD002B1947 /* JoinCallType.swift in Sources */,
 				1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */,
-				8D74315B263373F9000D0BCE /* BottomDrawerCellViewModel.swift in Sources */,
+				8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */,
 				1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */,
 				1F7CD40F25C1E9E80081D8F1 /* InfoHeaderView.swift in Sources */,
 				987C3DC62624DE6200E296D0 /* ParticipantLabelView.swift in Sources */,

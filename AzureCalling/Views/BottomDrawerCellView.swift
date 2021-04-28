@@ -15,7 +15,7 @@ class BottomDrawerCellView: UITableViewCell {
 
     // MARK: Public Functions
 
-    public func updateCellView(cellViewModel: BottomDrawerCellViewModel) {
+    public func updateCellView(cellViewModel: BottomDrawerItem) {
         self.title.text = cellViewModel.title
         self.avatar.image = cellViewModel.avatar
         self.accessoryImage.image = cellViewModel.accessoryImage
