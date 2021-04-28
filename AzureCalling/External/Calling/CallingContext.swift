@@ -80,7 +80,6 @@ class CallingContext: NSObject {
     }
 
     func joinCall(_ joinConfig: JoinCallConfig, completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        self.callAgent = nil
         self.callingInterfaceState = .connecting
         self.setupCallAgent(displayName: joinConfig.displayName) { [weak self] _ in
             guard let self = self else {
@@ -263,17 +262,7 @@ class CallingContext: NSObject {
 
     private func setupCalling(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         callClient = CallClient()
-        setupCallAgent(displayName: "") { [weak self] result in
-            guard let self = self else {
-                return
-            }
-
-            if case .failure(let error) = result {
-                completionHandler(.failure(error))
-                return
-            }
-            self.setupDeviceManager(completionHandler: completionHandler)
-        }
+        self.setupDeviceManager(completionHandler: completionHandler)
     }
 
     private func setupCallAgent(displayName: String, completionHandler: @escaping (Result<Void, Error>) -> Void) {
@@ -375,17 +364,29 @@ class CallingContext: NSObject {
             self.notifyRemoteParticipantsUpdated()
         }
 
+        participantsEventsAdapter?.onIsMutedChanged = { [weak self] remoteParticipant in
+            guard let self = self else {
+                return
+            }
+            if let userIdentifier = remoteParticipant.identifier.stringValue,
+               self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
+                self.notifyRemoteParticipantViewChanged()
+            }
+        }
+
         participantsEventsAdapter?.onIsSpeakingChanged = { [weak self] remoteParticipant in
             guard let self = self else {
                 return
             }
-            if remoteParticipant.isSpeaking,
-               let userIdentifier = remoteParticipant.identifier.stringValue {
-                // Swap in speaking participant if not currently displayed
-                if self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
-                    if self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed {
-                        self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
-                    }
+            if let userIdentifier = remoteParticipant.identifier.stringValue {
+                if remoteParticipant.isSpeaking,
+                   self.displayedRemoteParticipants.count == CallingContext.remoteParticipantsDisplayed,
+                   self.displayedRemoteParticipants.value(forKey: userIdentifier) == nil {
+                    // Swap in speaking participant if not currently displayed
+                    self.findInactiveSpeakerToSwap(with: remoteParticipant, id: userIdentifier)
+                } else if self.displayedRemoteParticipants.value(forKey: userIdentifier) != nil {
+                    // Highlight active speaker
+                    self.notifyRemoteParticipantViewChanged()
                 }
             }
         }
@@ -498,6 +499,10 @@ extension CallingContext: CallDelegate {
     private func notifyOnCallStateUpdated() {
         NotificationCenter.default.post(name: .onCallStateUpdated, object: nil)
     }
+
+    private func notifyRemoteParticipantViewChanged() {
+        NotificationCenter.default.post(name: .remoteParticipantViewChanged, object: nil)
+    }
 }
 
 extension Notification.Name {
@@ -505,4 +510,5 @@ extension Notification.Name {
     static let onCallStateUpdated = Notification.Name("OnCallStateUpdated")
     static let onRecordingActiveChangeUpdated = Notification.Name("OnRecordingActiveChangeUpdated")
     static let onTranscriptionActiveChangeUpdated = Notification.Name("OnTranscriptionActiveChangeUpdated")
+    static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
 }

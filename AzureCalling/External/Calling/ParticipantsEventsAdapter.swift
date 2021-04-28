@@ -9,6 +9,7 @@ class ParticipantsEventsAdapter: NSObject, RemoteParticipantDelegate {
     var onStateChanged: ((RemoteParticipant) -> Void) = {_ in }
     var onVideoStreamsUpdated: ((RemoteParticipant) -> Void) = {_ in }
     var onIsSpeakingChanged: ((RemoteParticipant) -> Void) = {_ in }
+    var onIsMutedChanged: ((RemoteParticipant) -> Void) = {_ in }
 
     func remoteParticipant(_ remoteParticipant: RemoteParticipant, didChangeState args: PropertyChangedEventArgs) {
         onStateChanged(remoteParticipant)
@@ -20,5 +21,9 @@ class ParticipantsEventsAdapter: NSObject, RemoteParticipantDelegate {
 
     func remoteParticipant(_ remoteParticipant: RemoteParticipant, didChangeSpeakingState args: PropertyChangedEventArgs) {
         onIsSpeakingChanged(remoteParticipant)
+    }
+
+    func remoteParticipant(_ remoteParticipant: RemoteParticipant, didChangeMuteState args: PropertyChangedEventArgs) {
+        onIsMutedChanged(remoteParticipant)
     }
 }
