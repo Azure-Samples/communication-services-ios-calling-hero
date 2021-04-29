@@ -45,6 +45,11 @@ class ParticipantView: UIView {
         participantLabelView.updateMuteIndicator(isMuted: isMuted)
     }
 
+    func updateActiveSpeaker(isSpeaking: Bool) {
+        contentView.layer.borderWidth = isSpeaking ? 3 : 0
+        contentView.layer.borderColor = isSpeaking ? ThemeColor.primary.cgColor : UIColor.clear.cgColor
+    }
+
     func updateVideoStream(localVideoStream: LocalVideoStream?) {
         if localVideoStream == nil {
             cleanUpVideoRendering()
