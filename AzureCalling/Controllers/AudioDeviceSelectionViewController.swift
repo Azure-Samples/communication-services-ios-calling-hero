@@ -54,19 +54,9 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         deviceTable.delegate = self
         deviceTable.reloadData()
 
-        //view.translatesAutoresizingMaskIntoConstraints = false
         let window = UIApplication.shared.windows[0]
         let guide = view.safeAreaLayoutGuide
-        //let bottomPadding = guide.bottomAnchor.
-
-        // Option 1: Height of deviceTable is Content plus padding to bottom of true window
         let bottomPadding = window.safeAreaInsets.bottom
-
-        // Option 2: Height of deviceTable is just Content, see Option 2 in openDeviceTable
-        //let bottomPadding = 0
-
-        // Option 3: Height of deviceTable is just Content, see Option 3 in openDeviceTable
-        //let bottomPadding = 0
 
         var deviceTableConstraints = [
             deviceTable.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
@@ -82,18 +72,11 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
     }
 
     func openDeviceTable() {
-        // Option 1
-        let anchor = NSLayoutConstraint.Attribute.bottom
-        // Option 2
-        //let anchor = NSLayoutConstraint.Attribute.bottom
-        // Option 3
-        //let anchor = NSLayoutConstraint.Attribute.bottomMargin
-
         let showConstraint = NSLayoutConstraint(item: deviceTable!,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: self.view,
-                attribute: anchor,
+                attribute: .bottom,
                 multiplier: 1,
                 constant: 0)
         showConstraint.priority = .required

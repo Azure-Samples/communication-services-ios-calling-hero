@@ -119,7 +119,6 @@
 		1F7CD3DA25C1E9E80081D8F1 /* AzureCalling */ = {
 			isa = PBXGroup;
 			children = (
-				8D6C8A2C2638B6BB00B94DA7 /* ViewModels */,
 				1F7CD3DB25C1E9E80081D8F1 /* Storyboards */,
 				1F7CD3EA25C1E9E80081D8F1 /* Controllers */,
 				1F7CD3F125C1E9E80081D8F1 /* Views */,
@@ -174,6 +173,7 @@
 				1F7CD3F525C1E9E80081D8F1 /* JoinIdShareItem.swift */,
 				1F7CD3F625C1E9E80081D8F1 /* InfoHeaderView.swift */,
 				987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */,
+				8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */,
 				8D743157263373ED000D0BCE /* BottomDrawerCellView.swift */,
 				8D743156263373ED000D0BCE /* BottomDrawerCellView.xib */,
 				1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */,
@@ -240,14 +240,6 @@
 				F538450C6909F619B02539DC /* Pods_AzureCalling.framework */,
 			);
 			path = Frameworks;
-			sourceTree = "<group>";
-		};
-		8D6C8A2C2638B6BB00B94DA7 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		DA170F1F827D779B33F40145 /* Pods */ = {
