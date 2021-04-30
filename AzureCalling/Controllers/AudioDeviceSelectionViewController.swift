@@ -25,7 +25,6 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-        view.isUserInteractionEnabled = true
 
         createAudioDeviceOptions()
         createDeviceTable()
