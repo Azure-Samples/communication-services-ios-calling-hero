@@ -31,6 +31,7 @@ class AudioSessionManager {
         case .receiver:
             print("iOS Audio selected")
             do {
+                try audioSession.setActive(true)
                 try audioSession.overrideOutputAudioPort(.none)
             } catch _ {
                 print("iOS Audio selected exception")
@@ -38,6 +39,7 @@ class AudioSessionManager {
         case .speaker:
             print("Speaker Audio selected")
             do {
+                try audioSession.setActive(true)
                 try audioSession.overrideOutputAudioPort(.speaker)
             } catch _ {
                 print("Speaker Audio selected exception")
