@@ -70,8 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(.playAndRecord, mode: .voiceChat)
+            let options: AVAudioSession.CategoryOptions = [.allowBluetooth, .duckOthers, .interruptSpokenAudioAndMixWithOthers, .allowBluetoothA2DP]
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: options)
             try audioSession.overrideOutputAudioPort(.speaker)
+            try audioSession.setActive(true)
         } catch {
             print("Failed to set audio session category.")
         }
