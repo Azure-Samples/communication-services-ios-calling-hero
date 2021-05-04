@@ -208,7 +208,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onToggleVideo(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         if sender.isSelected {
             callingContext.stopLocalVideoStream { [weak self] _ in
                 guard let self = self else {
@@ -243,7 +243,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onToggleMute(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
             guard let self = self else {
                 return

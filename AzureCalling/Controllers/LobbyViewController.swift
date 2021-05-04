@@ -265,7 +265,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
 
     @IBAction func toggleVideoButtonPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         if !sender.isSelected {
             callingContext.withLocalVideoStream { [weak self] localVideoStream in
                 DispatchQueue.main.async {
@@ -285,7 +285,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func toggleMicrophoneButtonPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
