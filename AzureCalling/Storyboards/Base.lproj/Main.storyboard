@@ -362,7 +362,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-tE-txc">
-                                                <rect key="frame" x="91" y="531.5" width="200" height="50"/>
+                                                <rect key="frame" x="41" y="531.5" width="300" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="gSY-SK-FFx">
                                                         <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
@@ -398,9 +398,23 @@
                                                             <action selector="toggleMicrophoneButtonPressed:" destination="go2-tU-kve" eventType="touchUpInside" id="6yp-xp-bYu"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NlG-FZ-0Ip">
+                                                        <rect key="frame" x="200" y="0.0" width="100" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="Exw-29-wHh"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <inset key="titleEdgeInsets" minX="-25" minY="35" maxX="0.0" maxY="0.0"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="-25" maxX="-45" maxY="0.0"/>
+                                                        <state key="normal" title="Device" image="ic_fluent_speaker_2_28_filled"/>
+                                                        <connections>
+                                                            <action selector="selectAudioDeviceButtonPressed:" destination="go2-tU-kve" eventType="touchUpInside" id="Bbf-1f-LgJ"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="200" id="8Oe-bO-EZZ"/>
+                                                    <constraint firstAttribute="width" constant="300" id="8Oe-bO-EZZ"/>
                                                     <constraint firstAttribute="height" constant="50" id="tp1-FD-2Rv"/>
                                                 </constraints>
                                             </stackView>
@@ -504,6 +518,7 @@
                         <outlet property="permissionWarningView" destination="G4U-5B-2Au" id="dQI-4v-RgQ"/>
                         <outlet property="previewCenterImageView" destination="qNA-wt-a9C" id="aY2-0D-Rsn"/>
                         <outlet property="previewView" destination="518-pB-unB" id="vxA-e8-tmr"/>
+                        <outlet property="selectAudioDeviceButton" destination="NlG-FZ-0Ip" id="bgq-9N-SU4"/>
                         <outlet property="startCallButton" destination="2Vm-we-mGV" id="dia-nr-oGD"/>
                         <outlet property="toggleMicrophoneButton" destination="ueH-21-TCG" id="BAO-od-Ovw"/>
                         <outlet property="toggleVideoButton" destination="gSY-SK-FFx" id="kt0-c4-UPU"/>
@@ -585,7 +600,7 @@
                                 <rect key="frame" x="0.0" y="796" width="414" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="749-3Q-0ou">
-                                        <rect key="frame" x="0.0" y="36" width="103.5" height="28"/>
+                                        <rect key="frame" x="0.0" y="36" width="83" height="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_video_28_filled"/>
                                         <state key="selected" image="ic_fluent_video_off_28_filled"/>
@@ -594,7 +609,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1w-2p-ooa">
-                                        <rect key="frame" x="103.5" y="36" width="103.5" height="28"/>
+                                        <rect key="frame" x="83" y="36" width="82.5" height="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_mic_on_28_filled"/>
                                         <state key="selected" image="ic_fluent_mic_off_28_filled"/>
@@ -602,8 +617,16 @@
                                             <action selector="onToggleMute:" destination="xT5-r8-X8c" eventType="touchUpInside" id="F97-4H-gu6"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5m-nf-kep">
+                                        <rect key="frame" x="165.5" y="36" width="83" height="28"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="ic_fluent_speaker_2_28_filled"/>
+                                        <connections>
+                                            <action selector="selectAudioDeviceButtonPressed:" destination="xT5-r8-X8c" eventType="touchUpInside" id="3gQ-cJ-LSF"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUT-f2-RbY">
-                                        <rect key="frame" x="207" y="38" width="103.5" height="24"/>
+                                        <rect key="frame" x="248.5" y="38" width="82.5" height="24"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_people_add_24_regular"/>
                                         <connections>
@@ -611,10 +634,10 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wmc-3d-dVK">
-                                        <rect key="frame" x="310.5" y="20" width="103.5" height="60"/>
+                                        <rect key="frame" x="331" y="20" width="83" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iH7-6f-y0M">
-                                                <rect key="frame" x="22" y="0.0" width="60" height="60"/>
+                                                <rect key="frame" x="11.5" y="0.0" width="60" height="60"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWL-2E-vdL">
                                                         <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
@@ -659,7 +682,7 @@
                                 <rect key="frame" x="314" y="0.0" width="100" height="896"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BdS-QG-foa">
-                                        <rect key="frame" x="36" y="0.0" width="28" height="224"/>
+                                        <rect key="frame" x="36" y="0.0" width="28" height="179"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_video_28_filled"/>
                                         <state key="selected" image="ic_fluent_video_off_28_filled"/>
@@ -668,7 +691,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="62P-XE-FHY">
-                                        <rect key="frame" x="36" y="224" width="28" height="224"/>
+                                        <rect key="frame" x="36" y="179" width="28" height="179.5"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_mic_on_28_filled"/>
                                         <state key="selected" image="ic_fluent_mic_off_28_filled"/>
@@ -676,8 +699,16 @@
                                             <action selector="onToggleMute:" destination="xT5-r8-X8c" eventType="touchUpInside" id="CAZ-Nb-ZQc"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EqJ-hf-Oki" userLabel="Vertical Select Audio Device Button">
+                                        <rect key="frame" x="36" y="358.5" width="28" height="179"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="ic_fluent_speaker_2_28_filled"/>
+                                        <connections>
+                                            <action selector="selectAudioDeviceButtonPressed:" destination="xT5-r8-X8c" eventType="touchUpInside" id="xLN-vs-fzu"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-MO-MMZ">
-                                        <rect key="frame" x="38" y="448" width="24" height="224"/>
+                                        <rect key="frame" x="38" y="537.5" width="24" height="179.5"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ic_fluent_people_add_24_regular"/>
                                         <connections>
@@ -685,10 +716,10 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e5Q-gH-SN6">
-                                        <rect key="frame" x="20" y="672" width="60" height="224"/>
+                                        <rect key="frame" x="20" y="717" width="60" height="179"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJR-36-j01">
-                                                <rect key="frame" x="0.0" y="82" width="60" height="60"/>
+                                                <rect key="frame" x="0.0" y="59.5" width="60" height="60"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XR-X4-oEE">
                                                         <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
@@ -789,8 +820,10 @@
                         <outlet property="localVideoViewWidthConstraint" destination="aSW-ZL-A4e" id="40F-6r-bUe"/>
                         <outlet property="participantsView" destination="0pb-xG-5G6" id="TMt-7B-rPs"/>
                         <outlet property="rightControlBar" destination="pmS-8P-vNV" id="peb-Yi-uhE"/>
+                        <outlet property="selectAudioDeviceButton" destination="X5m-nf-kep" id="o38-yP-ih7"/>
                         <outlet property="toggleMuteButton" destination="h1w-2p-ooa" id="bx6-az-aob"/>
                         <outlet property="toggleVideoButton" destination="749-3Q-0ou" id="Exe-ZY-384"/>
+                        <outlet property="verticalSelectAudioDeviceButton" destination="EqJ-hf-Oki" id="qpz-lg-i0Z"/>
                         <outlet property="verticalToggleMuteButton" destination="62P-XE-FHY" id="o9H-j7-awc"/>
                         <outlet property="verticalToggleVideoButton" destination="BdS-QG-foa" id="DSb-RF-DXN"/>
                         <segue destination="Tk0-qe-n8C" kind="unwind" identifier="UnwindToStart" unwindAction="unwindToStartWithSender:" id="cJu-K7-BFL"/>
@@ -801,11 +834,11 @@
                 <exit id="Tk0-qe-n8C" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="oaY-Mp-Stc">
                     <connections>
-                        <action selector="contentViewDidTapped:" destination="xT5-r8-X8c" id="6XG-Fo-c9N"/>
+                        <action selector="contentViewDidTapped:" destination="xT5-r8-X8c" id="PXG-lB-Cor"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2125.5999999999999" y="124.58770614692655"/>
+            <point key="canvasLocation" x="2124.6376811594205" y="124.55357142857142"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qB8-BI-f7l">
@@ -857,6 +890,7 @@
         <image name="ic_fluent_mic_on_28_filled" width="28" height="28"/>
         <image name="ic_fluent_people_add_24_regular" width="24" height="24"/>
         <image name="ic_fluent_person_48_filled" width="48" height="48"/>
+        <image name="ic_fluent_speaker_2_28_filled" width="28" height="28"/>
         <image name="ic_fluent_video_28_filled" width="28" height="28"/>
         <image name="ic_fluent_video_off_28_filled" width="28" height="28"/>
         <image name="videoOff" width="79" height="80"/>

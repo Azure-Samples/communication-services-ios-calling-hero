@@ -34,6 +34,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var participantsView: UICollectionView!
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
+    @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
@@ -43,6 +44,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var localVideoViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
+    @IBOutlet weak var verticalSelectAudioDeviceButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: UIViewController events
@@ -129,6 +131,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     deinit {
         cleanViewRendering()
+    }
+
+    private func openAudioDeviceDrawer() {
+        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
+        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
+        present(audioDeviceSelectionViewController, animated: false, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -246,6 +254,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
             }
         }
+    }
+
+    @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
+        openAudioDeviceDrawer()
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {
