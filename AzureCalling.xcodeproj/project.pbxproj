@@ -43,7 +43,9 @@
 		8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */; };
 		8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315C26337420000D0BCE /* AudioDeviceType.swift */; };
 		986654FD264352A000395329 /* ActiveSpeakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986654FC264352A000395329 /* ActiveSpeakerView.swift */; };
+		985A0CEC2641E71600147676 /* BottomDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985A0CEB2641E71600147676 /* BottomDrawerViewController.swift */; };
 		987C3DC62624DE6200E296D0 /* ParticipantLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */; };
+		98AF5CDF263B4447007608CD /* ParticipantListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AF5CDE263B4447007608CD /* ParticipantListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -102,7 +104,9 @@
 		8D74315A263373F9000D0BCE /* BottomDrawerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerItem.swift; sourceTree = "<group>"; };
 		8D74315C26337420000D0BCE /* AudioDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceType.swift; sourceTree = "<group>"; };
 		986654FC264352A000395329 /* ActiveSpeakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSpeakerView.swift; sourceTree = "<group>"; };
+		985A0CEB2641E71600147676 /* BottomDrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDrawerViewController.swift; sourceTree = "<group>"; };
 		987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantLabelView.swift; sourceTree = "<group>"; };
+		98AF5CDE263B4447007608CD /* ParticipantListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantListViewController.swift; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -165,6 +169,8 @@
 				8D743154263373E0000D0BCE /* AudioDeviceSelectionViewController.swift */,
 				1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */,
 				1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */,
+				98AF5CDE263B4447007608CD /* ParticipantListViewController.swift */,
+				985A0CEB2641E71600147676 /* BottomDrawerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -412,11 +418,13 @@
 				21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
+				98AF5CDF263B4447007608CD /* ParticipantListViewController.swift in Sources */,
 				1F7CD40925C1E9E80081D8F1 /* LobbyViewController.swift in Sources */,
 				1F5FADB225FFC76A00E2365F /* ParticipantsEventsAdapter.swift in Sources */,
 				1F7CD40225C1E9E80081D8F1 /* MappedSequence.swift in Sources */,
 				8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */,
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
+				985A0CEC2641E71600147676 /* BottomDrawerViewController.swift in Sources */,
 				1FC8820B261663DD002B1947 /* JoinCallType.swift in Sources */,
 				1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */,
 				8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */,

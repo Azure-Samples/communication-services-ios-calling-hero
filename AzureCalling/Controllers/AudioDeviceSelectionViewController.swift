@@ -5,7 +5,7 @@
 
 import UIKit
 
-class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AudioDeviceSelectionViewController: UIViewController, BottomDrawerViewController {
 
     // MARK: Properties
 
@@ -40,52 +40,15 @@ class AudioDeviceSelectionViewController: UIViewController, UITableViewDelegate,
         openDeviceTable()
     }
 
-    func createDeviceTable() {
-        deviceTable = UITableView()
-        deviceTable.isScrollEnabled = false
-        deviceTable.layer.cornerRadius = 8
-        deviceTable.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(deviceTable)
-        let audioDeviceCell = UINib(nibName: "BottomDrawerCellView",
-                                      bundle: nil)
-        deviceTable.register(audioDeviceCell, forCellReuseIdentifier: "BottomDrawerCellView")
-        deviceTable.dataSource = self
-        deviceTable.delegate = self
-        deviceTable.reloadData()
-
-        let window = UIApplication.shared.windows[0]
-        let guide = view.safeAreaLayoutGuide
-        let bottomPadding = window.safeAreaInsets.bottom
-
-        var deviceTableConstraints = [
-            deviceTable.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-            deviceTable.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            deviceTable.heightAnchor.constraint(equalToConstant: deviceTable.contentSize.height + bottomPadding)
-        ]
-
-        let hideConstraint = deviceTable.topAnchor.constraint(equalTo: view.bottomAnchor)
-        hideConstraint.priority = .defaultLow
-        deviceTableConstraints.append(hideConstraint)
-
-        NSLayoutConstraint.activate(deviceTableConstraints)
+    private func createDeviceTable() {
+        deviceTable = createBottomDrawer()
     }
 
-    func openDeviceTable() {
-        let showConstraint = NSLayoutConstraint(item: deviceTable!,
-                attribute: .bottom,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1,
-                constant: 0)
-        showConstraint.priority = .required
-        self.view.addConstraint(showConstraint)
-        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+    private func openDeviceTable() {
+        openBottomDrawer(table: deviceTable)
     }
 
-    func createAudioDeviceOptions() {
+    private func createAudioDeviceOptions() {
         let audioDeviceTypes = AudioSessionManager.getAllAudioDeviceTypes()
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
 
