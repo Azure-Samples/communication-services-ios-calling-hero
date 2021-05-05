@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="AzureCalling" customModuleProvider="target">
             <connections>
+                <outlet property="activeSpeakerView" destination="zye-vX-A83" id="xvx-xU-LbP"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
                 <outlet property="participantLabelView" destination="4tW-72-meb" id="pYy-VX-THl"/>
                 <outlet property="placeholderImage" destination="wyD-Dr-0Cm" id="yQT-C8-AHL"/>
@@ -33,6 +35,17 @@
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQU-ZL-awr" userLabel="Video View Container">
                             <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zye-vX-A83" customClass="ActiveSpeakerView" customModule="AzureCalling" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" name="primaryColor"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </view>
                         <stackView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-72-meb" customClass="ParticipantLabelView" customModule="AzureCalling" customModuleProvider="target">
                             <rect key="frame" x="8" y="898" width="114.5" height="20"/>
@@ -95,8 +108,12 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="4tW-72-meb" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" constant="8" id="02v-ij-sHT"/>
+                        <constraint firstItem="zye-vX-A83" firstAttribute="top" secondItem="9aZ-5g-VOP" secondAttribute="top" id="6Ou-4v-dO7"/>
+                        <constraint firstItem="zye-vX-A83" firstAttribute="bottom" secondItem="9aZ-5g-VOP" secondAttribute="bottom" id="EL9-fF-SIQ"/>
                         <constraint firstItem="wyD-Dr-0Cm" firstAttribute="centerX" secondItem="9aZ-5g-VOP" secondAttribute="centerX" id="JOW-q7-9Xa"/>
+                        <constraint firstItem="zye-vX-A83" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" id="Ji2-Mb-EHQ"/>
                         <constraint firstItem="iQU-ZL-awr" firstAttribute="top" secondItem="9aZ-5g-VOP" secondAttribute="top" id="NoH-hu-tPy"/>
+                        <constraint firstItem="zye-vX-A83" firstAttribute="trailing" secondItem="9aZ-5g-VOP" secondAttribute="trailing" id="Qrw-qm-lbe"/>
                         <constraint firstAttribute="bottom" secondItem="4tW-72-meb" secondAttribute="bottom" constant="8" id="Ug8-05-Te3"/>
                         <constraint firstAttribute="trailing" secondItem="iQU-ZL-awr" secondAttribute="trailing" id="W3V-cn-qjw"/>
                         <constraint firstAttribute="bottom" secondItem="iQU-ZL-awr" secondAttribute="bottom" id="glg-La-xgf"/>
@@ -123,5 +140,8 @@
     <resources>
         <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_person_48_filled" width="48" height="48"/>
+        <namedColor name="primaryColor">
+            <color red="0.0" green="0.47058823529411764" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
