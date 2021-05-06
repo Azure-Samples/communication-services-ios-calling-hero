@@ -39,6 +39,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var participantsView: UICollectionView!
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
+    @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
     @IBOutlet weak var noticeBannerStackView: NoticeBannerStackView!
     @IBOutlet weak var waitAdmissionView: UIView!
@@ -50,6 +51,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var localVideoViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var verticalToggleVideoButton: UIButton!
     @IBOutlet weak var verticalToggleMuteButton: UIButton!
+    @IBOutlet weak var verticalSelectAudioDeviceButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: UIViewController events
@@ -138,6 +140,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         cleanViewRendering()
     }
 
+    private func openAudioDeviceDrawer() {
+        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
+        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
+        present(audioDeviceSelectionViewController, animated: false, completion: nil)
+    }
+
     // MARK: UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -214,7 +222,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onToggleVideo(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         if sender.isSelected {
             callingContext.stopLocalVideoStream { [weak self] _ in
                 guard let self = self else {
@@ -249,7 +257,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onToggleMute(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
             guard let self = self else {
                 return
@@ -260,6 +268,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
             }
         }
+    }
+
+    @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
+        openAudioDeviceDrawer()
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {
