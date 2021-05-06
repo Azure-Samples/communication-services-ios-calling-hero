@@ -30,6 +30,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var videoMicrophoneControlStackView: UIStackView!
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMicrophoneButton: UIButton!
+    @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var startCallButton: UIButton!
 
@@ -115,6 +116,12 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = true
     }
 
+    private func openAudioDeviceDrawer() {
+        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
+        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
+        present(audioDeviceSelectionViewController, animated: false, completion: nil)
+    }
+
     private func updateCameraDisabledPermissionWarning() {
         permissionIconView.image = UIImage(named: "videoOff")
         permissionWarningLabel.text = "Your camera is disabled. To enable, please go to Settings to allow access."
@@ -191,6 +198,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = true
         toggleVideoButton.isEnabled = false
         toggleMicrophoneButton.isEnabled = false
+        selectAudioDeviceButton.isEnabled = false
         startCallButton.isEnabled = false
         permissionWarningView.isHidden = true
     }
@@ -200,6 +208,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         previewCenterImageView.isHidden = false
         toggleVideoButton.isEnabled = true
         toggleMicrophoneButton.isEnabled = true
+        selectAudioDeviceButton.isEnabled = true
         startCallButton.isEnabled = true
         permissionWarningView.isHidden = false
     }
@@ -256,7 +265,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
 
     @IBAction func toggleVideoButtonPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
         if !sender.isSelected {
             callingContext.withLocalVideoStream { [weak self] localVideoStream in
                 DispatchQueue.main.async {
@@ -276,7 +285,11 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func toggleMicrophoneButtonPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        sender.isSelected.toggle()
+    }
+
+    @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
+        openAudioDeviceDrawer()
     }
 
     @IBAction func goToSettingsButtonPressed(_ sender: UIButton) {
