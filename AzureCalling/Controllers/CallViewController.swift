@@ -135,22 +135,30 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openAudioDeviceDrawer() {
-        let bottomDrawerViewController = BottomDrawerViewController()
-        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
+        let audioDeviceSelectionViewController = AudioDeviceSelectionDataSource()
         audioDeviceSelectionViewController.createAudioDeviceOptions()
-        bottomDrawerViewController.tableViewDataSource = audioDeviceSelectionViewController
-        bottomDrawerViewController.tableViewDelegate = audioDeviceSelectionViewController
-        bottomDrawerViewController.modalPresentationStyle = .overCurrentContext
+
+        let bottomDrawerViewController = BottomDrawerViewController(
+            dataSource: audioDeviceSelectionViewController,
+            delegate: audioDeviceSelectionViewController)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
-        let bottomDrawerViewController = BottomDrawerViewController()
-        let participantListViewController = ParticipantListViewController()
-        participantListViewController.createParticipantList(callingContext.participantListInfo)
-        bottomDrawerViewController.tableViewDataSource = participantListViewController
-        bottomDrawerViewController.tableViewDelegate = participantListViewController
-        bottomDrawerViewController.modalPresentationStyle = .overCurrentContext
+        let participantListViewController = ParticipantListDataSource()
+        let participantListInfo = ParticipantListInfo(
+            localDisplayName: callingContext.displayName,
+            localIsMuted: callingContext.callIsMuted,
+            remoteParticipants: callingContext.remoteParticipants.map { (remoteParticipant) -> RemoteParticipantInfo in
+                RemoteParticipantInfo(
+                    displayName: remoteParticipant.displayName,
+                    isMuted: remoteParticipant.isMuted)
+            })
+        participantListViewController.createParticipantList(participantListInfo)
+
+        let bottomDrawerViewController = BottomDrawerViewController(
+            dataSource: participantListViewController,
+            delegate: participantListViewController)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 

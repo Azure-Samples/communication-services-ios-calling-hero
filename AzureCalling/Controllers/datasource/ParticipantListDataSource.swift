@@ -4,15 +4,19 @@
 //
 
 import UIKit
-import AzureCommunicationCalling
 
 struct ParticipantListInfo {
     let localDisplayName: String
     let localIsMuted: Bool?
-    let remoteParticipants: MappedSequence<String, RemoteParticipant>
+    let remoteParticipants: [RemoteParticipantInfo]
 }
 
-class ParticipantListViewController: NSObject, UITableViewDelegate, UITableViewDataSource {
+struct RemoteParticipantInfo {
+    let displayName: String
+    let isMuted: Bool
+}
+
+class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
 

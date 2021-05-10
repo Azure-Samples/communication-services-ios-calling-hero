@@ -9,9 +9,20 @@ class BottomDrawerViewController: UIViewController {
 
     // MARK: Properties
 
-    weak var tableViewDelegate: UITableViewDelegate?
-    var tableViewDataSource: UITableViewDataSource?
-    var tableView: UITableView!
+    private var tableView: UITableView!
+    private var tableViewDataSource: UITableViewDataSource?
+    private weak var tableViewDelegate: UITableViewDelegate?
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    init(dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+        super.init(nibName: nil, bundle: nil)
+        self.tableViewDataSource = dataSource
+        self.tableViewDelegate = delegate
+        self.modalPresentationStyle = .overCurrentContext
+    }
 
     // MARK: UIViewController events
 
