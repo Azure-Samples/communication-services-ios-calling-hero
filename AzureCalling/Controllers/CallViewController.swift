@@ -135,30 +135,31 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openAudioDeviceDrawer() {
-        let audioDeviceSelectionViewController = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionViewController.createAudioDeviceOptions()
+        let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.createAudioDeviceOptions()
 
         let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: audioDeviceSelectionViewController,
-            delegate: audioDeviceSelectionViewController)
+            dataSource: audioDeviceSelectionDataSource,
+            delegate: audioDeviceSelectionDataSource)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
-        let participantListViewController = ParticipantListDataSource()
+        let participantListDataSource = ParticipantListDataSource()
+        let remoteParticipantInfoList = callingContext.remoteParticipants.map { (remoteParticipant) -> RemoteParticipantInfo in
+            RemoteParticipantInfo(
+                displayName: remoteParticipant.displayName,
+                isMuted: remoteParticipant.isMuted)
+        }
         let participantListInfo = ParticipantListInfo(
             localDisplayName: callingContext.displayName,
             localIsMuted: callingContext.callIsMuted,
-            remoteParticipants: callingContext.remoteParticipants.map { (remoteParticipant) -> RemoteParticipantInfo in
-                RemoteParticipantInfo(
-                    displayName: remoteParticipant.displayName,
-                    isMuted: remoteParticipant.isMuted)
-            })
-        participantListViewController.createParticipantList(participantListInfo)
+            remoteParticipants: remoteParticipantInfoList)
+        participantListDataSource.createParticipantList(participantListInfo)
 
         let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: participantListViewController,
-            delegate: participantListViewController)
+            dataSource: participantListDataSource,
+            delegate: participantListDataSource)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 

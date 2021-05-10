@@ -162,7 +162,7 @@
 		1F7CD3EA25C1E9E80081D8F1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				989F61952649D72F000C5668 /* datasource */,
+				989F61952649D72F000C5668 /* DataSource */,
 				1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */,
 				1F7CD3EC25C1E9E80081D8F1 /* FeedbackViewController.swift */,
 				1F7CD3ED25C1E9E80081D8F1 /* CallViewController.swift */,
@@ -250,13 +250,13 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
-		989F61952649D72F000C5668 /* datasource */ = {
+		989F61952649D72F000C5668 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
 				8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */,
 				98AF5CDE263B4447007608CD /* ParticipantListDataSource.swift */,
 			);
-			path = datasource;
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		DA170F1F827D779B33F40145 /* Pods */ = {
