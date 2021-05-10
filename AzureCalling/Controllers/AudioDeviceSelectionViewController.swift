@@ -5,50 +5,15 @@
 
 import UIKit
 
-class AudioDeviceSelectionViewController: UIViewController, BottomDrawerViewController {
+class AudioDeviceSelectionViewController: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
 
-    private var audioDeviceOptions: [BottomDrawerItem] = [BottomDrawerItem]()
-    var deviceTable: UITableView!
+    private var audioDeviceOptions = [BottomDrawerItem]()
 
-    // MARK: UIViewController events
+    // MARK: Public API
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.modalTransitionStyle = .crossDissolve
-
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-        view.isOpaque = false
-
-        // tapping anywhere on the view is the same as tapping cancel
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-
-        createAudioDeviceOptions()
-        createDeviceTable()
-    }
-
-    @objc func dismissSelf() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        openDeviceTable()
-    }
-
-    private func createDeviceTable() {
-        deviceTable = createBottomDrawer()
-    }
-
-    private func openDeviceTable() {
-        openBottomDrawer(table: deviceTable)
-    }
-
-    private func createAudioDeviceOptions() {
+    func createAudioDeviceOptions() {
         let audioDeviceTypes = AudioSessionManager.getAllAudioDeviceTypes()
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
 
@@ -75,7 +40,6 @@ class AudioDeviceSelectionViewController: UIViewController, BottomDrawerViewCont
                    didSelectRowAt indexPath: IndexPath) {
         let audioDeviceType = AudioDeviceType(rawValue: audioDeviceOptions[indexPath.row].title)!
         AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
-        dismissSelf()
     }
 
     // MARK: UITableViewDataSource events
@@ -91,5 +55,4 @@ class AudioDeviceSelectionViewController: UIViewController, BottomDrawerViewCont
 
         return cell
     }
-
 }

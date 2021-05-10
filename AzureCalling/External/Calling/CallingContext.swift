@@ -37,8 +37,11 @@ class CallingContext: NSObject {
         return remoteParticipantCount + 1
     }
 
-    var isMuted: Bool? {
-        call?.isMuted
+    var participantListInfo: ParticipantListInfo {
+        ParticipantListInfo(
+            localDisplayName: displayName,
+            localIsMuted: call?.isMuted,
+            remoteParticipants: remoteParticipants)
     }
 
     // MARK: Initialization

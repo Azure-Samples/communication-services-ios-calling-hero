@@ -135,16 +135,23 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openAudioDeviceDrawer() {
+        let bottomDrawerViewController = BottomDrawerViewController()
         let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
-        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
-        present(audioDeviceSelectionViewController, animated: false, completion: nil)
+        audioDeviceSelectionViewController.createAudioDeviceOptions()
+        bottomDrawerViewController.tableViewDataSource = audioDeviceSelectionViewController
+        bottomDrawerViewController.tableViewDelegate = audioDeviceSelectionViewController
+        bottomDrawerViewController.modalPresentationStyle = .overCurrentContext
+        present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
+        let bottomDrawerViewController = BottomDrawerViewController()
         let participantListViewController = ParticipantListViewController()
-        participantListViewController.callingContext = callingContext
-        participantListViewController.modalPresentationStyle = .overCurrentContext
-        present(participantListViewController, animated: false, completion: nil)
+        participantListViewController.createParticipantList(callingContext.participantListInfo)
+        bottomDrawerViewController.tableViewDataSource = participantListViewController
+        bottomDrawerViewController.tableViewDelegate = participantListViewController
+        bottomDrawerViewController.modalPresentationStyle = .overCurrentContext
+        present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
