@@ -158,10 +158,25 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     // MARK: UICollectionViewDelegateFlowLayout
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let isShowGrid = participantIndexPathViewMap.count > 2
-        let cellWidth = isShowGrid ? collectionView.bounds.width / 2 : collectionView.bounds.width
-        let cellHeight = isShowGrid ? collectionView.bounds.height / 2 : collectionView.bounds.height
-        return CGSize(width: cellWidth, height: cellHeight )
+        let cellWidth: CGFloat
+        let cellHeight: CGFloat
+        switch participantIndexPathViewMap.count {
+        case 0...1:
+            cellWidth = collectionView.bounds.width
+            cellHeight = collectionView.bounds.height
+        case 2...4:
+            cellWidth = collectionView.bounds.width / 2
+            cellHeight = collectionView.bounds.height / 2
+        default:
+            if UIDevice.current.orientation.isLandscape {
+                cellWidth = collectionView.bounds.width / 3
+                cellHeight = collectionView.bounds.height / 2
+            } else {
+                cellWidth = collectionView.bounds.width / 2
+                cellHeight = collectionView.bounds.height / 3
+            }
+        }
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
