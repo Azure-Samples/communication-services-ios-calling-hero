@@ -37,7 +37,7 @@ class CallingContext: NSObject {
         return remoteParticipantCount + 1
     }
 
-    var callIsMuted: Bool? {
+    var isCallMuted: Bool? {
         call?.isMuted
     }
 

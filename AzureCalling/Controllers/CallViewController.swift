@@ -146,16 +146,19 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openParticipantListDrawer() {
         let participantListDataSource = ParticipantListDataSource()
-        let remoteParticipantInfoList = callingContext.remoteParticipants.map { (remoteParticipant) -> RemoteParticipantInfo in
-            RemoteParticipantInfo(
-                displayName: remoteParticipant.displayName,
-                isMuted: remoteParticipant.isMuted)
-        }
-        let participantListInfo = ParticipantListInfo(
-            localDisplayName: callingContext.displayName,
-            localIsMuted: callingContext.callIsMuted,
-            remoteParticipants: remoteParticipantInfoList)
-        participantListDataSource.createParticipantList(participantListInfo)
+        // Show local participant first
+        var participantInfoList = [
+            ParticipantInfo(
+                displayName: callingContext.displayName + " (Me)",
+                isMuted: callingContext.isCallMuted ?? false)
+        ]
+        // Get the rest of remote participants
+        participantInfoList.append(contentsOf: callingContext.remoteParticipants.map {
+            ParticipantInfo(
+                displayName: $0.displayName,
+                isMuted: $0.isMuted)
+        })
+        participantListDataSource.createParticipantList(participantInfoList)
 
         let bottomDrawerViewController = BottomDrawerViewController(
             dataSource: participantListDataSource,

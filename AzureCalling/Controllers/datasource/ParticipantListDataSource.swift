@@ -5,13 +5,7 @@
 
 import UIKit
 
-struct ParticipantListInfo {
-    let localDisplayName: String
-    let localIsMuted: Bool?
-    let remoteParticipants: [RemoteParticipantInfo]
-}
-
-struct RemoteParticipantInfo {
+struct ParticipantInfo {
     let displayName: String
     let isMuted: Bool
 }
@@ -24,15 +18,12 @@ class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataS
 
     // MARK: Public API
 
-    func createParticipantList(_ participantListInfo: ParticipantListInfo) {
-        // Show local participant first
+    func createParticipantList(_ participantInfoList: [ParticipantInfo]) {
         let accessoryImage = UIImage(named: "ic_fluent_mic_off_28_filled")!
         let image = UIImage(named: "ic_fluent_person_48_filled")!
-        let participantInfo = BottomDrawerItem(avatar: image, title: participantListInfo.localDisplayName + " (Me)", accessoryImage: accessoryImage, enabled: participantListInfo.localIsMuted ?? false)
-        participantList.append(participantInfo)
 
-        for remoteParticipant in participantListInfo.remoteParticipants {
-            let participantInfo = BottomDrawerItem(avatar: image, title: remoteParticipant.displayName, accessoryImage: accessoryImage, enabled: remoteParticipant.isMuted)
+        for participantInfo in participantInfoList {
+            let participantInfo = BottomDrawerItem(avatar: image, title: participantInfo.displayName, accessoryImage: accessoryImage, enabled: participantInfo.isMuted)
             participantList.append(participantInfo)
         }
     }
