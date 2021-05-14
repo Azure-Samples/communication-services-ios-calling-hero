@@ -37,6 +37,10 @@ class CallingContext: NSObject {
         return remoteParticipantCount + 1
     }
 
+    var isCallMuted: Bool? {
+        call?.isMuted
+    }
+
     // MARK: Initialization
 
     init(tokenFetcher: @escaping TokenFetcher) {

@@ -35,6 +35,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var toggleVideoButton: UIButton!
     @IBOutlet weak var toggleMuteButton: UIButton!
     @IBOutlet weak var selectAudioDeviceButton: UIButton!
+    @IBOutlet weak var showParticipantsButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
@@ -134,9 +135,35 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openAudioDeviceDrawer() {
-        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
-        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
-        present(audioDeviceSelectionViewController, animated: false, completion: nil)
+        let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.createAudioDeviceOptions()
+
+        let bottomDrawerViewController = BottomDrawerViewController(
+            dataSource: audioDeviceSelectionDataSource,
+            delegate: audioDeviceSelectionDataSource)
+        present(bottomDrawerViewController, animated: false, completion: nil)
+    }
+
+    private func openParticipantListDrawer() {
+        let participantListDataSource = ParticipantListDataSource()
+        // Show local participant first
+        var participantInfoList = [
+            ParticipantInfo(
+                displayName: callingContext.displayName + " (Me)",
+                isMuted: callingContext.isCallMuted ?? false)
+        ]
+        // Get the rest of remote participants
+        participantInfoList.append(contentsOf: callingContext.remoteParticipants.map {
+            ParticipantInfo(
+                displayName: $0.displayName,
+                isMuted: $0.isMuted)
+        })
+        participantListDataSource.createParticipantList(participantInfoList)
+
+        let bottomDrawerViewController = BottomDrawerViewController(
+            dataSource: participantListDataSource,
+            delegate: participantListDataSource)
+        present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -273,6 +300,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
         openAudioDeviceDrawer()
+    }
+
+    @IBAction func showParticipantsButtonPressed(_ sender: UIButton) {
+        openParticipantListDrawer()
     }
 
     @IBAction func onEndCall(_ sender: UIButton) {
