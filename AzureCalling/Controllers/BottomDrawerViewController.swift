@@ -52,6 +52,15 @@ class BottomDrawerViewController: UIViewController {
         openBottomDrawer()
     }
 
+    func refreshBottomDrawer(dataSource: UITableViewDataSource) {
+        self.tableViewDataSource = dataSource
+        tableView.dataSource = self.tableViewDataSource
+        tableView.reloadData()
+
+        NSLayoutConstraint.deactivate(tableView.constraints)
+        setTableConstraints()
+    }
+
     // MARK: Private Functions
 
     private func createBottomDrawer() {
@@ -66,6 +75,25 @@ class BottomDrawerViewController: UIViewController {
         tableView.delegate = self.tableViewDelegate
         tableView.reloadData()
 
+        setTableConstraints()
+    }
+
+    private func openBottomDrawer() {
+        let showConstraint = NSLayoutConstraint(item: tableView!,
+                attribute: .bottom,
+                relatedBy: .equal,
+                toItem: self.view,
+                attribute: .bottom,
+                multiplier: 1,
+                constant: 0)
+        showConstraint.priority = .required
+        self.view.addConstraint(showConstraint)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func setTableConstraints() {
         let window = UIApplication.shared.windows[0]
         let guide = self.view.safeAreaLayoutGuide
         let bottomPadding = window.safeAreaInsets.bottom
@@ -84,20 +112,5 @@ class BottomDrawerViewController: UIViewController {
         tableConstraints.append(hideConstraint)
 
         NSLayoutConstraint.activate(tableConstraints)
-    }
-
-    private func openBottomDrawer() {
-        let showConstraint = NSLayoutConstraint(item: tableView!,
-                attribute: .bottom,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1,
-                constant: 0)
-        showConstraint.priority = .required
-        self.view.addConstraint(showConstraint)
-        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
     }
 }

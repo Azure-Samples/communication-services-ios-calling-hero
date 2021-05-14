@@ -28,6 +28,23 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
+    private var bottomDrawerViewController: BottomDrawerViewController?
+    private var participantInfoList: [ParticipantInfo] {
+        // Show local participant first
+        var participantInfoList = [
+            ParticipantInfo(
+                displayName: callingContext.displayName + " (Me)",
+                isMuted: callingContext.isCallMuted ?? false)
+        ]
+        // Get the rest of remote participants
+        participantInfoList.append(contentsOf: callingContext.remoteParticipants.map {
+            ParticipantInfo(
+                displayName: $0.displayName,
+                isMuted: $0.isMuted)
+        })
+        return participantInfoList
+    }
+
     // MARK: IBOutlets
 
     @IBOutlet weak var localVideoViewContainer: UIRoundedView!
@@ -146,24 +163,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openParticipantListDrawer() {
         let participantListDataSource = ParticipantListDataSource()
-        // Show local participant first
-        var participantInfoList = [
-            ParticipantInfo(
-                displayName: callingContext.displayName + " (Me)",
-                isMuted: callingContext.isCallMuted ?? false)
-        ]
-        // Get the rest of remote participants
-        participantInfoList.append(contentsOf: callingContext.remoteParticipants.map {
-            ParticipantInfo(
-                displayName: $0.displayName,
-                isMuted: $0.isMuted)
-        })
         participantListDataSource.createParticipantList(participantInfoList)
 
-        let bottomDrawerViewController = BottomDrawerViewController(
+        bottomDrawerViewController = BottomDrawerViewController(
             dataSource: participantListDataSource,
             delegate: participantListDataSource)
-        present(bottomDrawerViewController, animated: false, completion: nil)
+        present(bottomDrawerViewController!, animated: false, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -578,13 +583,29 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.updateParticipant(count: callingContext.participantCount)
     }
 
+    private func participantListUpdate() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                  let bottomDrawerViewController = self.bottomDrawerViewController,
+                  bottomDrawerViewController.isViewLoaded else {
+                return
+            }
+
+            let participantListDataSource = ParticipantListDataSource()
+            participantListDataSource.createParticipantList(self.participantInfoList)
+            bottomDrawerViewController.refreshBottomDrawer(dataSource: participantListDataSource)
+        }
+    }
+
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
         meetingInfoViewUpdate()
     }
 
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
     }
 
     @objc func appResignActive(_ notification: Notification) {
