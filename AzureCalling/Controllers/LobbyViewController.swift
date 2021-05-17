@@ -117,9 +117,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func openAudioDeviceDrawer() {
-        let audioDeviceSelectionViewController = AudioDeviceSelectionViewController()
-        audioDeviceSelectionViewController.modalPresentationStyle = .overCurrentContext
-        present(audioDeviceSelectionViewController, animated: false, completion: nil)
+        let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.createAudioDeviceOptions()
+
+        let bottomDrawerViewController = BottomDrawerViewController(
+            dataSource: audioDeviceSelectionDataSource,
+            delegate: audioDeviceSelectionDataSource)
+        present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func updateCameraDisabledPermissionWarning() {

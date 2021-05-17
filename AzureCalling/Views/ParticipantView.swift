@@ -21,6 +21,7 @@ class ParticipantView: UIView {
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
+    @IBOutlet weak var activeSpeakerView: ActiveSpeakerView!
     @IBOutlet weak var participantLabelView: ParticipantLabelView!
 
     // MARK: Constructors
@@ -46,8 +47,7 @@ class ParticipantView: UIView {
     }
 
     func updateActiveSpeaker(isSpeaking: Bool) {
-        contentView.layer.borderWidth = isSpeaking ? 3 : 0
-        contentView.layer.borderColor = isSpeaking ? ThemeColor.primary.cgColor : UIColor.clear.cgColor
+        activeSpeakerView.isHidden = !isSpeaking
     }
 
     func updateVideoStream(localVideoStream: LocalVideoStream?) {
@@ -60,6 +60,7 @@ class ParticipantView: UIView {
         if newVideoSourceId == videoStreamId {
             return
         }
+        cleanUpVideoRendering()
 
         do {
             let newRenderer: VideoStreamRenderer = try VideoStreamRenderer(localVideoStream: localVideoStream!)
@@ -80,6 +81,7 @@ class ParticipantView: UIView {
         if newVideoSourceId == videoStreamId {
             return
         }
+        cleanUpVideoRendering()
 
         do {
             let newRenderer: VideoStreamRenderer = try VideoStreamRenderer(remoteVideoStream: remoteVideoStream!)
@@ -94,7 +96,6 @@ class ParticipantView: UIView {
         guard let view = participantLabelView else {
             return
         }
-
         view.isHidden = !isDisplayNameVisible
     }
 
