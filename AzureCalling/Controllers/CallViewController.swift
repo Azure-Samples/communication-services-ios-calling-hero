@@ -448,6 +448,43 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
+    private func getOrCreateParticipantView(participant: RemoteParticipant,
+                                            index: Int,
+                                            prevParticipantIdIndexPathMap: [String: IndexPath],
+                                            prevParticipantIndexPathViewMap: inout [IndexPath: ParticipantView],
+                                            indexPathMoves: inout [(at: IndexPath, to: IndexPath)],
+                                            insertIndexPaths: inout [IndexPath]) {
+        let userIdentifier = participant.identifier.stringValue ?? ""
+        let indexPath = IndexPath(item: index, section: 0)
+
+        var participantView: ParticipantView?
+        if let prevIndexPath = prevParticipantIdIndexPathMap[userIdentifier],
+           let prevParticipantView = prevParticipantIndexPathViewMap[prevIndexPath] {
+            prevParticipantIndexPathViewMap.removeValue(forKey: prevIndexPath)
+            participantView = prevParticipantView
+            if prevIndexPath != indexPath {
+                // Add to move list
+                indexPathMoves.append((at: prevIndexPath, to: indexPath))
+            }
+        } else {
+            participantView = ParticipantView()
+            // Add to insert list
+            insertIndexPaths.append(indexPath)
+        }
+
+        participantView!.updateDisplayName(displayName: participant.displayName)
+        participantView!.updateMuteIndicator(isMuted: participant.isMuted)
+        participantView!.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+        if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+            participantView!.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+        } else {
+            participantView!.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+        }
+
+        participantIdIndexPathMap[userIdentifier] = indexPath
+        participantIndexPathViewMap[indexPath] = participantView!
+    }
+
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
         // Previous maps tracking participants
         let prevParticipantIdIndexPathMap = participantIdIndexPathMap
@@ -463,74 +500,26 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var insertIndexPaths: [IndexPath] = []
 
         // Check to see if any screenshare
-        var screenShareParticipantView: ParticipantView?
-        outerLoop: for participant in callingContext.displayedRemoteParticipants {
-            for videoStream in participant.videoStreams {
-                if videoStream.mediaStreamType == .screenSharing {
-                    let userIdentifier = participant.identifier.stringValue ?? ""
-                    let indexPath = IndexPath(item: 0, section: 0)
-
-                    if let prevIndexPath = prevParticipantIdIndexPathMap[userIdentifier],
-                       let prevParticipantView = prevParticipantIndexPathViewMap[prevIndexPath] {
-                        prevParticipantIndexPathViewMap.removeValue(forKey: prevIndexPath)
-                        screenShareParticipantView = prevParticipantView
-                        if prevIndexPath != indexPath {
-                            // Add to move list
-                            indexPathMoves.append((at: prevIndexPath, to: indexPath))
-                        }
-                    } else {
-                        screenShareParticipantView = ParticipantView()
-
-                        // Add to insert list
-                        insertIndexPaths.append(indexPath)
-                    }
-
-                    screenShareParticipantView!.hasScreenShare = true
-                    screenShareParticipantView!.updateDisplayName(displayName: participant.displayName)
-                    screenShareParticipantView!.updateMuteIndicator(isMuted: participant.isMuted)
-                    screenShareParticipantView!.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-                    screenShareParticipantView!.updateVideoStream(remoteVideoStream: videoStream)
-
-                    participantIdIndexPathMap[userIdentifier] = indexPath
-                    participantIndexPathViewMap[indexPath] = screenShareParticipantView!
-                    break outerLoop
-                }
+        for participant in callingContext.displayedRemoteParticipants {
+            if participant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                getOrCreateParticipantView(participant: participant,
+                                           index: 0,
+                                           prevParticipantIdIndexPathMap: prevParticipantIdIndexPathMap,
+                                           prevParticipantIndexPathViewMap: &prevParticipantIndexPathViewMap,
+                                           indexPathMoves: &indexPathMoves,
+                                           insertIndexPaths: &insertIndexPaths)
+                break
             }
         }
 
-        if screenShareParticipantView == nil {
-            // Build new maps and collect changes
+        if participantIdIndexPathMap.isEmpty {
             for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
-                let userIdentifier = participant.identifier.stringValue ?? ""
-                let indexPath = IndexPath(item: index, section: 0)
-                var participantView: ParticipantView
-
-                // Check for previously tracked participants
-                if let prevIndexPath = prevParticipantIdIndexPathMap[userIdentifier],
-                   let prevParticipantView = prevParticipantIndexPathViewMap[prevIndexPath] {
-                    prevParticipantIndexPathViewMap.removeValue(forKey: prevIndexPath)
-
-                    participantView = prevParticipantView
-
-                    if prevIndexPath != indexPath {
-                        // Add to move list
-                        indexPathMoves.append((at: prevIndexPath, to: indexPath))
-                    }
-                } else {
-                    participantView = ParticipantView()
-
-                    // Add to insert list
-                    insertIndexPaths.append(indexPath)
-                }
-
-                participantView.hasScreenShare = false
-                participantView.updateDisplayName(displayName: participant.displayName)
-                participantView.updateMuteIndicator(isMuted: participant.isMuted)
-                participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-                participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
-
-                participantIdIndexPathMap[userIdentifier] = indexPath
-                participantIndexPathViewMap[indexPath] = participantView
+                getOrCreateParticipantView(participant: participant,
+                                           index: index,
+                                           prevParticipantIdIndexPathMap: prevParticipantIdIndexPathMap,
+                                           prevParticipantIndexPathViewMap: &prevParticipantIndexPathViewMap,
+                                           indexPathMoves: &indexPathMoves,
+                                           insertIndexPaths: &insertIndexPaths)
             }
         }
 
