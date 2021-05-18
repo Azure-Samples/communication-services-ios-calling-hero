@@ -10,17 +10,15 @@ class BottomDrawerViewController: UIViewController {
     // MARK: Properties
 
     private var tableView: UITableView!
-    private var tableViewDataSource: UITableViewDataSource?
-    private weak var tableViewDelegate: UITableViewDelegate?
+    private var bottomDrawerDataSource: BottomDrawerDataSource?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    init(dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+    init(dataSource: BottomDrawerDataSource) {
         super.init(nibName: nil, bundle: nil)
-        self.tableViewDataSource = dataSource
-        self.tableViewDelegate = delegate
+        self.bottomDrawerDataSource = dataSource
         self.modalPresentationStyle = .overCurrentContext
     }
 
@@ -52,9 +50,8 @@ class BottomDrawerViewController: UIViewController {
         openBottomDrawer()
     }
 
-    func refreshBottomDrawer(dataSource: UITableViewDataSource) {
-        self.tableViewDataSource = dataSource
-        tableView.dataSource = self.tableViewDataSource
+    func refreshBottomDrawer() {
+        bottomDrawerDataSource?.refreshDataSource?()
         tableView.reloadData()
 
         NSLayoutConstraint.deactivate(tableView.constraints)
@@ -71,8 +68,8 @@ class BottomDrawerViewController: UIViewController {
         let cell = UINib(nibName: "BottomDrawerCellView",
                          bundle: nil)
         tableView.register(cell, forCellReuseIdentifier: "BottomDrawerCellView")
-        tableView.dataSource = self.tableViewDataSource
-        tableView.delegate = self.tableViewDelegate
+        tableView.dataSource = self.bottomDrawerDataSource
+        tableView.delegate = self.bottomDrawerDataSource
         tableView.reloadData()
 
         setTableConstraints()

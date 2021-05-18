@@ -5,7 +5,7 @@
 
 import UIKit
 
-class AudioDeviceSelectionDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
 
     // MARK: Properties
 

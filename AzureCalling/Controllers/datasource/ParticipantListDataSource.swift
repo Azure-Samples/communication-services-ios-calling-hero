@@ -12,7 +12,7 @@ struct ParticipantInfo {
 
 typealias ParticipantsFetcher = () -> [ParticipantInfo]
 
-class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+class ParticipantListDataSource: NSObject, BottomDrawerDataSource {
 
     // MARK: Properties
 
@@ -39,6 +39,13 @@ class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataS
             let participantInfo = BottomDrawerItem(avatar: image, title: participantInfo.displayName, accessoryImage: accessoryImage, enabled: participantInfo.isMuted)
             participantList.append(participantInfo)
         }
+    }
+
+    // MARK: BottomDrawerDataSource events
+
+    func refreshDataSource() {
+        participantList.removeAll()
+        createParticipantList()
     }
 
     // MARK: UITableViewDataSource events
