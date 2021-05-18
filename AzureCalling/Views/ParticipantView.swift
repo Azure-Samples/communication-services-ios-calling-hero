@@ -60,6 +60,7 @@ class ParticipantView: UIView {
         if newVideoSourceId == videoStreamId {
             return
         }
+        cleanUpVideoRendering()
 
         do {
             let newRenderer: VideoStreamRenderer = try VideoStreamRenderer(localVideoStream: localVideoStream!)
@@ -80,6 +81,7 @@ class ParticipantView: UIView {
         if newVideoSourceId == videoStreamId {
             return
         }
+        cleanUpVideoRendering()
 
         do {
             let newRenderer: VideoStreamRenderer = try VideoStreamRenderer(remoteVideoStream: remoteVideoStream!)
@@ -94,7 +96,6 @@ class ParticipantView: UIView {
         guard let view = participantLabelView else {
             return
         }
-
         view.isHidden = !isDisplayNameVisible
     }
 
