@@ -10,15 +10,23 @@ struct ParticipantInfo {
     let isMuted: Bool
 }
 
+typealias ParticipantsFetcher = () -> [ParticipantInfo]
+
 class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
 
     private var participantList = [BottomDrawerItem]()
+    private var participantsFetcher: ParticipantsFetcher
+
+    init(participantsFetcher: @escaping ParticipantsFetcher) {
+        self.participantsFetcher = participantsFetcher
+    }
 
     // MARK: Public API
 
-    func createParticipantList(_ participantInfoList: [ParticipantInfo]) {
+    func createParticipantList() {
+        let participantInfoList = self.participantsFetcher()
         let accessoryImage = UIImage(named: "ic_fluent_mic_off_28_filled")!
         let image = UIImage(named: "ic_fluent_person_48_filled")!
 

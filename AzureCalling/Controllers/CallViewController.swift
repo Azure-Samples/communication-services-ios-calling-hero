@@ -147,9 +147,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func openParticipantListDrawer() {
-        let participantListDataSource = ParticipantListDataSource()
-        let participantInfoList = getParticipantInfoList()
-        participantListDataSource.createParticipantList(participantInfoList)
+        let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
+        participantListDataSource.createParticipantList()
 
         bottomDrawerViewController = BottomDrawerViewController(
             dataSource: participantListDataSource,
@@ -593,9 +592,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 return
             }
 
-            let participantListDataSource = ParticipantListDataSource()
-            let participantInfoList = self.getParticipantInfoList()
-            participantListDataSource.createParticipantList(participantInfoList)
+            let participantListDataSource = ParticipantListDataSource(participantsFetcher: self.getParticipantInfoList)
+            participantListDataSource.createParticipantList()
             bottomDrawerViewController.refreshBottomDrawer(dataSource: participantListDataSource)
         }
     }
