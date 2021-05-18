@@ -138,8 +138,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.createAudioDeviceOptions()
-
         let bottomDrawerViewController = BottomDrawerViewController(
             dataSource: audioDeviceSelectionDataSource,
             delegate: audioDeviceSelectionDataSource)
@@ -148,8 +146,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openParticipantListDrawer() {
         let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
-        participantListDataSource.createParticipantList()
-
         bottomDrawerViewController = BottomDrawerViewController(
             dataSource: participantListDataSource,
             delegate: participantListDataSource)
@@ -593,7 +589,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             let participantListDataSource = ParticipantListDataSource(participantsFetcher: self.getParticipantInfoList)
-            participantListDataSource.createParticipantList()
             bottomDrawerViewController.refreshBottomDrawer(dataSource: participantListDataSource)
         }
     }
