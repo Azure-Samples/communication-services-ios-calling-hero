@@ -28,6 +28,11 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
+    private var prevParticipantIdIndexPathMap: [String: IndexPath] = [:]
+    private var prevParticipantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
+    private var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
+    private var insertIndexPaths: [IndexPath] = []
+
     // MARK: IBOutlets
 
     @IBOutlet weak var localVideoViewContainer: UIRoundedView!
@@ -448,12 +453,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
-    private func getOrCreateParticipantView(participant: RemoteParticipant,
-                                            index: Int,
-                                            prevParticipantIdIndexPathMap: [String: IndexPath],
-                                            prevParticipantIndexPathViewMap: inout [IndexPath: ParticipantView],
-                                            indexPathMoves: inout [(at: IndexPath, to: IndexPath)],
-                                            insertIndexPaths: inout [IndexPath]) {
+    private func getOrCreateParticipantView(participant: RemoteParticipant, index: Int) {
         let userIdentifier = participant.identifier.stringValue ?? ""
         let indexPath = IndexPath(item: index, section: 0)
 
@@ -472,23 +472,26 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             insertIndexPaths.append(indexPath)
         }
 
-        participantView!.updateDisplayName(displayName: participant.displayName)
-        participantView!.updateMuteIndicator(isMuted: participant.isMuted)
-        participantView!.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-        if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
-            participantView!.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
-        } else {
-            participantView!.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
-        }
-
+        updateParticipantView(participantView: participantView!, participant: participant)
         participantIdIndexPathMap[userIdentifier] = indexPath
         participantIndexPathViewMap[indexPath] = participantView!
     }
 
+    private func updateParticipantView(participantView: ParticipantView, participant: RemoteParticipant) {
+        participantView.updateDisplayName(displayName: participant.displayName)
+        participantView.updateMuteIndicator(isMuted: participant.isMuted)
+        participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+        if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+            participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+        } else {
+            participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+        }
+    }
+
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
         // Previous maps tracking participants
-        let prevParticipantIdIndexPathMap = participantIdIndexPathMap
-        var prevParticipantIndexPathViewMap = participantIndexPathViewMap
+        prevParticipantIdIndexPathMap = participantIdIndexPathMap
+        prevParticipantIndexPathViewMap = participantIndexPathViewMap
 
         // New maps to track updated list of participants
         participantIdIndexPathMap = [:]
@@ -496,30 +499,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         // Collect IndexPath changes for batch update
         var deleteIndexPaths: [IndexPath] = []
-        var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
-        var insertIndexPaths: [IndexPath] = []
+        indexPathMoves = []
+        insertIndexPaths = []
 
         // Check to see if any screenshare
-        for participant in callingContext.displayedRemoteParticipants {
-            if participant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
-                getOrCreateParticipantView(participant: participant,
-                                           index: 0,
-                                           prevParticipantIdIndexPathMap: prevParticipantIdIndexPathMap,
-                                           prevParticipantIndexPathViewMap: &prevParticipantIndexPathViewMap,
-                                           indexPathMoves: &indexPathMoves,
-                                           insertIndexPaths: &insertIndexPaths)
-                break
-            }
-        }
-
-        if participantIdIndexPathMap.isEmpty {
+        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant {
+            getOrCreateParticipantView(participant: screenSharingParticipant, index: 0)
+        } else {
             for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
-                getOrCreateParticipantView(participant: participant,
-                                           index: index,
-                                           prevParticipantIdIndexPathMap: prevParticipantIdIndexPathMap,
-                                           prevParticipantIndexPathViewMap: &prevParticipantIndexPathViewMap,
-                                           indexPathMoves: &indexPathMoves,
-                                           insertIndexPaths: &insertIndexPaths)
+                getOrCreateParticipantView(participant: participant, index: index)
             }
         }
 

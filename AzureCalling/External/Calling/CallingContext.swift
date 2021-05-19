@@ -29,6 +29,7 @@ class CallingContext: NSObject {
     private var call: Call?
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
+    private (set) var currentScreenSharingParticipant: RemoteParticipant?
 
     var callType: JoinCallType = .groupCall
 
@@ -369,9 +370,16 @@ class CallingContext: NSObject {
             }
         }
 
-        participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] _ in
+        participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] remoteParticipant in
             guard let self = self else {
                 return
+            }
+            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                self.currentScreenSharingParticipant = remoteParticipant
+            } else if let userIdentifier = remoteParticipant.identifier.stringValue,
+                      let screenSharingParticipantIdentifier = self.currentScreenSharingParticipant?.identifier.stringValue,
+                      userIdentifier == screenSharingParticipantIdentifier {
+                self.currentScreenSharingParticipant = nil
             }
             self.notifyRemoteParticipantsUpdated()
         }
