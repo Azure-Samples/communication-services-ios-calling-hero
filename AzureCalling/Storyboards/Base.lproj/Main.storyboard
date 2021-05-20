@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B4A-Cy-PGy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B4A-Cy-PGy">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -925,20 +925,33 @@
                                 <rect key="frame" x="28" y="102" width="358" height="48"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIY-qA-W2e">
-                                        <rect key="frame" x="8" y="0.0" width="342" height="48"/>
+                                        <rect key="frame" x="20" y="0.0" width="318" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wl8-Jj-lBK">
+                                        <rect key="frame" x="318" y="14" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="anC-Sm-dQc"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="ic_fluent_people_20_regular"/>
+                                        <connections>
+                                            <action selector="showParticipantsButtonPressed:" destination="xT5-r8-X8c" eventType="touchUpInside" id="GSD-xU-1ts"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="pIY-qA-W2e" firstAttribute="top" secondItem="Rfn-CZ-Xnd" secondAttribute="top" id="5In-6b-MTU"/>
                                     <constraint firstAttribute="width" constant="358" id="63O-Y1-DIv"/>
                                     <constraint firstAttribute="bottom" secondItem="pIY-qA-W2e" secondAttribute="bottom" id="CO2-kS-5y4"/>
-                                    <constraint firstAttribute="trailing" secondItem="pIY-qA-W2e" secondAttribute="trailing" constant="8" id="G9B-Cv-PMo"/>
-                                    <constraint firstItem="pIY-qA-W2e" firstAttribute="leading" secondItem="Rfn-CZ-Xnd" secondAttribute="leading" constant="8" id="GYS-jt-7YF"/>
+                                    <constraint firstAttribute="trailing" secondItem="pIY-qA-W2e" secondAttribute="trailing" constant="20" id="G9B-Cv-PMo"/>
+                                    <constraint firstItem="pIY-qA-W2e" firstAttribute="leading" secondItem="Rfn-CZ-Xnd" secondAttribute="leading" constant="20" id="GYS-jt-7YF"/>
                                     <constraint firstAttribute="height" constant="48" id="lRy-2M-kQ8"/>
+                                    <constraint firstItem="Wl8-Jj-lBK" firstAttribute="centerY" secondItem="pIY-qA-W2e" secondAttribute="centerY" id="oVl-Nv-vKQ"/>
+                                    <constraint firstItem="Wl8-Jj-lBK" firstAttribute="trailing" secondItem="pIY-qA-W2e" secondAttribute="trailing" id="xf1-BF-QR8"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -987,6 +1000,7 @@
                         <outlet property="participantsView" destination="0pb-xG-5G6" id="TMt-7B-rPs"/>
                         <outlet property="rightControlBar" destination="pmS-8P-vNV" id="peb-Yi-uhE"/>
                         <outlet property="selectAudioDeviceButton" destination="X5m-nf-kep" id="o38-yP-ih7"/>
+                        <outlet property="showParticipantsButton" destination="Wl8-Jj-lBK" id="7Ea-If-YAf"/>
                         <outlet property="toggleMuteButton" destination="h1w-2p-ooa" id="bx6-az-aob"/>
                         <outlet property="toggleVideoButton" destination="749-3Q-0ou" id="Exe-ZY-384"/>
                         <outlet property="verticalSelectAudioDeviceButton" destination="EqJ-hf-Oki" id="qpz-lg-i0Z"/>
@@ -1038,6 +1052,7 @@
         <image name="ic_fluent_dismiss_24_regular" width="24" height="24"/>
         <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_mic_on_28_filled" width="28" height="28"/>
+        <image name="ic_fluent_people_20_regular" width="20" height="20"/>
         <image name="ic_fluent_people_add_24_regular" width="24" height="24"/>
         <image name="ic_fluent_person_48_filled" width="48" height="48"/>
         <image name="ic_fluent_speaker_2_28_filled" width="28" height="28"/>

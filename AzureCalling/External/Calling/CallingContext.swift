@@ -19,7 +19,7 @@ public typealias TokenFetcher = (@escaping (String?, Error?) -> Void) -> Void
 
 class CallingContext: NSObject {
     // MARK: Constants
-    private static let remoteParticipantsDisplayed: Int = 3
+    private static let remoteParticipantsDisplayed: Int = 5
 
     // MARK: Properties
     private (set) var joinId: String!
@@ -45,6 +45,10 @@ class CallingContext: NSObject {
     var participantCount: Int {
         let remoteParticipantCount = call?.remoteParticipants.count ?? 0
         return remoteParticipantCount + 1
+    }
+
+    var isCallMuted: Bool? {
+        call?.isMuted
     }
 
     // MARK: Initialization
