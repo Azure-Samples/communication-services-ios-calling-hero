@@ -28,11 +28,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
-    private var prevParticipantIdIndexPathMap: [String: IndexPath] = [:]
-    private var prevParticipantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
-    private var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
-    private var insertIndexPaths: [IndexPath] = []
-
     // MARK: IBOutlets
 
     @IBOutlet weak var localVideoViewContainer: UIRoundedView!
@@ -453,45 +448,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
-    private func getOrCreateParticipantView(participant: RemoteParticipant, index: Int) {
-        let userIdentifier = participant.identifier.stringValue ?? ""
-        let indexPath = IndexPath(item: index, section: 0)
-
-        var participantView: ParticipantView?
-        if let prevIndexPath = prevParticipantIdIndexPathMap[userIdentifier],
-           let prevParticipantView = prevParticipantIndexPathViewMap[prevIndexPath] {
-            prevParticipantIndexPathViewMap.removeValue(forKey: prevIndexPath)
-            participantView = prevParticipantView
-            if prevIndexPath != indexPath {
-                // Add to move list
-                indexPathMoves.append((at: prevIndexPath, to: indexPath))
-            }
-        } else {
-            participantView = ParticipantView()
-            // Add to insert list
-            insertIndexPaths.append(indexPath)
-        }
-
-        updateParticipantView(participantView: participantView!, participant: participant)
-        participantIdIndexPathMap[userIdentifier] = indexPath
-        participantIndexPathViewMap[indexPath] = participantView!
-    }
-
-    private func updateParticipantView(participantView: ParticipantView, participant: RemoteParticipant) {
-        participantView.updateDisplayName(displayName: participant.displayName)
-        participantView.updateMuteIndicator(isMuted: participant.isMuted)
-        participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-        if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
-            participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
-        } else {
-            participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
-        }
-    }
-
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
         // Previous maps tracking participants
-        prevParticipantIdIndexPathMap = participantIdIndexPathMap
-        prevParticipantIndexPathViewMap = participantIndexPathViewMap
+        let prevParticipantIdIndexPathMap = participantIdIndexPathMap
+        var prevParticipantIndexPathViewMap = participantIndexPathViewMap
 
         // New maps to track updated list of participants
         participantIdIndexPathMap = [:]
@@ -499,16 +459,53 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         // Collect IndexPath changes for batch update
         var deleteIndexPaths: [IndexPath] = []
-        indexPathMoves = []
-        insertIndexPaths = []
+        var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
+        var insertIndexPaths: [IndexPath] = []
 
-        // Check to see if any screenshare
-        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant {
-            getOrCreateParticipantView(participant: screenSharingParticipant, index: 0)
+        var remoteParticipantsToDisplay: MappedSequence<String, RemoteParticipant>
+        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant,
+           let userIdentifier = screenSharingParticipant.identifier.stringValue {
+            remoteParticipantsToDisplay = MappedSequence<String, RemoteParticipant>()
+            remoteParticipantsToDisplay.append(forKey: userIdentifier, value: screenSharingParticipant)
         } else {
-            for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
-                getOrCreateParticipantView(participant: participant, index: index)
+            remoteParticipantsToDisplay = callingContext.displayedRemoteParticipants
+        }
+
+        // Build new maps and collect changes
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
+            let userIdentifier = participant.identifier.stringValue ?? ""
+            let indexPath = IndexPath(item: index, section: 0)
+            var participantView: ParticipantView
+
+            // Check for previously tracked participants
+            if let prevIndexPath = prevParticipantIdIndexPathMap[userIdentifier],
+               let prevParticipantView = prevParticipantIndexPathViewMap[prevIndexPath] {
+                prevParticipantIndexPathViewMap.removeValue(forKey: prevIndexPath)
+
+                participantView = prevParticipantView
+
+                if prevIndexPath != indexPath {
+                    // Add to move list
+                    indexPathMoves.append((at: prevIndexPath, to: indexPath))
+                }
+            } else {
+                participantView = ParticipantView()
+
+                // Add to insert list
+                insertIndexPaths.append(indexPath)
             }
+
+            participantView.updateDisplayName(displayName: participant.displayName)
+            participantView.updateMuteIndicator(isMuted: participant.isMuted)
+            participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+            }
+
+            participantIdIndexPathMap[userIdentifier] = indexPath
+            participantIndexPathViewMap[indexPath] = participantView
         }
 
         // Do not include local participant in cleanup
