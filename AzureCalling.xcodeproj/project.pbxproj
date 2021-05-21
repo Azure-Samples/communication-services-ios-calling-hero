@@ -46,6 +46,7 @@
 		986654FD264352A000395329 /* ActiveSpeakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986654FC264352A000395329 /* ActiveSpeakerView.swift */; };
 		987C3DC62624DE6200E296D0 /* ParticipantLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */; };
 		98AF5CDF263B4447007608CD /* ParticipantListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AF5CDE263B4447007608CD /* ParticipantListDataSource.swift */; };
+		98F49DA72654651B00EE4396 /* BottomDrawerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F49DA62654651B00EE4396 /* BottomDrawerDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -107,6 +108,7 @@
 		986654FC264352A000395329 /* ActiveSpeakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSpeakerView.swift; sourceTree = "<group>"; };
 		987C3DC52624DE6200E296D0 /* ParticipantLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantLabelView.swift; sourceTree = "<group>"; };
 		98AF5CDE263B4447007608CD /* ParticipantListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantListDataSource.swift; sourceTree = "<group>"; };
+		98F49DA62654651B00EE4396 /* BottomDrawerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDrawerDataSource.swift; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -253,6 +255,7 @@
 		989F61952649D72F000C5668 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				98F49DA62654651B00EE4396 /* BottomDrawerDataSource.swift */,
 				8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */,
 				98AF5CDE263B4447007608CD /* ParticipantListDataSource.swift */,
 			);
@@ -416,6 +419,7 @@
 				8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */,
 				1F7CD40725C1E9E80081D8F1 /* CallViewController.swift in Sources */,
 				1F7CD40825C1E9E80081D8F1 /* HangupConfirmationViewController.swift in Sources */,
+				98F49DA72654651B00EE4396 /* BottomDrawerDataSource.swift in Sources */,
 				1F5FAD8E25FAC62900E2365F /* CommunicationIdentifierExtension.swift in Sources */,
 				8D743159263373ED000D0BCE /* BottomDrawerCellView.swift in Sources */,
 				1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */,

@@ -10,17 +10,15 @@ class BottomDrawerViewController: UIViewController {
     // MARK: Properties
 
     private var tableView: UITableView!
-    private var tableViewDataSource: UITableViewDataSource?
-    private weak var tableViewDelegate: UITableViewDelegate?
+    private var bottomDrawerDataSource: BottomDrawerDataSource?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    init(dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+    init(dataSource: BottomDrawerDataSource) {
         super.init(nibName: nil, bundle: nil)
-        self.tableViewDataSource = dataSource
-        self.tableViewDelegate = delegate
+        self.bottomDrawerDataSource = dataSource
         self.modalPresentationStyle = .overCurrentContext
     }
 
@@ -52,6 +50,14 @@ class BottomDrawerViewController: UIViewController {
         openBottomDrawer()
     }
 
+    func refreshBottomDrawer() {
+        bottomDrawerDataSource?.refreshDataSource?()
+        tableView.reloadData()
+
+        NSLayoutConstraint.deactivate(tableView.constraints)
+        setTableConstraints()
+    }
+
     // MARK: Private Functions
 
     private func createBottomDrawer() {
@@ -62,10 +68,29 @@ class BottomDrawerViewController: UIViewController {
         let cell = UINib(nibName: "BottomDrawerCellView",
                          bundle: nil)
         tableView.register(cell, forCellReuseIdentifier: "BottomDrawerCellView")
-        tableView.dataSource = self.tableViewDataSource
-        tableView.delegate = self.tableViewDelegate
+        tableView.dataSource = self.bottomDrawerDataSource
+        tableView.delegate = self.bottomDrawerDataSource
         tableView.reloadData()
 
+        setTableConstraints()
+    }
+
+    private func openBottomDrawer() {
+        let showConstraint = NSLayoutConstraint(item: tableView!,
+                attribute: .bottom,
+                relatedBy: .equal,
+                toItem: self.view,
+                attribute: .bottom,
+                multiplier: 1,
+                constant: 0)
+        showConstraint.priority = .required
+        self.view.addConstraint(showConstraint)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func setTableConstraints() {
         let window = UIApplication.shared.windows[0]
         let guide = self.view.safeAreaLayoutGuide
         let bottomPadding = window.safeAreaInsets.bottom
@@ -84,20 +109,5 @@ class BottomDrawerViewController: UIViewController {
         tableConstraints.append(hideConstraint)
 
         NSLayoutConstraint.activate(tableConstraints)
-    }
-
-    private func openBottomDrawer() {
-        let showConstraint = NSLayoutConstraint(item: tableView!,
-                attribute: .bottom,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1,
-                constant: 0)
-        showConstraint.priority = .required
-        self.view.addConstraint(showConstraint)
-        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
     }
 }
