@@ -594,6 +594,23 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.updateParticipant(count: callingContext.participantCount)
     }
 
+    private func participantViewUpdate() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            for participant in self.callingContext.displayedRemoteParticipants {
+                if let userIdentifier = participant.identifier.stringValue,
+                   let indexPath = self.participantIdIndexPathMap[userIdentifier],
+                   let participantView = self.participantIndexPathViewMap[indexPath] {
+                    participantView.updateMuteIndicator(isMuted: participant.isMuted)
+                    participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+                }
+            }
+        }
+    }
+
     private func participantListUpdate() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self,
@@ -613,7 +630,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
-        queueParticipantViewsUpdate()
+        participantViewUpdate()
         participantListUpdate()
     }
 
