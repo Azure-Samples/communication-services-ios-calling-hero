@@ -18,6 +18,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var joinCallConfig: JoinCallConfig!
     var callingContext: CallingContext!
 
+    private var bottomDrawerViewController: BottomDrawerViewController?
+
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
     private var isParticipantViewsUpdatePending: Bool = false
@@ -136,16 +138,17 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.createAudioDeviceOptions()
-
-        let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: audioDeviceSelectionDataSource,
-            delegate: audioDeviceSelectionDataSource)
+        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
-        let participantListDataSource = ParticipantListDataSource()
+        let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
+        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource)
+        present(bottomDrawerViewController!, animated: false, completion: nil)
+    }
+
+    private func getParticipantInfoList() -> [ParticipantInfo] {
         // Show local participant first
         var participantInfoList = [
             ParticipantInfo(
@@ -158,12 +161,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 displayName: $0.displayName,
                 isMuted: $0.isMuted)
         })
-        participantListDataSource.createParticipantList(participantInfoList)
-
-        let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: participantListDataSource,
-            delegate: participantListDataSource)
-        present(bottomDrawerViewController, animated: false, completion: nil)
+        return participantInfoList
     }
 
     // MARK: UICollectionViewDataSource
@@ -596,13 +594,27 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.updateParticipant(count: callingContext.participantCount)
     }
 
+    private func participantListUpdate() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                  let bottomDrawerViewController = self.bottomDrawerViewController,
+                  bottomDrawerViewController.isViewLoaded else {
+                return
+            }
+
+            bottomDrawerViewController.refreshBottomDrawer()
+        }
+    }
+
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
         meetingInfoViewUpdate()
     }
 
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
     }
 
     @objc func appResignActive(_ notification: Notification) {
