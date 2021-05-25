@@ -362,8 +362,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func initParticipantViews() {
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Remote participants
-        for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let remoteParticipantView = ParticipantView()
             remoteParticipantView.updateDisplayName(displayName: participant.displayName)
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
@@ -448,6 +449,18 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
+    private func getRemoteParticipantsToDisplay() -> MappedSequence<String, RemoteParticipant> {
+        var remoteParticipantsToDisplay: MappedSequence<String, RemoteParticipant>
+        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant,
+           let userIdentifier = screenSharingParticipant.identifier.stringValue {
+            remoteParticipantsToDisplay = MappedSequence<String, RemoteParticipant>()
+            remoteParticipantsToDisplay.append(forKey: userIdentifier, value: screenSharingParticipant)
+        } else {
+            remoteParticipantsToDisplay = callingContext.displayedRemoteParticipants
+        }
+        return remoteParticipantsToDisplay
+    }
+
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
         // Previous maps tracking participants
         let prevParticipantIdIndexPathMap = participantIdIndexPathMap
@@ -462,15 +475,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
         var insertIndexPaths: [IndexPath] = []
 
-        var remoteParticipantsToDisplay: MappedSequence<String, RemoteParticipant>
-        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant,
-           let userIdentifier = screenSharingParticipant.identifier.stringValue {
-            remoteParticipantsToDisplay = MappedSequence<String, RemoteParticipant>()
-            remoteParticipantsToDisplay.append(forKey: userIdentifier, value: screenSharingParticipant)
-        } else {
-            remoteParticipantsToDisplay = callingContext.displayedRemoteParticipants
-        }
-
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Build new maps and collect changes
         for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let userIdentifier = participant.identifier.stringValue ?? ""

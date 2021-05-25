@@ -422,6 +422,10 @@ extension CallingContext: CallDelegate {
             if let userIdentifier = participant.identifier.stringValue {
                 self.remoteParticipants.removeValue(forKey: userIdentifier)?.delegate = nil
                 self.displayedRemoteParticipants.removeValue(forKey: userIdentifier)
+                if let screenSharingParticipantId = currentScreenSharingParticipant?.identifier.stringValue,
+                   screenSharingParticipantId == userIdentifier {
+                    currentScreenSharingParticipant = nil
+                }
             }
         }
     }
