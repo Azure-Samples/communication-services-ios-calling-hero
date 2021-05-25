@@ -12,6 +12,7 @@ class ParticipantView: UIView {
 
     // MARK: Properties
 
+    private var detachMode: Bool = false
     private var renderer: VideoStreamRenderer?
     private var rendererView: RendererView?
     private var videoStreamId: String?
@@ -20,9 +21,11 @@ class ParticipantView: UIView {
     // MARK: IBOutlets
 
     @IBOutlet var contentView: UIView!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
     @IBOutlet weak var activeSpeakerView: ActiveSpeakerView!
+    @IBOutlet weak var switchCameraButton: UIRoundedButton!
     @IBOutlet weak var participantLabelView: ParticipantLabelView!
 
     // MARK: Constructors
@@ -107,7 +110,42 @@ class ParticipantView: UIView {
         }
 
         placeholderImage.isHidden = isDisplayVideo
+        switchCameraButton.isHidden = !isDisplayVideo
         view.isHidden = !isDisplayVideo
+    }
+
+    func updateCameraSwitch(isOneOnOne: Bool) {
+        // Skip update if display mode is the same
+        guard detachMode != isOneOnOne else {
+            return
+        }
+        detachMode = isOneOnOne
+
+        let buttonLength: CGFloat
+        let verticalConstraint: NSLayoutConstraint
+
+        if isOneOnOne {
+            // Top right (smaller) camera switch for detached local participant view
+            buttonLength = 24
+            verticalConstraint = switchCameraButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4)
+        } else {
+            // Middle right camera switch for standard local participant view
+            buttonLength = 30
+            verticalConstraint = switchCameraButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        }
+
+        switchCameraButton.constraints
+            .filter { [.width, .height].contains($0.firstAttribute) }
+            .forEach { $0.constant = buttonLength }
+        switchCameraButton.updateConstraints()
+
+        containerView.constraints
+            .filter {
+                switchCameraButton.hash == $0.firstItem?.hash &&
+                    [.top, .centerY].contains($0.firstAttribute)
+            }
+            .forEach { containerView.removeConstraint($0) }
+        containerView.addConstraint(verticalConstraint)
     }
 
     func dispose() {
