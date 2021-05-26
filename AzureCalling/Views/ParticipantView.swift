@@ -15,6 +15,7 @@ class ParticipantView: UIView {
     private var renderer: VideoStreamRenderer?
     private var rendererView: RendererView?
     private var videoStreamId: String?
+    private var isScreenSharing: Bool = false
 
     // MARK: IBOutlets
 
@@ -71,7 +72,8 @@ class ParticipantView: UIView {
         }
     }
 
-    func updateVideoStream(remoteVideoStream: RemoteVideoStream?) {
+    func updateVideoStream(remoteVideoStream: RemoteVideoStream?, isScreenSharing: Bool = false) {
+        self.isScreenSharing = isScreenSharing
         if remoteVideoStream == nil {
             cleanUpVideoRendering()
             return
@@ -123,7 +125,8 @@ class ParticipantView: UIView {
     }
 
     private func updateRendering(newRenderer: VideoStreamRenderer) throws {
-        let newRendererView: RendererView = try newRenderer.createView(withOptions: CreateViewOptions(scalingMode: .crop))
+        let scalingMode = !isScreenSharing ? CreateViewOptions(scalingMode: .crop) : CreateViewOptions(scalingMode: .fit)
+        let newRendererView: RendererView = try newRenderer.createView(withOptions: scalingMode)
 
         attachRendererView(rendererView: newRendererView)
 
