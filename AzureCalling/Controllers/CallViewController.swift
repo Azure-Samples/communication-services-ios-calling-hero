@@ -360,8 +360,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func initParticipantViews() {
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Remote participants
-        for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let remoteParticipantView = ParticipantView()
             remoteParticipantView.updateDisplayName(displayName: participant.displayName)
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
@@ -446,6 +447,18 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
+    private func getRemoteParticipantsToDisplay() -> MappedSequence<String, RemoteParticipant> {
+        var remoteParticipantsToDisplay: MappedSequence<String, RemoteParticipant>
+        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant,
+           let userIdentifier = screenSharingParticipant.identifier.stringValue {
+            remoteParticipantsToDisplay = MappedSequence<String, RemoteParticipant>()
+            remoteParticipantsToDisplay.append(forKey: userIdentifier, value: screenSharingParticipant)
+        } else {
+            remoteParticipantsToDisplay = callingContext.displayedRemoteParticipants
+        }
+        return remoteParticipantsToDisplay
+    }
+
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
         // Previous maps tracking participants
         let prevParticipantIdIndexPathMap = participantIdIndexPathMap
@@ -460,8 +473,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
         var insertIndexPaths: [IndexPath] = []
 
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Build new maps and collect changes
-        for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let userIdentifier = participant.identifier.stringValue ?? ""
             let indexPath = IndexPath(item: index, section: 0)
             var participantView: ParticipantView
@@ -487,7 +501,11 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             participantView.updateDisplayName(displayName: participant.displayName)
             participantView.updateMuteIndicator(isMuted: participant.isMuted)
             participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-            participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+            }
 
             participantIdIndexPathMap[userIdentifier] = indexPath
             participantIndexPathViewMap[indexPath] = participantView
