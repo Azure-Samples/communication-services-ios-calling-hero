@@ -245,6 +245,9 @@ class CallingContext: NSObject {
                 print("Camera switch successful")
                 completionHandler(.success(()))
             }
+        } else {
+            print("ERROR: The other camera is absent.")
+            completionHandler(.failure(NSError()))
         }
     }
 
