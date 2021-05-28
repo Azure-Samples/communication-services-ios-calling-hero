@@ -23,6 +23,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
     private var isParticipantViewsUpdatePending: Bool = false
+    private var isParticipantViewsUpdateQueued: Bool = false
     private var isParticipantViewLayoutInvalidated: Bool = false
 
     private var localParticipantIndexPath: IndexPath?
@@ -416,6 +417,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             if self.isParticipantViewsUpdatePending {
+                // Defer next update until the current update is complete
+                self.isParticipantViewsUpdateQueued = true
                 return
             }
 
@@ -444,6 +447,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             self.lastParticipantViewsUpdateTimestamp = Date().timeIntervalSince1970
             self.isParticipantViewsUpdatePending = false
+
+            if self.isParticipantViewsUpdateQueued {
+                // Reset queue and run last update
+                self.isParticipantViewsUpdateQueued = false
+                self.queueParticipantViewsUpdate()
+            }
         }
     }
 
@@ -594,23 +603,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.updateParticipant(count: callingContext.participantCount)
     }
 
-    private func participantViewUpdate() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            for participant in self.callingContext.displayedRemoteParticipants {
-                if let userIdentifier = participant.identifier.stringValue,
-                   let indexPath = self.participantIdIndexPathMap[userIdentifier],
-                   let participantView = self.participantIndexPathViewMap[indexPath] {
-                    participantView.updateMuteIndicator(isMuted: participant.isMuted)
-                    participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-                }
-            }
-        }
-    }
-
     private func participantListUpdate() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self,
@@ -630,7 +622,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
-        participantViewUpdate()
+        queueParticipantViewsUpdate()
         participantListUpdate()
     }
 
