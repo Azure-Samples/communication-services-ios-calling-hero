@@ -114,17 +114,17 @@ class ParticipantView: UIView {
         view.isHidden = !isDisplayVideo
     }
 
-    func updateCameraSwitch(isOneOnOne: Bool) {
+    func updateCameraSwitch(isOneOnOne detachMode: Bool) {
         // Skip update if display mode is the same
-        guard detachMode != isOneOnOne else {
+        guard self.detachMode != detachMode else {
             return
         }
-        detachMode = isOneOnOne
+        self.detachMode = detachMode
 
         let buttonLength: CGFloat
         let verticalConstraint: NSLayoutConstraint
 
-        if isOneOnOne {
+        if detachMode {
             // Top right (smaller) camera switch for detached local participant view
             buttonLength = 24
             verticalConstraint = switchCameraButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4)
