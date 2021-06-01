@@ -27,7 +27,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var isParticipantViewLayoutInvalidated: Bool = false
 
     private var localParticipantIndexPath: IndexPath?
-    private var localParticipantView = ParticipantView()
+    private var localParticipantView = LocalParticipantView()
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
@@ -65,7 +65,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         updateToggleVideoButtonState()
 
-        localParticipantView.switchCamera = { [weak self] in
+        localParticipantView.setOnSwitchCamera { [weak self] in
             guard let self = self else {
                 return
             }

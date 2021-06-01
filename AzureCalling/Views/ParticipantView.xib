@@ -16,7 +16,7 @@
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
                 <outlet property="participantLabelView" destination="4tW-72-meb" id="pYy-VX-THl"/>
                 <outlet property="placeholderImage" destination="wyD-Dr-0Cm" id="yQT-C8-AHL"/>
-                <outlet property="switchCameraButton" destination="yep-eI-b7j" id="ZhU-JC-UHp"/>
+                <outlet property="switchCameraButton" destination="yep-eI-b7j" id="mcG-hp-kkg"/>
                 <outlet property="videoViewContainer" destination="iQU-ZL-awr" id="aPd-w3-oFY"/>
             </connections>
         </placeholder>
@@ -64,7 +64,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
-                                <action selector="switchCamera:" destination="-1" eventType="touchUpInside" id="y6s-9J-eyL"/>
+                                <action selector="onSwitchCamera:" destination="-2" eventType="touchUpInside" id="JyQ-3e-vmS"/>
                             </connections>
                         </button>
                         <stackView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-72-meb" customClass="ParticipantLabelView" customModule="AzureCalling" customModuleProvider="target">
