@@ -65,6 +65,14 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         updateToggleVideoButtonState()
 
+        localParticipantView.switchCamera = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.callingContext.switchCamera { _ in }
+        }
+
         // Join the call asynchronously so that navigation is not blocked
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
@@ -309,10 +317,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func contentViewDidTapped(_ sender: UITapGestureRecognizer) {
         infoHeaderView.toggleDisplay()
-    }
-
-    @IBAction func switchCamera(_ sender: UIButton) {
-        callingContext.switchCamera { _ in }
     }
 
     private func onJoinCall() {

@@ -12,6 +12,8 @@ class ParticipantView: UIView {
 
     // MARK: Properties
 
+    var switchCamera: () -> Void = {}
+
     private var detachMode: Bool = false
     private var renderer: VideoStreamRenderer?
     private var rendererView: RendererView?
@@ -38,6 +40,12 @@ class ParticipantView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         initSubviews()
+    }
+
+    // MARK: Actions
+
+    @IBAction func switchCamera(_ sender: UIButton) {
+        switchCamera()
     }
 
     // MARK: Operation methods

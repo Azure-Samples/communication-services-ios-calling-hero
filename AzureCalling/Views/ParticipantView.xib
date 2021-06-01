@@ -64,7 +64,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
-                                <action selector="switchCamera:" destination="-2" eventType="touchUpInside" id="Tg0-de-xLz"/>
+                                <action selector="switchCamera:" destination="-1" eventType="touchUpInside" id="y6s-9J-eyL"/>
                             </connections>
                         </button>
                         <stackView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-72-meb" customClass="ParticipantLabelView" customModule="AzureCalling" customModuleProvider="target">
