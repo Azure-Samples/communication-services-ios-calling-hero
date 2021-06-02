@@ -10,7 +10,6 @@ protocol HangupConfirmationViewControllerDelegate: AnyObject {
 }
 
 class HangupConfirmationViewController: UIViewController {
-    var callingContext: CallingContext!
     weak var delegate: HangupConfirmationViewControllerDelegate?
 
     override func viewDidLoad() {

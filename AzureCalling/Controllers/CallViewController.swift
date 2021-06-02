@@ -225,7 +225,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func showConfirmHangupModal() {
         let hangupConfirmationViewController = HangupConfirmationViewController()
-        hangupConfirmationViewController.callingContext = callingContext
         hangupConfirmationViewController.modalPresentationStyle = .overCurrentContext
         hangupConfirmationViewController.delegate = self
         hangupConfirmationViewController.modalTransitionStyle = .crossDissolve
