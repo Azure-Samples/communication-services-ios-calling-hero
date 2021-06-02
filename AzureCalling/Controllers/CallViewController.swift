@@ -70,7 +70,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 return
             }
 
-            self.callingContext.switchCamera { _ in }
+            self.localParticipantView.switchCameraButton.isEnabled = false
+            self.callingContext.switchCamera { _ in
+                self.localParticipantView.switchCameraButton.isEnabled = true
+            }
         }
 
         // Join the call asynchronously so that navigation is not blocked
