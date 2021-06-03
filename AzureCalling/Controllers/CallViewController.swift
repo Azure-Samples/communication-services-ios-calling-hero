@@ -23,6 +23,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
     private var isParticipantViewsUpdatePending: Bool = false
+    private var isParticipantViewsUpdateQueued: Bool = false
     private var isParticipantViewLayoutInvalidated: Bool = false
 
     private var localParticipantIndexPath: IndexPath?
@@ -415,6 +416,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             if self.isParticipantViewsUpdatePending {
+                // Defer next update until the current update is complete
+                self.isParticipantViewsUpdateQueued = true
                 return
             }
 
@@ -443,6 +446,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             self.lastParticipantViewsUpdateTimestamp = Date().timeIntervalSince1970
             self.isParticipantViewsUpdatePending = false
+
+            if self.isParticipantViewsUpdateQueued {
+                // Reset queue and run last update
+                self.isParticipantViewsUpdateQueued = false
+                self.queueParticipantViewsUpdate()
+            }
         }
     }
 
