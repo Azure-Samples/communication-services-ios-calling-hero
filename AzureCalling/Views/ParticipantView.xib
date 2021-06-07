@@ -12,11 +12,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantView" customModule="AzureCalling" customModuleProvider="target">
             <connections>
                 <outlet property="activeSpeakerView" destination="zye-vX-A83" id="xvx-xU-LbP"/>
-                <outlet property="containerView" destination="9aZ-5g-VOP" id="ZUN-I5-2mW"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="450-CQ-3yZ"/>
                 <outlet property="participantLabelView" destination="4tW-72-meb" id="pYy-VX-THl"/>
                 <outlet property="placeholderImage" destination="wyD-Dr-0Cm" id="yQT-C8-AHL"/>
-                <outlet property="switchCameraButton" destination="yep-eI-b7j" id="mcG-hp-kkg"/>
                 <outlet property="videoViewContainer" destination="iQU-ZL-awr" id="aPd-w3-oFY"/>
             </connections>
         </placeholder>
@@ -49,24 +47,6 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yep-eI-b7j" userLabel="Switch Camera Button" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
-                            <rect key="frame" x="394" y="448" width="30" height="30"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.40112553810586737" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="1bD-Nz-Iwm"/>
-                                <constraint firstAttribute="width" constant="30" id="XL0-l8-ShX"/>
-                            </constraints>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="ic_fluent_camera_switch_24_regular"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                    <real key="value" value="4"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="onSwitchCamera:" destination="-2" eventType="touchUpInside" id="JyQ-3e-vmS"/>
-                            </connections>
-                        </button>
                         <stackView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-72-meb" customClass="ParticipantLabelView" customModule="AzureCalling" customModuleProvider="target">
                             <rect key="frame" x="8" y="898" width="114.5" height="20"/>
                             <subviews>
@@ -136,9 +116,7 @@
                         <constraint firstItem="zye-vX-A83" firstAttribute="trailing" secondItem="9aZ-5g-VOP" secondAttribute="trailing" id="Qrw-qm-lbe"/>
                         <constraint firstAttribute="bottom" secondItem="4tW-72-meb" secondAttribute="bottom" constant="8" id="Ug8-05-Te3"/>
                         <constraint firstAttribute="trailing" secondItem="iQU-ZL-awr" secondAttribute="trailing" id="W3V-cn-qjw"/>
-                        <constraint firstItem="yep-eI-b7j" firstAttribute="centerY" secondItem="9aZ-5g-VOP" secondAttribute="centerY" id="bbW-O6-YIC"/>
                         <constraint firstAttribute="bottom" secondItem="iQU-ZL-awr" secondAttribute="bottom" id="glg-La-xgf"/>
-                        <constraint firstAttribute="trailing" secondItem="yep-eI-b7j" secondAttribute="trailing" constant="4" id="its-nm-dwe"/>
                         <constraint firstItem="iQU-ZL-awr" firstAttribute="leading" secondItem="9aZ-5g-VOP" secondAttribute="leading" id="rUl-V0-byP"/>
                         <constraint firstItem="wyD-Dr-0Cm" firstAttribute="centerY" secondItem="9aZ-5g-VOP" secondAttribute="centerY" id="yaX-F1-RcL"/>
                     </constraints>
@@ -159,13 +137,7 @@
             <point key="canvasLocation" x="56.521739130434788" y="-4.0178571428571423"/>
         </view>
     </objects>
-    <designables>
-        <designable name="yep-eI-b7j">
-            <size key="intrinsicContentSize" width="24" height="24"/>
-        </designable>
-    </designables>
     <resources>
-        <image name="ic_fluent_camera_switch_24_regular" width="24" height="24"/>
         <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_person_48_filled" width="48" height="48"/>
         <namedColor name="primaryColor">

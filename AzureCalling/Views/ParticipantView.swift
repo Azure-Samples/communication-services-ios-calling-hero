@@ -20,11 +20,9 @@ class ParticipantView: UIView {
     // MARK: IBOutlets
 
     @IBOutlet var contentView: UIView!
-    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var placeholderImage: UIImageView!
     @IBOutlet weak var videoViewContainer: UIView!
     @IBOutlet weak var activeSpeakerView: ActiveSpeakerView!
-    @IBOutlet weak var switchCameraButton: UIRoundedButton!
     @IBOutlet weak var participantLabelView: ParticipantLabelView!
 
     // MARK: Constructors
