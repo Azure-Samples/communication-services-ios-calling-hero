@@ -22,7 +22,7 @@ class CallingContext: NSObject {
     private (set) var remoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private var localVideoStream: LocalVideoStream?
     private var tokenFetcher: TokenFetcher
-
+    private var availableCameras = [CameraFacing: VideoDeviceInfo]()
     private var isSetup: Bool = false
     private var callClient: CallClient?
     private var callAgent: CallAgent?
@@ -227,6 +227,30 @@ class CallingContext: NSObject {
         }
     }
 
+    func switchCamera(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        guard let localVideoStream = localVideoStream else {
+            return
+        }
+
+        let currentCamera = localVideoStream.source
+        let flip: CameraFacing = currentCamera.cameraFacing == .front ? .back : .front
+
+        if let flipCamera = availableCameras[flip] {
+            localVideoStream.switchSource(camera: flipCamera) { error in
+                if error != nil {
+                    print("ERROR: It was not possible to switch camera. \(error!)")
+                    completionHandler(.failure(error!))
+                    return
+                }
+                print("Camera switch successful")
+                completionHandler(.success(()))
+            }
+        } else {
+            print("ERROR: The other camera is absent.")
+            completionHandler(.failure(NSError()))
+        }
+    }
+
     func mute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.mute(completionHandler: { (error) in
             if error != nil {
@@ -335,9 +359,15 @@ class CallingContext: NSObject {
         guard let deviceManager = deviceManager else {
             return
         }
-        let camera = deviceManager.cameras[0]
-        localVideoStream = LocalVideoStream(camera: camera)
-        completionHandler(localVideoStream)
+        availableCameras[.front] = deviceManager.cameras.first(where: { $0.cameraFacing == .front })
+        availableCameras[.back] = deviceManager.cameras.first(where: { $0.cameraFacing == .back })
+
+        if let frontCamera = availableCameras[.front] {
+            localVideoStream = LocalVideoStream(camera: frontCamera)
+            completionHandler(localVideoStream)
+        } else {
+            completionHandler(nil)
+        }
     }
 
     private func setupRemoteParticipantsEventsAdapter() {

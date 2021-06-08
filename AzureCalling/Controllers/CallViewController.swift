@@ -27,7 +27,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var isParticipantViewLayoutInvalidated: Bool = false
 
     private var localParticipantIndexPath: IndexPath?
-    private var localParticipantView = ParticipantView()
+    private var localParticipantView = LocalParticipantView()
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
@@ -64,6 +64,17 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMuteButton.isSelected = joinCallConfig.isMicrophoneMuted
 
         updateToggleVideoButtonState()
+
+        localParticipantView.setOnSwitchCamera { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.localParticipantView.switchCameraButton.isEnabled = false
+            self.callingContext.switchCamera { _ in
+                self.localParticipantView.switchCameraButton.isEnabled = true
+            }
+        }
 
         // Join the call asynchronously so that navigation is not blocked
         DispatchQueue.main.async { [weak self] in
@@ -261,7 +272,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                 }
             }
-
         } else {
             callingContext.startLocalVideoStream { [weak self] localVideoStream in
                 guard let self = self else {
@@ -388,6 +398,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             // Use separate view for local video when only 1 remote participant
             localVideoViewContainer.isHidden = !callingContext.isCameraPreferredOn
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: false)
+            localParticipantView.updateCameraSwitch(isOneOnOne: true)
             attach(localParticipantView, to: localVideoViewContainer)
         } else {
             // Display Local video in last position of grid
@@ -395,6 +406,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             localParticipantIndexPath = indexPath
             participantIndexPathViewMap[indexPath] = localParticipantView
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: true)
+            localParticipantView.updateCameraSwitch(isOneOnOne: false)
             localVideoViewContainer.isHidden = true
         }
 
@@ -527,6 +539,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             localVideoViewContainer.isHidden = !callingContext.isCameraPreferredOn
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: false)
+            localParticipantView.updateCameraSwitch(isOneOnOne: true)
             attach(localParticipantView, to: localVideoViewContainer)
         } else {
             // Display Local video in last position of grid
@@ -547,6 +560,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             localParticipantIndexPath = indexPath
             participantIndexPathViewMap[indexPath] = localParticipantView
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: true)
+            localParticipantView.updateCameraSwitch(isOneOnOne: false)
             localVideoViewContainer.isHidden = true
         }
 

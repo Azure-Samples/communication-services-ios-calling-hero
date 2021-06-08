@@ -101,15 +101,6 @@ class ParticipantView: UIView {
         view.isHidden = !isDisplayNameVisible
     }
 
-    func updateVideoDisplayed(isDisplayVideo: Bool) {
-        guard let view = videoViewContainer else {
-            return
-        }
-
-        placeholderImage.isHidden = isDisplayVideo
-        view.isHidden = !isDisplayVideo
-    }
-
     func dispose() {
         cleanUpVideoRendering()
     }
