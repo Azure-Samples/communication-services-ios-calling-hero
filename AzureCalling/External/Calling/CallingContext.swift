@@ -405,6 +405,10 @@ extension CallingContext: CallDelegate {
         notifyRemoteParticipantsUpdated()
     }
 
+    func call(_ call: Call, didChangeMuteState args: PropertyChangedEventArgs) {
+        notifyOnIsMutedChanged()
+    }
+
     private func findInactiveSpeakerToSwap(with remoteParticipant: RemoteParticipant, id: String) {
         for displayedRemoteParticipant in displayedRemoteParticipants {
             if !displayedRemoteParticipant.isSpeaking,
@@ -456,9 +460,14 @@ extension CallingContext: CallDelegate {
     private func notifyRemoteParticipantViewChanged() {
         NotificationCenter.default.post(name: .remoteParticipantViewChanged, object: nil)
     }
+
+    private func notifyOnIsMutedChanged() {
+        NotificationCenter.default.post(name: .onIsMutedChanged, object: nil)
+    }
 }
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
     static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
+    static let onIsMutedChanged = Notification.Name("OnIsMutedChanged")
 }

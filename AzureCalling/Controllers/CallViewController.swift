@@ -284,16 +284,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func onToggleMute(_ sender: UIButton) {
         sender.isSelected.toggle()
-        (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            if case .success = result {
-                DispatchQueue.main.async {
-                    self.localParticipantView.updateMuteIndicator(isMuted: sender.isSelected)
-                }
-            }
-        }
+        (sender.isSelected ? callingContext.mute : callingContext.unmute) { _ in }
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
@@ -315,6 +306,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantViewChanged(_:)), name: .remoteParticipantViewChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onIsMutedChanged(_:)), name: .onIsMutedChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
@@ -623,6 +615,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
         participantListUpdate()
+    }
+
+    @objc func onIsMutedChanged(_ notification: Notification) {
+        if let isCallMuted = callingContext.isCallMuted {
+            toggleMuteButton.isSelected = isCallMuted
+            verticalToggleMuteButton.isSelected = isCallMuted
+            localParticipantView.updateMuteIndicator(isMuted: isCallMuted)
+            participantListUpdate()
+        }
     }
 
     @objc func appResignActive(_ notification: Notification) {
