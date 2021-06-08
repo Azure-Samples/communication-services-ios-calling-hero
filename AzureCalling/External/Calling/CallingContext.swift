@@ -12,6 +12,7 @@ enum CallingInterfaceState {
     case waitingAdmission
     case admissionDenied
     case connected
+    case callEnded
     case removed
 }
 
@@ -133,6 +134,7 @@ class CallingContext: NSObject {
     }
 
     func endCall(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        callingInterfaceState = .callEnded
         self.call?.hangUp(options: HangUpOptions()) { (error) in
             if error != nil {
                 print("ERROR: It was not possible to hangup the call.")
@@ -409,7 +411,7 @@ extension CallingContext: CallDelegate {
         switch call.state {
         case .none:
             if callType == .teamsMeeting {
-                callingInterfaceState = callingInterfaceState == .connected ? .removed : .admissionDenied
+                callingInterfaceState = .admissionDenied
             }
         case .connected:
             callingInterfaceState = .connected
@@ -418,6 +420,10 @@ extension CallingContext: CallDelegate {
             notifyRemoteParticipantsUpdated()
         case .inLobby:
             callingInterfaceState = .waitingAdmission
+        case .disconnected:
+            if callType == .teamsMeeting && callingInterfaceState != .callEnded {
+                callingInterfaceState = .removed
+            }
         default:
             break
         }
