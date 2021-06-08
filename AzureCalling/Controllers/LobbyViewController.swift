@@ -33,6 +33,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var startCallButton: UIButton!
+    @IBOutlet weak var switchCameraButton: UIRoundedButton!
 
     // MARK: UIViewController events
 
@@ -276,11 +277,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
                         self.setupPreviewView(localVideoStream: localVideoStream)
                     }
                     self.rendererView?.isHidden = false
+                    self.switchCameraButton.isHidden = false
                     self.updatePermissionView()
                 }
             }
         } else {
             rendererView?.isHidden = true
+            switchCameraButton.isHidden = true
         }
     }
 
@@ -295,6 +298,16 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     @IBAction func goToSettingsButtonPressed(_ sender: UIButton) {
         if let appSettings = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+        }
+    }
+
+    @IBAction func switchCamera(_ sender: UIButton) {
+        switchCameraButton.isEnabled = false
+        callingContext.switchCamera { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.switchCameraButton.isEnabled = true
         }
     }
 }
