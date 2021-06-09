@@ -5,15 +5,22 @@
 
 import UIKit
 
-class AudioDeviceSelectionDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
 
     // MARK: Properties
 
     private var audioDeviceOptions = [BottomDrawerItem]()
 
-    // MARK: Public API
+    // MARK: Initialization
 
-    func createAudioDeviceOptions() {
+    override init() {
+        super.init()
+        createAudioDeviceOptions()
+    }
+
+    // MARK: Private Functions
+
+    private func createAudioDeviceOptions() {
         let audioDeviceTypes = AudioSessionManager.getAllAudioDeviceTypes()
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
 

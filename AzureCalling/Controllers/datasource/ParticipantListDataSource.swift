@@ -10,15 +10,28 @@ struct ParticipantInfo {
     let isMuted: Bool
 }
 
-class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+typealias ParticipantsFetcher = () -> [ParticipantInfo]
+
+class ParticipantListDataSource: NSObject, BottomDrawerDataSource {
 
     // MARK: Properties
 
     private var participantList = [BottomDrawerItem]()
+    private var participantsFetcher: ParticipantsFetcher
 
-    // MARK: Public API
+    // MARK: Initialization
 
-    func createParticipantList(_ participantInfoList: [ParticipantInfo]) {
+    init(participantsFetcher: @escaping ParticipantsFetcher) {
+        self.participantsFetcher = participantsFetcher
+
+        super.init()
+        createParticipantList()
+    }
+
+    // MARK: Private Functions
+
+    private func createParticipantList() {
+        let participantInfoList = self.participantsFetcher()
         let accessoryImage = UIImage(named: "ic_fluent_mic_off_28_filled")!
         let image = UIImage(named: "ic_fluent_person_48_filled")!
 
@@ -26,6 +39,13 @@ class ParticipantListDataSource: NSObject, UITableViewDelegate, UITableViewDataS
             let participantInfo = BottomDrawerItem(avatar: image, title: participantInfo.displayName, accessoryImage: accessoryImage, enabled: participantInfo.isMuted)
             participantList.append(participantInfo)
         }
+    }
+
+    // MARK: BottomDrawerDataSource events
+
+    func refreshDataSource() {
+        participantList.removeAll()
+        createParticipantList()
     }
 
     // MARK: UITableViewDataSource events

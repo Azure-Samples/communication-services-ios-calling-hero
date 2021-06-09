@@ -10,7 +10,6 @@ protocol HangupConfirmationViewControllerDelegate: AnyObject {
 }
 
 class HangupConfirmationViewController: UIViewController {
-    var callingContext: CallingContext!
     weak var delegate: HangupConfirmationViewControllerDelegate?
 
     override func viewDidLoad() {
@@ -34,7 +33,7 @@ class HangupConfirmationViewController: UIViewController {
         view.addSubview(cancelButton)
 
         let constraints = [
-            hangupButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -215),
+            hangupButton.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -8),
             hangupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             hangupButton.widthAnchor.constraint(equalToConstant: 328),
             hangupButton.heightAnchor.constraint(equalToConstant: 50),
@@ -43,7 +42,6 @@ class HangupConfirmationViewController: UIViewController {
             cancelButton.heightAnchor.constraint(equalTo: hangupButton.heightAnchor),
             cancelButton.centerXAnchor.constraint(equalTo: hangupButton.centerXAnchor),
             cancelButton.topAnchor.constraint(equalTo: hangupButton.bottomAnchor, constant: 16)
-
         ]
         NSLayoutConstraint.activate(constraints)
 
