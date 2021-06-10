@@ -499,6 +499,25 @@
                                                     <constraint firstAttribute="height" constant="50" id="tp1-FD-2Rv"/>
                                                 </constraints>
                                             </stackView>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdG-sX-f0b" customClass="UIRoundedButton" customModule="AzureCalling" customModuleProvider="target">
+                                                <rect key="frame" x="350" y="8" width="24" height="24"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="24" id="6F7-I9-bf2"/>
+                                                    <constraint firstAttribute="height" constant="24" id="Apg-Jc-a7j"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                                <state key="normal" image="ic_fluent_camera_switch_24_regular"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="switchCamera:" destination="go2-tU-kve" eventType="touchUpInside" id="P6Z-gN-g54"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.16078431372549018" green="0.16078431372549018" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -506,6 +525,7 @@
                                             <constraint firstItem="G4U-5B-2Au" firstAttribute="top" secondItem="518-pB-unB" secondAttribute="top" id="9de-5P-AoS"/>
                                             <constraint firstItem="Vnl-tE-txc" firstAttribute="centerX" secondItem="518-pB-unB" secondAttribute="centerX" id="9hh-bg-GBc"/>
                                             <constraint firstItem="Vnl-tE-txc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="518-pB-unB" secondAttribute="leading" constant="20" symbolic="YES" id="9vF-ac-53c"/>
+                                            <constraint firstAttribute="trailing" secondItem="bdG-sX-f0b" secondAttribute="trailing" constant="8" id="Aim-ZG-6fG"/>
                                             <constraint firstItem="qNA-wt-a9C" firstAttribute="centerX" secondItem="518-pB-unB" secondAttribute="centerX" id="Gar-MT-9BC"/>
                                             <constraint firstItem="G4U-5B-2Au" firstAttribute="centerY" secondItem="518-pB-unB" secondAttribute="centerY" id="Je5-na-nnv"/>
                                             <constraint firstAttribute="bottom" secondItem="Vnl-tE-txc" secondAttribute="bottom" constant="20" symbolic="YES" id="KH3-5P-NeH"/>
@@ -514,6 +534,7 @@
                                             <constraint firstItem="hlG-7A-Jed" firstAttribute="centerY" secondItem="518-pB-unB" secondAttribute="centerY" id="VxV-lt-8hJ"/>
                                             <constraint firstItem="hlG-7A-Jed" firstAttribute="centerX" secondItem="518-pB-unB" secondAttribute="centerX" id="cH3-07-MpM"/>
                                             <constraint firstAttribute="trailing" secondItem="G4U-5B-2Au" secondAttribute="trailing" id="dSJ-2D-yBP"/>
+                                            <constraint firstItem="bdG-sX-f0b" firstAttribute="top" secondItem="518-pB-unB" secondAttribute="top" constant="8" id="eRB-gV-PXf"/>
                                             <constraint firstItem="qNA-wt-a9C" firstAttribute="centerY" secondItem="518-pB-unB" secondAttribute="centerY" id="r1Y-iR-q09"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
@@ -601,6 +622,7 @@
                         <outlet property="previewView" destination="518-pB-unB" id="vxA-e8-tmr"/>
                         <outlet property="selectAudioDeviceButton" destination="NlG-FZ-0Ip" id="bgq-9N-SU4"/>
                         <outlet property="startCallButton" destination="2Vm-we-mGV" id="dia-nr-oGD"/>
+                        <outlet property="switchCameraButton" destination="bdG-sX-f0b" id="UNn-PO-aFs"/>
                         <outlet property="toggleMicrophoneButton" destination="ueH-21-TCG" id="BAO-od-Ovw"/>
                         <outlet property="toggleVideoButton" destination="gSY-SK-FFx" id="kt0-c4-UPU"/>
                         <outlet property="videoMicrophoneControlStackView" destination="Vnl-tE-txc" id="i9z-TF-CIw"/>
@@ -1040,6 +1062,29 @@
             <point key="canvasLocation" x="620" y="-631"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="2Vm-we-mGV">
+            <size key="intrinsicContentSize" width="76" height="30"/>
+        </designable>
+        <designable name="9zL-5k-pzo">
+            <size key="intrinsicContentSize" width="225" height="50"/>
+        </designable>
+        <designable name="Igr-te-ihU">
+            <size key="intrinsicContentSize" width="98" height="30"/>
+        </designable>
+        <designable name="ZFZ-dJ-kd6">
+            <size key="intrinsicContentSize" width="126" height="50"/>
+        </designable>
+        <designable name="bdG-sX-f0b">
+            <size key="intrinsicContentSize" width="28" height="28"/>
+        </designable>
+        <designable name="hwl-9h-PR7">
+            <size key="intrinsicContentSize" width="61" height="50"/>
+        </designable>
+        <designable name="mwY-XK-xHF">
+            <size key="intrinsicContentSize" width="100" height="50"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="sMD-yp-j0r"/>
     </inferredMetricsTieBreakers>
@@ -1050,6 +1095,7 @@
         <image name="ic_fluent_checkmark_circle_24_filled" width="24" height="24"/>
         <image name="ic_fluent_circle_24_regular" width="24" height="24"/>
         <image name="ic_fluent_dismiss_24_regular" width="24" height="24"/>
+        <image name="ic_fluent_camera_switch_24_regular" width="24" height="24"/>
         <image name="ic_fluent_mic_off_28_filled" width="28" height="28"/>
         <image name="ic_fluent_mic_on_28_filled" width="28" height="28"/>
         <image name="ic_fluent_people_20_regular" width="20" height="20"/>
