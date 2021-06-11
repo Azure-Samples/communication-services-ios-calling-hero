@@ -23,13 +23,16 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var joinCallConfig: JoinCallConfig!
     var callingContext: CallingContext!
 
+    private var bottomDrawerViewController: BottomDrawerViewController?
+
     private let eventHandlingQueue = DispatchQueue(label: "eventHandlingQueue", qos: .userInteractive)
     private var lastParticipantViewsUpdateTimestamp: TimeInterval = Date().timeIntervalSince1970
     private var isParticipantViewsUpdatePending: Bool = false
+    private var isParticipantViewsUpdateQueued: Bool = false
     private var isParticipantViewLayoutInvalidated: Bool = false
 
     private var localParticipantIndexPath: IndexPath?
-    private var localParticipantView = ParticipantView()
+    private var localParticipantView = LocalParticipantView()
     private var participantIdIndexPathMap: [String: IndexPath] = [:]
     private var participantIndexPathViewMap: [IndexPath: ParticipantView] = [:]
 
@@ -68,6 +71,17 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMuteButton.isSelected = joinCallConfig.isMicrophoneMuted
 
         updateToggleVideoButtonState()
+
+        localParticipantView.setOnSwitchCamera { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.localParticipantView.switchCameraButton.isEnabled = false
+            self.callingContext.switchCamera { _ in
+                self.localParticipantView.switchCameraButton.isEnabled = true
+            }
+        }
 
         // Join the call asynchronously so that navigation is not blocked
         DispatchQueue.main.async { [weak self] in
@@ -143,16 +157,17 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.createAudioDeviceOptions()
-
-        let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: audioDeviceSelectionDataSource,
-            delegate: audioDeviceSelectionDataSource)
+        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
-        let participantListDataSource = ParticipantListDataSource()
+        let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
+        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource)
+        present(bottomDrawerViewController!, animated: false, completion: nil)
+    }
+
+    private func getParticipantInfoList() -> [ParticipantInfo] {
         // Show local participant first
         var participantInfoList = [
             ParticipantInfo(
@@ -165,12 +180,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 displayName: $0.displayName,
                 isMuted: $0.isMuted)
         })
-        participantListDataSource.createParticipantList(participantInfoList)
-
-        let bottomDrawerViewController = BottomDrawerViewController(
-            dataSource: participantListDataSource,
-            delegate: participantListDataSource)
-        present(bottomDrawerViewController, animated: false, completion: nil)
+        return participantInfoList
     }
 
     // MARK: UICollectionViewDataSource
@@ -233,7 +243,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func showConfirmHangupModal() {
         let hangupConfirmationViewController = HangupConfirmationViewController()
-        hangupConfirmationViewController.callingContext = callingContext
         hangupConfirmationViewController.modalPresentationStyle = .overCurrentContext
         hangupConfirmationViewController.delegate = self
         hangupConfirmationViewController.modalTransitionStyle = .crossDissolve
@@ -277,7 +286,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                 }
             }
-
         } else {
             callingContext.startLocalVideoStream { [weak self] localVideoStream in
                 guard let self = self else {
@@ -300,16 +308,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @IBAction func onToggleMute(_ sender: UIButton) {
         sender.isSelected.toggle()
-        (sender.isSelected ? callingContext.mute : callingContext.unmute) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            if case .success = result {
-                DispatchQueue.main.async {
-                    self.localParticipantView.updateMuteIndicator(isMuted: sender.isSelected)
-                }
-            }
-        }
+        (sender.isSelected ? callingContext.mute : callingContext.unmute) { _ in }
     }
 
     @IBAction func selectAudioDeviceButtonPressed(_ sender: UIButton) {
@@ -336,6 +335,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(transcriptionActiveChangeUpdated(_:)), name: .onTranscriptionActiveChangeUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantViewChanged(_:)), name: .remoteParticipantViewChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onIsMutedChanged(_:)), name: .onIsMutedChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
@@ -381,8 +381,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     private func initParticipantViews() {
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Remote participants
-        for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let remoteParticipantView = ParticipantView()
             remoteParticipantView.updateDisplayName(displayName: participant.displayName)
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
@@ -416,6 +417,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             // Use separate view for local video when only 1 remote participant
             localVideoViewContainer.isHidden = !callingContext.isCameraPreferredOn
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: false)
+            localParticipantView.updateCameraSwitch(isOneOnOne: true)
             attach(localParticipantView, to: localVideoViewContainer)
         } else {
             // Display Local video in last position of grid
@@ -423,6 +425,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             localParticipantIndexPath = indexPath
             participantIndexPathViewMap[indexPath] = localParticipantView
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: true)
+            localParticipantView.updateCameraSwitch(isOneOnOne: false)
             localVideoViewContainer.isHidden = true
         }
 
@@ -436,6 +439,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             if self.isParticipantViewsUpdatePending {
+                // Defer next update until the current update is complete
+                self.isParticipantViewsUpdateQueued = true
                 return
             }
 
@@ -464,7 +469,25 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             self.lastParticipantViewsUpdateTimestamp = Date().timeIntervalSince1970
             self.isParticipantViewsUpdatePending = false
+
+            if self.isParticipantViewsUpdateQueued {
+                // Reset queue and run last update
+                self.isParticipantViewsUpdateQueued = false
+                self.queueParticipantViewsUpdate()
+            }
         }
+    }
+
+    private func getRemoteParticipantsToDisplay() -> MappedSequence<String, RemoteParticipant> {
+        var remoteParticipantsToDisplay: MappedSequence<String, RemoteParticipant>
+        if let screenSharingParticipant = callingContext.currentScreenSharingParticipant,
+           let userIdentifier = screenSharingParticipant.identifier.stringValue {
+            remoteParticipantsToDisplay = MappedSequence<String, RemoteParticipant>()
+            remoteParticipantsToDisplay.append(forKey: userIdentifier, value: screenSharingParticipant)
+        } else {
+            remoteParticipantsToDisplay = callingContext.displayedRemoteParticipants
+        }
+        return remoteParticipantsToDisplay
     }
 
     private func updateParticipantViews(completionHandler: @escaping () -> Void) {
@@ -481,8 +504,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var indexPathMoves: [(at: IndexPath, to: IndexPath)] = []
         var insertIndexPaths: [IndexPath] = []
 
+        let remoteParticipantsToDisplay = getRemoteParticipantsToDisplay()
         // Build new maps and collect changes
-        for (index, participant) in callingContext.displayedRemoteParticipants.enumerated() {
+        for (index, participant) in remoteParticipantsToDisplay.enumerated() {
             let userIdentifier = participant.identifier.stringValue ?? ""
             let indexPath = IndexPath(item: index, section: 0)
             var participantView: ParticipantView
@@ -508,7 +532,11 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             participantView.updateDisplayName(displayName: participant.displayName)
             participantView.updateMuteIndicator(isMuted: participant.isMuted)
             participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
-            participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                participantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
+            }
 
             participantIdIndexPathMap[userIdentifier] = indexPath
             participantIndexPathViewMap[indexPath] = participantView
@@ -530,6 +558,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             localVideoViewContainer.isHidden = !callingContext.isCameraPreferredOn
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: false)
+            localParticipantView.updateCameraSwitch(isOneOnOne: true)
             attach(localParticipantView, to: localVideoViewContainer)
         } else {
             // Display Local video in last position of grid
@@ -550,6 +579,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             localParticipantIndexPath = indexPath
             participantIndexPathViewMap[indexPath] = localParticipantView
             localParticipantView.updateDisplayNameVisible(isDisplayNameVisible: true)
+            localParticipantView.updateCameraSwitch(isOneOnOne: false)
             localVideoViewContainer.isHidden = true
         }
 
@@ -597,8 +627,21 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         infoHeaderView.updateParticipant(count: callingContext.participantCount)
     }
 
+    private func participantListUpdate() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                  let bottomDrawerViewController = self.bottomDrawerViewController,
+                  bottomDrawerViewController.isViewLoaded else {
+                return
+            }
+
+            bottomDrawerViewController.refreshBottomDrawer()
+        }
+    }
+
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
         meetingInfoViewUpdate()
     }
 
@@ -655,6 +698,16 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
+        participantListUpdate()
+    }
+
+    @objc func onIsMutedChanged(_ notification: Notification) {
+        if let isCallMuted = callingContext.isCallMuted {
+            toggleMuteButton.isSelected = isCallMuted
+            verticalToggleMuteButton.isSelected = isCallMuted
+            localParticipantView.updateMuteIndicator(isMuted: isCallMuted)
+            participantListUpdate()
+        }
     }
 
     @objc func appResignActive(_ notification: Notification) {

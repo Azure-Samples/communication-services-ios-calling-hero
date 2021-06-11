@@ -31,13 +31,14 @@ class CallingContext: NSObject {
     private (set) var remoteParticipants: MappedSequence<String, RemoteParticipant> = MappedSequence<String, RemoteParticipant>()
     private var localVideoStream: LocalVideoStream?
     private var tokenFetcher: TokenFetcher
-
+    private var availableCameras = [CameraFacing: VideoDeviceInfo]()
     private var isSetup: Bool = false
     private var callClient: CallClient?
     private var callAgent: CallAgent?
     private var call: Call?
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
+    private (set) var currentScreenSharingParticipant: RemoteParticipant?
 
     var callingInterfaceState: CallingInterfaceState = .connecting
     var callType: JoinCallType = .groupCall
@@ -242,6 +243,30 @@ class CallingContext: NSObject {
         }
     }
 
+    func switchCamera(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        guard let localVideoStream = localVideoStream else {
+            return
+        }
+
+        let currentCamera = localVideoStream.source
+        let flip: CameraFacing = currentCamera.cameraFacing == .front ? .back : .front
+
+        if let flipCamera = availableCameras[flip] {
+            localVideoStream.switchSource(camera: flipCamera) { error in
+                if error != nil {
+                    print("ERROR: It was not possible to switch camera. \(error!)")
+                    completionHandler(.failure(error!))
+                    return
+                }
+                print("Camera switch successful")
+                completionHandler(.success(()))
+            }
+        } else {
+            print("ERROR: The other camera is absent.")
+            completionHandler(.failure(NSError()))
+        }
+    }
+
     func mute(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.mute(completionHandler: { (error) in
             if error != nil {
@@ -350,9 +375,15 @@ class CallingContext: NSObject {
         guard let deviceManager = deviceManager else {
             return
         }
-        let camera = deviceManager.cameras[0]
-        localVideoStream = LocalVideoStream(camera: camera)
-        completionHandler(localVideoStream)
+        availableCameras[.front] = deviceManager.cameras.first(where: { $0.cameraFacing == .front })
+        availableCameras[.back] = deviceManager.cameras.first(where: { $0.cameraFacing == .back })
+
+        if let frontCamera = availableCameras[.front] {
+            localVideoStream = LocalVideoStream(camera: frontCamera)
+            completionHandler(localVideoStream)
+        } else {
+            completionHandler(nil)
+        }
     }
 
     private func setupRemoteParticipantsEventsAdapter() {
@@ -397,9 +428,16 @@ class CallingContext: NSObject {
             }
         }
 
-        participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] _ in
+        participantsEventsAdapter?.onVideoStreamsUpdated = { [weak self] remoteParticipant in
             guard let self = self else {
                 return
+            }
+            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                self.currentScreenSharingParticipant = remoteParticipant
+            } else if let userIdentifier = remoteParticipant.identifier.stringValue,
+                      let screenSharingParticipantIdentifier = self.currentScreenSharingParticipant?.identifier.stringValue,
+                      userIdentifier == screenSharingParticipantIdentifier {
+                self.currentScreenSharingParticipant = nil
             }
             self.notifyRemoteParticipantsUpdated()
         }
@@ -453,6 +491,10 @@ extension CallingContext: CallDelegate {
         }
     }
 
+    func call(_ call: Call, didChangeMuteState args: PropertyChangedEventArgs) {
+        notifyOnIsMutedChanged()
+    }
+
     private func findInactiveSpeakerToSwap(with remoteParticipant: RemoteParticipant, id: String) {
         for displayedRemoteParticipant in displayedRemoteParticipants {
             if !displayedRemoteParticipant.isSpeaking,
@@ -470,6 +512,10 @@ extension CallingContext: CallDelegate {
             if let userIdentifier = participant.identifier.stringValue {
                 self.remoteParticipants.removeValue(forKey: userIdentifier)?.delegate = nil
                 self.displayedRemoteParticipants.removeValue(forKey: userIdentifier)
+                if let screenSharingParticipantId = currentScreenSharingParticipant?.identifier.stringValue,
+                   screenSharingParticipantId == userIdentifier {
+                    currentScreenSharingParticipant = nil
+                }
             }
         }
     }
@@ -513,6 +559,10 @@ extension CallingContext: CallDelegate {
     private func notifyRemoteParticipantViewChanged() {
         NotificationCenter.default.post(name: .remoteParticipantViewChanged, object: nil)
     }
+
+    private func notifyOnIsMutedChanged() {
+        NotificationCenter.default.post(name: .onIsMutedChanged, object: nil)
+    }
 }
 
 extension Notification.Name {
@@ -521,4 +571,5 @@ extension Notification.Name {
     static let onRecordingActiveChangeUpdated = Notification.Name("OnRecordingActiveChangeUpdated")
     static let onTranscriptionActiveChangeUpdated = Notification.Name("OnTranscriptionActiveChangeUpdated")
     static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
+    static let onIsMutedChanged = Notification.Name("OnIsMutedChanged")
 }
