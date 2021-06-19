@@ -7,6 +7,15 @@ import Foundation
 import AzureCommunicationCalling
 import AVFoundation
 
+enum CallingInterfaceState {
+    case connecting
+    case waitingAdmission
+    case admissionDenied
+    case connected
+    case callEnded
+    case removed
+}
+
 public typealias TokenFetcher = (@escaping (String?, Error?) -> Void) -> Void
 
 class CallingContext: NSObject {
@@ -31,8 +40,10 @@ class CallingContext: NSObject {
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
     private (set) var currentScreenSharingParticipant: RemoteParticipant?
 
+    var callingInterfaceState: CallingInterfaceState = .connecting
     var callType: JoinCallType = .groupCall
-
+    var isRecordingActive: Bool = false
+    var isTranscriptionActive: Bool = false
     var participantCount: Int {
         let remoteParticipantCount = call?.remoteParticipants.count ?? 0
         return remoteParticipantCount + 1
@@ -75,6 +86,7 @@ class CallingContext: NSObject {
     }
 
     func joinCall(_ joinConfig: JoinCallConfig, completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        self.callingInterfaceState = .connecting
         self.setupCallAgent(displayName: joinConfig.displayName) { [weak self] _ in
             guard let self = self else {
                 return
@@ -97,6 +109,9 @@ class CallingContext: NSObject {
             case .groupCall:
                 let groupId = UUID(uuidString: joinIdStr) ?? UUID()
                 joinLocator = GroupCallLocator(groupId: groupId)
+            case .teamsMeeting:
+                joinLocator = TeamsMeetingLinkLocator(meetingLink: joinIdStr)
+                self.callingInterfaceState = .waitingAdmission
             }
 
             self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions) { [weak self] (call, error) in
@@ -120,6 +135,7 @@ class CallingContext: NSObject {
     }
 
     func endCall(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        callingInterfaceState = .callEnded
         self.call?.hangUp(options: HangUpOptions()) { (error) in
             if error != nil {
                 print("ERROR: It was not possible to hangup the call.")
@@ -372,6 +388,18 @@ class CallingContext: NSObject {
 
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
+        participantsEventsAdapter?.onStateChanged = { [weak self] remoteParticipant in
+            guard let self = self else {
+                return
+            }
+            guard self.displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
+                  remoteParticipant.state == .connected,
+                  let userIdentifier = remoteParticipant.identifier.stringValue else {
+                return
+            }
+            self.displayedRemoteParticipants.append(forKey: userIdentifier, value: remoteParticipant)
+            self.notifyRemoteParticipantsUpdated()
+        }
 
         participantsEventsAdapter?.onIsMutedChanged = { [weak self] remoteParticipant in
             guard let self = self else {
@@ -419,13 +447,25 @@ class CallingContext: NSObject {
 extension CallingContext: CallDelegate {
     func call(_ call: Call, didChangeState args: PropertyChangedEventArgs) {
         switch call.state {
+        case .none:
+            if callType == .teamsMeeting {
+                callingInterfaceState = .admissionDenied
+            }
         case .connected:
+            callingInterfaceState = .connected
             addRemoteParticipants(call.remoteParticipants)
             updateDisplayedRemoteParticipants()
             notifyRemoteParticipantsUpdated()
+        case .inLobby:
+            callingInterfaceState = .waitingAdmission
+        case .disconnected:
+            if callType == .teamsMeeting && callingInterfaceState != .callEnded {
+                callingInterfaceState = .removed
+            }
         default:
             break
         }
+        notifyOnCallStateUpdated()
     }
 
     func call(_ call: Call, didUpdateRemoteParticipant args: ParticipantsUpdatedEventArgs) {
@@ -433,6 +473,22 @@ extension CallingContext: CallDelegate {
         addRemoteParticipants(args.addedParticipants)
         updateDisplayedRemoteParticipants()
         notifyRemoteParticipantsUpdated()
+    }
+
+    func call(_ call: Call, didChangeRecordingState args: PropertyChangedEventArgs) {
+        let newRecordingActive = call.isRecordingActive
+        if newRecordingActive != isRecordingActive {
+            isRecordingActive = newRecordingActive
+            notifyOnRecordingActiveChangeUpdated()
+        }
+    }
+
+    func call(_ call: Call, didChangeTranscriptionState args: PropertyChangedEventArgs) {
+        let newTranscriptionActive = call.isTranscriptionActive
+        if newTranscriptionActive != isTranscriptionActive {
+            isTranscriptionActive = newTranscriptionActive
+            notifyOnTranscriptionActiveChangeUpdated()
+        }
     }
 
     func call(_ call: Call, didChangeMuteState args: PropertyChangedEventArgs) {
@@ -475,6 +531,7 @@ extension CallingContext: CallDelegate {
 
     private func updateDisplayedRemoteParticipants() {
         for remoteParticipant in remoteParticipants {
+            //if a remote participant is waiting permission to join a Teams meeting, his state is .idle
             if displayedRemoteParticipants.count < CallingContext.remoteParticipantsDisplayed,
                remoteParticipant.state != .inLobby,
                let userIdentifier = remoteParticipant.identifier.stringValue {
@@ -485,6 +542,18 @@ extension CallingContext: CallDelegate {
 
     private func notifyRemoteParticipantsUpdated() {
         NotificationCenter.default.post(name: .remoteParticipantsUpdated, object: nil)
+    }
+
+    private func notifyOnRecordingActiveChangeUpdated() {
+        NotificationCenter.default.post(name: .onRecordingActiveChangeUpdated, object: nil)
+    }
+
+    private func notifyOnTranscriptionActiveChangeUpdated() {
+        NotificationCenter.default.post(name: .onTranscriptionActiveChangeUpdated, object: nil)
+    }
+
+    private func notifyOnCallStateUpdated() {
+        NotificationCenter.default.post(name: .onCallStateUpdated, object: nil)
     }
 
     private func notifyRemoteParticipantViewChanged() {
@@ -498,6 +567,9 @@ extension CallingContext: CallDelegate {
 
 extension Notification.Name {
     static let remoteParticipantsUpdated = Notification.Name("RemoteParticipantsUpdated")
+    static let onCallStateUpdated = Notification.Name("OnCallStateUpdated")
+    static let onRecordingActiveChangeUpdated = Notification.Name("OnRecordingActiveChangeUpdated")
+    static let onTranscriptionActiveChangeUpdated = Notification.Name("OnTranscriptionActiveChangeUpdated")
     static let remoteParticipantViewChanged = Notification.Name("RemoteParticipantViewChanged")
     static let onIsMutedChanged = Notification.Name("OnIsMutedChanged")
 }

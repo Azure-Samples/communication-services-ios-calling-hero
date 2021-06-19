@@ -1,5 +1,5 @@
 PODS:
-  - AzureCommunicationCalling (1.0.1):
+  - AzureCommunicationCalling (1.1.0-beta.1):
     - AzureCommunicationCommon (= 1.0.0)
   - AzureCommunicationCommon (1.0.0):
     - AzureCore (= 1.0.0-beta.12)
@@ -10,7 +10,7 @@ PODS:
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
-  - AzureCommunicationCalling (= 1.0.1)
+  - AzureCommunicationCalling (= 1.1.0-beta.1)
   - MSAL (= 1.1.13)
   - SwiftLint (= 0.42.0)
 
@@ -23,12 +23,12 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  AzureCommunicationCalling: 563d3335e454ab057f50409e1d2d63de784227c0
+  AzureCommunicationCalling: 29be62620800e06d7e99ba7f025e80f41c2b46b3
   AzureCommunicationCommon: 37d81f556d367c8a8e20581da1d8ffea5401cb86
   AzureCore: 2e029168d18ade4f2e8cc59a96f6d8b26acad2b2
   MSAL: 291d1cfc8d095a6bfe669e4beda2c5be6774a4ff
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 83e9ec469b102e56667fd25973ce7d13ee3845e7
+PODFILE CHECKSUM: 768dcfe6cb7c5fc33aab057b6400486eb7195e24
 
 COCOAPODS: 1.10.1

@@ -7,4 +7,5 @@ import Foundation
 
 enum JoinCallType {
     case groupCall
+    case teamsMeeting
 }
