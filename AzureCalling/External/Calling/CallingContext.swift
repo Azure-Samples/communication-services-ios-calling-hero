@@ -119,15 +119,6 @@ class CallingContext: NSObject {
         }
     }
 
-    func updateScreenSharingParticipant() {
-        for remoteParticipant in remoteParticipants {
-            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
-                currentScreenSharingParticipant = remoteParticipant
-                return
-            }
-        }
-    }
-
     func endCall(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.hangUp(options: HangUpOptions()) { (error) in
             if error != nil {
@@ -379,6 +370,15 @@ class CallingContext: NSObject {
         }
     }
 
+    private func updateScreenSharingParticipant() {
+        for remoteParticipant in remoteParticipants {
+            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                currentScreenSharingParticipant = remoteParticipant
+                return
+            }
+        }
+    }
+
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
 
@@ -443,7 +443,6 @@ extension CallingContext: CallDelegate {
         addRemoteParticipants(args.addedParticipants)
         updateDisplayedRemoteParticipants()
         notifyRemoteParticipantsUpdated()
-        updateScreenSharingParticipant()
     }
 
     func call(_ call: Call, didChangeMuteState args: PropertyChangedEventArgs) {
