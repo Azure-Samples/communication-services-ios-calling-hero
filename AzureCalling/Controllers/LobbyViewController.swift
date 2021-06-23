@@ -75,6 +75,21 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         return true
     }
 
+    func resetRendererView() {
+        callingContext.withLocalVideoStream { [weak self] localVideoStream in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.rendererView = nil
+                if let localVideoStream = localVideoStream {
+                    self.setupPreviewView(localVideoStream: localVideoStream)
+                }
+            }
+        }
+    }
+
     // MARK: Private Functions
 
     private func setupUI() {
