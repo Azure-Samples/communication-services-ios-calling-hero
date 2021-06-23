@@ -432,6 +432,7 @@ extension CallingContext: CallDelegate {
             addRemoteParticipants(call.remoteParticipants)
             updateDisplayedRemoteParticipants()
             notifyRemoteParticipantsUpdated()
+            updateScreenSharingParticipant()
         default:
             break
         }
@@ -442,6 +443,7 @@ extension CallingContext: CallDelegate {
         addRemoteParticipants(args.addedParticipants)
         updateDisplayedRemoteParticipants()
         notifyRemoteParticipantsUpdated()
+        updateScreenSharingParticipant()
     }
 
     func call(_ call: Call, didChangeMuteState args: PropertyChangedEventArgs) {
@@ -478,10 +480,6 @@ extension CallingContext: CallDelegate {
             if let userIdentifier = participant.identifier.stringValue {
                 participant.delegate = self.participantsEventsAdapter
                 self.remoteParticipants.append(forKey: userIdentifier, value: participant)
-                if participant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
-                    currentScreenSharingParticipant = participant
-                    return
-                }
             }
         }
     }

@@ -322,7 +322,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         infoHeaderView.toggleDisplay()
         meetingInfoViewUpdate()
-        callingContext.updateScreenSharingParticipant()
         initParticipantViews()
         activityIndicator.stopAnimating()
     }
