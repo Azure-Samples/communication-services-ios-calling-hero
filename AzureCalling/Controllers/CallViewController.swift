@@ -322,6 +322,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         infoHeaderView.toggleDisplay()
         meetingInfoViewUpdate()
+        callingContext.updateScreenSharingParticipant()
         initParticipantViews()
         activityIndicator.stopAnimating()
     }
@@ -370,8 +371,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
             remoteParticipantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
 
-            if let remoteVideoStream = participant.videoStreams.first {
-                remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
             }
 
             let userIdentifier = participant.identifier.stringValue ?? ""

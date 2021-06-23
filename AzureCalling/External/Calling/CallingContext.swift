@@ -119,6 +119,15 @@ class CallingContext: NSObject {
         }
     }
 
+    func updateScreenSharingParticipant() {
+        for remoteParticipant in remoteParticipants {
+            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                currentScreenSharingParticipant = remoteParticipant
+                return
+            }
+        }
+    }
+
     func endCall(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         self.call?.hangUp(options: HangUpOptions()) { (error) in
             if error != nil {
@@ -469,6 +478,10 @@ extension CallingContext: CallDelegate {
             if let userIdentifier = participant.identifier.stringValue {
                 participant.delegate = self.participantsEventsAdapter
                 self.remoteParticipants.append(forKey: userIdentifier, value: participant)
+                if participant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                    currentScreenSharingParticipant = participant
+                    return
+                }
             }
         }
     }
