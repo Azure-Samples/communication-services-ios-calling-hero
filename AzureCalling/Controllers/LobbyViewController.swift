@@ -77,7 +77,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     func resetRendererView() {
         callingContext.withLocalVideoStream { [weak self] localVideoStream in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
                 guard let self = self else {
                     return
                 }
@@ -101,8 +101,9 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    private func setupPreviewView(localVideoStream: LocalVideoStream) {
-        if rendererView == nil {
+    private func setupPreviewView(localVideoStream: LocalVideoStream, retry: Int = 0) {
+        if rendererView == nil,
+           retry <= 3 {
             do {
                 loadingView.startAnimating()
                 previewRenderer = try VideoStreamRenderer(localVideoStream: localVideoStream)
@@ -114,8 +115,17 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
                 rendererView!.leftAnchor.constraint(equalTo: previewView.leftAnchor).isActive = true
                 rendererView!.rightAnchor.constraint(equalTo: previewView.rightAnchor).isActive = true
                 loadingView.stopAnimating()
+                print("Lobby video view renderer successfully created.")
             } catch {
-                print("Failed to create renderer for lobby video view")
+                print("Failed to create renderer for lobby video view. " + (retry > 0 ? "Retry attempt #\(retry)" : "Attempt to retry..."))
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.setupPreviewView(localVideoStream: localVideoStream, retry: retry + 1)
+                }
             }
         }
     }
