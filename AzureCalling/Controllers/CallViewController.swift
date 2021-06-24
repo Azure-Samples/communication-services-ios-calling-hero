@@ -150,13 +150,13 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource)
+        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
     private func openParticipantListDrawer() {
         let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
-        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource)
+        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource, allowsSelection: false)
         present(bottomDrawerViewController!, animated: false, completion: nil)
     }
 

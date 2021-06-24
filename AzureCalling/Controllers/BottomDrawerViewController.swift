@@ -5,20 +5,22 @@
 
 import UIKit
 
-class BottomDrawerViewController: UIViewController {
+class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: Properties
 
     private var tableView: UITableView!
     private var bottomDrawerDataSource: BottomDrawerDataSource?
+    private var allowRowSelection: Bool = false
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    init(dataSource: BottomDrawerDataSource) {
+    init(dataSource: BottomDrawerDataSource, allowsSelection: Bool) {
         super.init(nibName: nil, bundle: nil)
         self.bottomDrawerDataSource = dataSource
+        self.allowRowSelection = allowsSelection
         self.modalPresentationStyle = .overCurrentContext
     }
 
@@ -32,16 +34,21 @@ class BottomDrawerViewController: UIViewController {
         view.isOpaque = false
 
         // tapping anywhere on the view is the same as tapping cancel
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        let dismissSelf = UITapGestureRecognizer(target: self, action: #selector(gestureRecognizer))
+        dismissSelf.delegate = self
+        dismissSelf.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissSelf)
         view.isUserInteractionEnabled = true
 
         createBottomDrawer()
     }
 
-    @objc func dismissSelf() {
-        dismiss(animated: true, completion: nil)
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let backgroundDidTapped = touch.view == gestureRecognizer.view
+        if allowRowSelection || backgroundDidTapped {
+            dismiss(animated: true, completion: nil)
+        }
+        return backgroundDidTapped
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +69,7 @@ class BottomDrawerViewController: UIViewController {
 
     private func createBottomDrawer() {
         tableView = UITableView()
+        tableView.allowsSelection = allowRowSelection
         tableView.layer.cornerRadius = 8
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
