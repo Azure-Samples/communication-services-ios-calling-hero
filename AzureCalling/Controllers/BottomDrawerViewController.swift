@@ -19,6 +19,7 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
 
     init(dataSource: BottomDrawerDataSource, allowsSelection: Bool) {
         super.init(nibName: nil, bundle: nil)
+        dataSource.setDismissDrawer?(dismissDrawer: dismissSelf)
         self.bottomDrawerDataSource = dataSource
         self.allowRowSelection = allowsSelection
         self.modalPresentationStyle = .overCurrentContext
@@ -34,21 +35,12 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
         view.isOpaque = false
 
         // tapping anywhere on the view is the same as tapping cancel
-        let dismissSelf = UITapGestureRecognizer(target: self, action: #selector(gestureRecognizer))
-        dismissSelf.delegate = self
-        dismissSelf.cancelsTouchesInView = false
-        view.addGestureRecognizer(dismissSelf)
-        view.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(gestureRecognizer))
+        tap.cancelsTouchesInView = false
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
 
         createBottomDrawer()
-    }
-
-    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        let backgroundDidTapped = touch.view == gestureRecognizer.view
-        if allowRowSelection || backgroundDidTapped {
-            dismiss(animated: true, completion: nil)
-        }
-        return backgroundDidTapped
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +48,18 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
 
         openBottomDrawer()
     }
+
+    // MARK: UIGestureRecognizerDelegate events
+
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let backgroundDidTapped = touch.view == gestureRecognizer.view
+        if backgroundDidTapped {
+            dismissSelf()
+        }
+        return backgroundDidTapped
+    }
+
+    // MARK: Public Functions
 
     func refreshBottomDrawer() {
         bottomDrawerDataSource?.refreshDataSource?()
@@ -66,6 +70,10 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
     }
 
     // MARK: Private Functions
+
+    private func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
 
     private func createBottomDrawer() {
         tableView = UITableView()
