@@ -58,6 +58,11 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         setupUI()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resetRendererView()
+    }
+
     deinit {
         cleanRenderView()
     }
@@ -73,21 +78,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         displayName = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
         updateStartCallButtonState()
         return true
-    }
-
-    func resetRendererView() {
-        callingContext.withLocalVideoStream { [weak self] localVideoStream in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.rendererView = nil
-                if let localVideoStream = localVideoStream {
-                    self.setupPreviewView(localVideoStream: localVideoStream)
-                }
-            }
-        }
     }
 
     // MARK: Private Functions
@@ -192,6 +182,21 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         } else {
             // audio not granted only
             updateMicrophoneDisabledPermissionWarning()
+        }
+    }
+
+    private func resetRendererView() {
+        callingContext.withLocalVideoStream { [weak self] localVideoStream in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.rendererView = nil
+                if let localVideoStream = localVideoStream {
+                    self.setupPreviewView(localVideoStream: localVideoStream)
+                }
+            }
         }
     }
 
