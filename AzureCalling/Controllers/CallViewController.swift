@@ -205,7 +205,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cellWidth = collectionView.bounds.width / 2
             cellHeight = collectionView.bounds.height / 2
         default:
-            if UIDevice.current.orientation.isLandscape {
+            if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
                 cellWidth = collectionView.bounds.width / 3
                 cellHeight = collectionView.bounds.height / 2
             } else {
@@ -370,8 +370,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
             remoteParticipantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
 
-            if let remoteVideoStream = participant.videoStreams.first {
-                remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
             }
 
             let userIdentifier = participant.identifier.stringValue ?? ""

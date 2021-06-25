@@ -370,6 +370,15 @@ class CallingContext: NSObject {
         }
     }
 
+    private func updateScreenSharingParticipant() {
+        for remoteParticipant in remoteParticipants {
+            if remoteParticipant.videoStreams.contains(where: { $0.mediaStreamType == .screenSharing }) {
+                currentScreenSharingParticipant = remoteParticipant
+                return
+            }
+        }
+    }
+
     private func setupRemoteParticipantsEventsAdapter() {
         participantsEventsAdapter = ParticipantsEventsAdapter()
 
@@ -423,6 +432,7 @@ extension CallingContext: CallDelegate {
             addRemoteParticipants(call.remoteParticipants)
             updateDisplayedRemoteParticipants()
             notifyRemoteParticipantsUpdated()
+            updateScreenSharingParticipant()
         default:
             break
         }
