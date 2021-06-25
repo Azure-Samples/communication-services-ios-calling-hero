@@ -156,7 +156,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openParticipantListDrawer() {
         let participantListDataSource = ParticipantListDataSource(participantsFetcher: getParticipantInfoList)
-        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource, allowsSelection: false)
+        bottomDrawerViewController = BottomDrawerViewController(dataSource: participantListDataSource)
         present(bottomDrawerViewController!, animated: false, completion: nil)
     }
 

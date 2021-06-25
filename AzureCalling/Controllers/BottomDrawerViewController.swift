@@ -17,7 +17,7 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
         super.init(coder: aDecoder)
     }
 
-    init(dataSource: BottomDrawerDataSource, allowsSelection: Bool) {
+    init(dataSource: BottomDrawerDataSource, allowsSelection: Bool = false) {
         super.init(nibName: nil, bundle: nil)
         dataSource.setDismissDrawer?(dismissDrawer: dismissSelf)
         self.bottomDrawerDataSource = dataSource
