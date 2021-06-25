@@ -205,7 +205,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cellWidth = collectionView.bounds.width / 2
             cellHeight = collectionView.bounds.height / 2
         default:
-            if UIDevice.current.orientation.isLandscape {
+            if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
                 cellWidth = collectionView.bounds.width / 3
                 cellHeight = collectionView.bounds.height / 2
             } else {
