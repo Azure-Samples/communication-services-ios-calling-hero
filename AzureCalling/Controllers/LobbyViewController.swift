@@ -58,6 +58,11 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         setupUI()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resetRendererView()
+    }
+
     deinit {
         cleanRenderView()
     }
@@ -170,9 +175,26 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    private func resetRendererView() {
+        callingContext.withLocalVideoStream { [weak self] localVideoStream in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.cleanRenderView()
+                if let localVideoStream = localVideoStream {
+                    self.setupPreviewView(localVideoStream: localVideoStream)
+                }
+            }
+        }
+    }
+
     private func cleanRenderView() {
         rendererView?.dispose()
         previewRenderer?.dispose()
+        rendererView = nil
+        previewRenderer = nil
     }
 
     private func setupStartCallButton() {

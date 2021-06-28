@@ -96,6 +96,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        localParticipantView.dispose()
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         UIApplication.shared.isIdleTimerDisabled = false
         forcePortraitOrientation()
