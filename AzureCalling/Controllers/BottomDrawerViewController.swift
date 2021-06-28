@@ -5,20 +5,23 @@
 
 import UIKit
 
-class BottomDrawerViewController: UIViewController {
+class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: Properties
 
     private var tableView: UITableView!
     private var bottomDrawerDataSource: BottomDrawerDataSource?
+    private var allowRowSelection: Bool = false
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    init(dataSource: BottomDrawerDataSource) {
+    init(dataSource: BottomDrawerDataSource, allowsSelection: Bool = false) {
         super.init(nibName: nil, bundle: nil)
+        dataSource.setDismissDrawer?(dismissDrawer: dismissSelf)
         self.bottomDrawerDataSource = dataSource
+        self.allowRowSelection = allowsSelection
         self.modalPresentationStyle = .overCurrentContext
     }
 
@@ -32,16 +35,12 @@ class BottomDrawerViewController: UIViewController {
         view.isOpaque = false
 
         // tapping anywhere on the view is the same as tapping cancel
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(gestureRecognizer))
         tap.cancelsTouchesInView = false
+        tap.delegate = self
         view.addGestureRecognizer(tap)
-        view.isUserInteractionEnabled = true
 
         createBottomDrawer()
-    }
-
-    @objc func dismissSelf() {
-        dismiss(animated: true, completion: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -49,6 +48,18 @@ class BottomDrawerViewController: UIViewController {
 
         openBottomDrawer()
     }
+
+    // MARK: UIGestureRecognizerDelegate events
+
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let backgroundDidTapped = touch.view == gestureRecognizer.view
+        if backgroundDidTapped {
+            dismissSelf()
+        }
+        return backgroundDidTapped
+    }
+
+    // MARK: Public Functions
 
     func refreshBottomDrawer() {
         bottomDrawerDataSource?.refreshDataSource?()
@@ -60,8 +71,13 @@ class BottomDrawerViewController: UIViewController {
 
     // MARK: Private Functions
 
+    private func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func createBottomDrawer() {
         tableView = UITableView()
+        tableView.allowsSelection = allowRowSelection
         tableView.layer.cornerRadius = 8
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)

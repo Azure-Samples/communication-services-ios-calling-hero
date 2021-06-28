@@ -10,6 +10,7 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
     // MARK: Properties
 
     private var audioDeviceOptions = [BottomDrawerItem]()
+    private var dismissDrawer: () -> Void = {}
 
     // MARK: Initialization
 
@@ -41,12 +42,19 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
         }
     }
 
+    // MARK: BottomDrawerDataSource events
+
+    func setDismissDrawer(dismissDrawer: @escaping () -> Void) {
+        self.dismissDrawer = dismissDrawer
+    }
+
     // MARK: UITableViewDelegate events
 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         let audioDeviceType = AudioDeviceType(rawValue: audioDeviceOptions[indexPath.row].title)!
         AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
+        dismissDrawer()
     }
 
     // MARK: UITableViewDataSource events

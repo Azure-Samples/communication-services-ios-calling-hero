@@ -103,6 +103,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        localParticipantView.dispose()
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         UIApplication.shared.isIdleTimerDisabled = false
         forcePortraitOrientation()
@@ -157,7 +158,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource)
+        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 
@@ -212,7 +213,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cellWidth = collectionView.bounds.width / 2
             cellHeight = collectionView.bounds.height / 2
         default:
-            if UIDevice.current.orientation.isLandscape {
+            if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
                 cellWidth = collectionView.bounds.width / 3
                 cellHeight = collectionView.bounds.height / 2
             } else {
@@ -389,8 +390,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             remoteParticipantView.updateMuteIndicator(isMuted: participant.isMuted)
             remoteParticipantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
 
-            if let remoteVideoStream = participant.videoStreams.first {
-                remoteParticipantView.updateVideoStream(remoteVideoStream: remoteVideoStream)
+            if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
+            } else {
+                remoteParticipantView.updateVideoStream(remoteVideoStream: participant.videoStreams.first)
             }
 
             let userIdentifier = participant.identifier.stringValue ?? ""
