@@ -119,7 +119,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource)
+        let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
 

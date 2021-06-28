@@ -7,4 +7,6 @@ import UIKit
 
 @objc protocol BottomDrawerDataSource: UITableViewDelegate, UITableViewDataSource {
     @objc optional func refreshDataSource()
+
+    @objc optional func setDismissDrawer(dismissDrawer: @escaping () -> Void)
 }
