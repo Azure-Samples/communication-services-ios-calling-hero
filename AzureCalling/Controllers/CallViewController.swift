@@ -268,6 +268,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 DispatchQueue.main.async {
                     self.localParticipantView.updateVideoDisplayed(isDisplayVideo: false)
+                    self.localParticipantView.dispose()
                     if self.localParticipantIndexPath == nil {
                         self.localVideoViewContainer.isHidden = true
                     }

@@ -298,14 +298,13 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
                     if let localVideoStream = localVideoStream {
                         self.setupPreviewView(localVideoStream: localVideoStream)
                     }
-                    self.rendererView?.isHidden = false
                     self.switchCameraButton.isHidden = false
                     self.updatePermissionView()
                 }
             }
         } else {
-            rendererView?.isHidden = true
             switchCameraButton.isHidden = true
+            self.cleanRenderView()
         }
     }
 

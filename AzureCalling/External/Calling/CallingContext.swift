@@ -194,16 +194,20 @@ class CallingContext: NSObject {
     func stopLocalVideoStream(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         isCameraPreferredOn = false
         guard let videoStream = self.localVideoStream else {
-            print("Local video has already stopoed")
+            print("Local video has already stopped")
             completionHandler(.success(()))
             return
         }
-        self.call?.stopVideo(stream: videoStream) { (error) in
+        self.call?.stopVideo(stream: videoStream) { [weak self] (error) in
+            guard let self = self else {
+                return
+            }
             if error != nil {
                 print("ERROR: Local video failed to stop. \(error!)")
                 completionHandler(.failure(error!))
                 return
             }
+            self.localVideoStream = nil
             print("Local video stopped successfully")
             completionHandler(.success(()))
         }
