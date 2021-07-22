@@ -262,13 +262,13 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func onToggleVideo(_ sender: UIButton) {
         sender.isSelected.toggle()
         if sender.isSelected {
-            localParticipantView.dispose()
             callingContext.stopLocalVideoStream { [weak self] _ in
                 guard let self = self else {
                     return
                 }
                 DispatchQueue.main.async {
                     self.localParticipantView.updateVideoDisplayed(isDisplayVideo: false)
+                    self.localParticipantView.dispose()
                     if self.localParticipantIndexPath == nil {
                         self.localVideoViewContainer.isHidden = true
                     }
