@@ -95,7 +95,7 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
         let showConstraint = NSLayoutConstraint(item: tableView!,
                 attribute: .bottom,
                 relatedBy: .equal,
-                toItem: self.view,
+                toItem: self.view.safeAreaLayoutGuide,
                 attribute: .bottom,
                 multiplier: 1,
                 constant: 0)
@@ -109,7 +109,6 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
     private func setTableConstraints() {
         let window = UIApplication.shared.windows[0]
         let guide = self.view.safeAreaLayoutGuide
-        let bottomPadding = window.safeAreaInsets.bottom
         let midScreenHeight = window.screen.bounds.height / 2
 
         tableView.isScrollEnabled = tableView.contentSize.height > midScreenHeight
@@ -117,7 +116,7 @@ class BottomDrawerViewController: UIViewController, UIGestureRecognizerDelegate 
         var tableConstraints = [
             tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: min(tableView.contentSize.height, midScreenHeight) + bottomPadding)
+            tableView.heightAnchor.constraint(equalToConstant: min(tableView.contentSize.height, midScreenHeight))
         ]
 
         let hideConstraint = tableView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
