@@ -23,7 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>msauth.com.azure.samples.communication.calling</string>
+				<string>msauth.com.microsoft.azure.communication.calling-hackathon</string>
 			</array>
 		</dict>
 	</array>
