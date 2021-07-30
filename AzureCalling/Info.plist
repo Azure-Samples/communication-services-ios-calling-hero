@@ -21,14 +21,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>acscallingapp</string>
-			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
 			<string>com.microsoft.azure.communication.calling-hackathon</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>acscallingapp</string>
+			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>

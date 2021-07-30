@@ -102,7 +102,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return false
         }
 
-        self.introViewController?.meetingLinkFromUniversalLink = URL(string: meetingUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed))!.absoluteString
+        self.introViewController?.meetingLinkFromUniversalLink = URL(string: meetingUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!.absoluteString
         self.introViewController?.performSegue(withIdentifier: "JoinCall", sender: nil)
         return true
     }
