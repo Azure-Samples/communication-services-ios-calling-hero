@@ -9,6 +9,8 @@ import MSAL
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var authHandler: AADAuthHandler?
+    var introViewController: IntroViewController?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -23,11 +25,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
            let introViewController = navigationViewController.visibleViewController as? IntroViewController,
            let appDelegate = UIApplication.shared.delegate as? AppDelegate {
 
-            introViewController.authHandler = appDelegate.authHandler
+            authHandler = appDelegate.authHandler
+            introViewController.authHandler = authHandler
             introViewController.createCallingContextFunction = { () -> CallingContext in
                 return CallingContext(tokenFetcher: appDelegate.tokenService.getCommunicationToken)
             }
+            self.introViewController = introViewController
         }
+
+        guard let urlContext = connectionOptions.urlContexts.first else {
+            return
+        }
+
+        _ = launchMeetingsUrl(urlContext.url)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -62,7 +72,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let urlContext = URLContexts.first else {
             return
         }
-        handleMSALResponse(urlContext)
+
+        if launchMeetingsUrl(urlContext.url) {
+            print("Successfully handled teams meeting url")
+        } else {
+            handleMSALResponse(urlContext)
+        }
     }
 
     // MARK: Private Functions
@@ -76,4 +91,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         MSALPublicClientApplication.handleMSALResponse(url, sourceApplication: sourceApp)
     }
 
+    private func launchMeetingsUrl(_ url: URL) -> Bool {
+        let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true)
+        guard let params = components!.queryItems else {
+                print("Invalid URL, exiting")
+                return false
+        }
+
+        guard let meetingUrl = params.first(where: { $0.name == "meeting" })?.value else {
+            return false
+        }
+
+        self.introViewController?.meetingLinkFromUniversalLink = URL(string: meetingUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed))!.absoluteString
+        self.introViewController?.performSegue(withIdentifier: "JoinCall", sender: nil)
+        return true
+    }
 }

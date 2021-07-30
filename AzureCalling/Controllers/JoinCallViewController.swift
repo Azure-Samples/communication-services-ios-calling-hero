@@ -15,6 +15,8 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     var callingContext: CallingContext!
 
+    var meetingLinkFromUniversalLink: String?
+
     private var joinCallType: JoinCallType = .groupCall
 
     // MARK: IBOutlets
@@ -28,11 +30,14 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         setupJoinIdTextField()
-        updateJoinCallButton(forInput: nil)
+        updateJoinCallButton(forInput: meetingLinkFromUniversalLink)
 
         // Dismiss keyboard if tapping outside
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
+        if meetingLinkFromUniversalLink != nil {
+            self.performSegue(withIdentifier: "JoinCallToLobby", sender: self)
+        }
     }
 
     // MARK: UITextFieldDelegate
@@ -55,6 +60,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         let placeHolderColor = ThemeColor.gray300
         joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
                                                                    attributes: [.foregroundColor: placeHolderColor])
+        joinIdTextField.text = meetingLinkFromUniversalLink ?? groupIdPlaceHolder
     }
 
     private func updateJoinCallButton(forInput string: String?) {
@@ -66,7 +72,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         let joinId = joinIdTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard UUID(uuidString: joinId) != nil else {
+        guard UUID(uuidString: joinId) != nil || joinId.starts(with: "https://") else {
             promptInvalidJoinIdInput()
             return false
         }
@@ -90,7 +96,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         }
 
         lobbyViewController.callingContext = callingContext
-        lobbyViewController.joinInput = joinIdTextField.text!
+        lobbyViewController.joinInput = meetingLinkFromUniversalLink ?? joinIdTextField.text!
         lobbyViewController.joinCallType = joinCallType
     }
 

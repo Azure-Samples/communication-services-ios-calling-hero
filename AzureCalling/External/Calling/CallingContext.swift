@@ -92,11 +92,18 @@ class CallingContext: NSObject {
             joinCallOptions.audioOptions?.muted = joinConfig.isMicrophoneMuted
 
             var joinLocator: JoinMeetingLocator!
-            let joinIdStr = joinConfig.joinId?.trimmingCharacters(in: .whitespacesAndNewlines) ?? UUID().uuidString
-            switch joinConfig.callType {
-            case .groupCall:
-                let groupId = UUID(uuidString: joinIdStr) ?? UUID()
-                joinLocator = GroupCallLocator(groupId: groupId)
+            var joinIdStr: String!
+
+            if joinConfig.joinId != nil && joinConfig.joinId!.starts(with: "https://teams") {
+                joinIdStr = joinConfig.joinId!
+                joinLocator = TeamsMeetingLinkLocator(meetingLink: joinIdStr)
+            } else {
+                joinIdStr = joinConfig.joinId?.trimmingCharacters(in: .whitespacesAndNewlines) ?? UUID().uuidString
+                switch joinConfig.callType {
+                case .groupCall:
+                    let groupId = UUID(uuidString: joinIdStr) ?? UUID()
+                    joinLocator = GroupCallLocator(groupId: groupId)
+                }
             }
 
             self.callAgent?.join(with: joinLocator, joinCallOptions: joinCallOptions) { [weak self] (call, error) in

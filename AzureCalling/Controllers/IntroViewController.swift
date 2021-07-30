@@ -13,6 +13,7 @@ class IntroViewController: UIViewController {
 
     var authHandler: AADAuthHandler!
     var createCallingContextFunction: (() -> CallingContext)!
+    var meetingLinkFromUniversalLink: String?
 
     // MARK: IBOutlets
 
@@ -29,6 +30,11 @@ class IntroViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("viewDidAppear")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,6 +72,7 @@ class IntroViewController: UIViewController {
         }
 
         joinCallViewController.callingContext = createCallingContextFunction()
+        joinCallViewController.meetingLinkFromUniversalLink = meetingLinkFromUniversalLink
     }
 
     // MARK: UI layout
