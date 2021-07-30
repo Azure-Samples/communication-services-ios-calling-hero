@@ -6,6 +6,9 @@
 import UIKit
 import MSAL
 import AVFoundation
+import AppCenter
+import AppCenterAnalytics
+import AppCenterCrashes
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setAudioSessionOutputToSpeaker()
         initializeDependencies()
 
+        AppCenter.start(withAppSecret: appSettings.appcenterSecret, services: [Analytics.self, Crashes.self])
         return true
     }
 

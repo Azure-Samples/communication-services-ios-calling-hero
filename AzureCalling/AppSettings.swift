@@ -33,6 +33,10 @@ class AppSettings {
         return settings["aadScopes"] as! [String]
     }
 
+    var appcenterSecret: String {
+        return settings["appcenterSecret"] as! String
+    }
+
     init() {
         if let url = Bundle.main.url(forResource: "AppSettings", withExtension: "plist") {
             do {
