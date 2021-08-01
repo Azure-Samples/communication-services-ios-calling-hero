@@ -40,6 +40,7 @@ class IntroViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.meetingLinkFromUniversalLink = nil
     }
 
     // MARK: Navigation

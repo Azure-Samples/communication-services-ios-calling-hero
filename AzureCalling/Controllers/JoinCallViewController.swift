@@ -40,6 +40,12 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        meetingLinkFromUniversalLink = nil
+        setupJoinIdTextField()
+    }
+
     // MARK: UITextFieldDelegate
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

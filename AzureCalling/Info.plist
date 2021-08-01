@@ -24,7 +24,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.microsoft.azure.communication.calling-hackathon</string>
+			<string>com.microsoft.azure-df.communication.calling-hackathon</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>acscallingapp</string>
@@ -33,7 +33,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>msauth.com.microsoft.azure.communication.calling-hackathon</string>
+				<string>msauth.com.microsoft.azure-df.communication.calling-hackathon</string>
 			</array>
 		</dict>
 	</array>
