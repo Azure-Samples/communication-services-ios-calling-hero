@@ -66,7 +66,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         let placeHolderColor = ThemeColor.gray300
         joinIdTextField.attributedPlaceholder = NSAttributedString(string: groupIdPlaceHolder,
                                                                    attributes: [.foregroundColor: placeHolderColor])
-        joinIdTextField.text = meetingLinkFromUniversalLink ?? groupIdPlaceHolder
+        joinIdTextField.text = meetingLinkFromUniversalLink ?? ""
     }
 
     private func updateJoinCallButton(forInput string: String?) {
