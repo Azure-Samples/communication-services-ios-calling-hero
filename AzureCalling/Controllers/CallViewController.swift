@@ -516,7 +516,13 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             participantView.updateDisplayName(displayName: participant.displayName)
             participantView.updateMuteIndicator(isMuted: participant.isMuted)
-            participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+
+            if participant.isMuted {
+                participantView.updateActiveSpeaker(isSpeaking: false)
+            } else {
+                participantView.updateActiveSpeaker(isSpeaking: participant.isSpeaking)
+            }
+
             if let videoStream = participant.videoStreams.first(where: { $0.mediaStreamType == .screenSharing }) {
                 participantView.updateVideoStream(remoteVideoStream: videoStream, isScreenSharing: true)
             } else {
