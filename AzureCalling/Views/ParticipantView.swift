@@ -45,10 +45,6 @@ class ParticipantView: UIView {
 
     func updateMuteIndicator(isMuted: Bool) {
         participantLabelView.updateMuteIndicator(isMuted: isMuted)
-
-        if isMuted {
-            updateActiveSpeaker(isSpeaking: false)
-        }
     }
 
     func updateActiveSpeaker(isSpeaking: Bool) {
