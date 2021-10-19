@@ -85,6 +85,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     private func setupUI() {
         setupStartCallButton()
         setupNameTextField()
+        updateAudioDevice() // update audio icon at start of call
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -124,6 +125,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self  //delegate action to AudioDeviceSelectionDataSource
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -243,6 +245,19 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         startCallButton.isEnabled = isDisplayNameValid && isPermissionValid
     }
 
+    // update the audio device icon with current selection
+    private func updateAudioDevice() {
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType() // Get the current audio selection
+        // set icon based on audio type
+        var deviceIcon: UIImage
+        switch currentAudioDeviceType {
+        case .receiver:
+            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_regular")!
+        case .speaker:
+            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_filled")!
+        }
+        self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal) //update the device icon
+    }
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
            view.frame.origin.y == 0 {
@@ -330,5 +345,12 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
             }
             self.switchCameraButton.isEnabled = true
         }
+    }
+}
+
+extension LobbyViewController: AudioDeviceSelectionViewControllerDelegate {
+    // implement the update action
+    func updateDeviceAudioSelection() {
+        updateAudioDevice()
     }
 }

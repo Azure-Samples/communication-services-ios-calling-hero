@@ -64,6 +64,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMuteButton.isSelected = joinCallConfig.isMicrophoneMuted
 
         updateToggleVideoButtonState()
+        updateAudioDevice() // update audio icon at start of call
 
         localParticipantView.setOnSwitchCamera { [weak self] in
             guard let self = self else {
@@ -151,6 +152,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self  //delegate action to AudioDeviceSelectionDataSource
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -629,6 +631,21 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             bottomDrawerViewController.refreshBottomDrawer()
         }
     }
+    // update the audio device icon with current selection
+    private func updateAudioDevice() {
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()  // Get the current audio device selection
+        // set icon based on audio type
+        var image: UIImage
+        switch currentAudioDeviceType {
+        case .receiver:
+            image = UIImage(named: "ic_fluent_speaker_2_28_regular")!
+        case .speaker:
+            image = UIImage(named: "ic_fluent_speaker_2_28_filled")!
+        }
+        //update the device icons
+        self.verticalSelectAudioDeviceButton.setImage(image, for: .normal)
+        self.selectAudioDeviceButton.setImage(image, for: .normal)
+    }
 
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
         queueParticipantViewsUpdate()
@@ -675,5 +692,11 @@ extension CallViewController: HangupConfirmationViewControllerDelegate {
         endCall()
         promptForFeedback()
         cleanViewRendering()
+    }
+}
+extension CallViewController: AudioDeviceSelectionViewControllerDelegate {
+    // implement the update function
+    func updateDeviceAudioSelection() {
+        updateAudioDevice()
     }
 }
