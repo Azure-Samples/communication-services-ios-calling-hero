@@ -125,7 +125,9 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self
+        audioDeviceSelectionDataSource.didSelectAudioDevice = {
+            self.updateAudioDeviceButtonIcon()
+        }
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -338,11 +340,5 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
             }
             self.switchCameraButton.isEnabled = true
         }
-    }
-}
-
-extension LobbyViewController: AudioDeviceButtonIconViewControllerDelegate {
-    func updateAudioDeviceSelectionButtonIcon() {
-        updateAudioDeviceButtonIcon()
     }
 }

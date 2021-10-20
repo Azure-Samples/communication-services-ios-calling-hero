@@ -152,7 +152,9 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self
+        audioDeviceSelectionDataSource.didSelectAudioDevice = {
+            self.updateAudioDeviceButtonIcon()
+        }
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -683,10 +685,5 @@ extension CallViewController: HangupConfirmationViewControllerDelegate {
         endCall()
         promptForFeedback()
         cleanViewRendering()
-    }
-}
-extension CallViewController: AudioDeviceButtonIconViewControllerDelegate {
-    func updateAudioDeviceSelectionButtonIcon() {
-        updateAudioDeviceButtonIcon()
     }
 }

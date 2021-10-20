@@ -11,7 +11,7 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
 
     private var audioDeviceOptions = [BottomDrawerItem]()
     private var dismissDrawer: () -> Void = {}
-    weak var audioDeviceSelectionDelegate: AudioDeviceButtonIconViewControllerDelegate?
+    var didSelectAudioDevice: () -> Void = {}
     // MARK: Initialization
 
     override init() {
@@ -54,7 +54,7 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
                    didSelectRowAt indexPath: IndexPath) {
         let audioDeviceType = AudioDeviceType(rawValue: audioDeviceOptions[indexPath.row].title)!
         AudioSessionManager.switchAudioDeviceType(audioDeviceType: audioDeviceType)
-        self.audioDeviceSelectionDelegate?.updateAudioDeviceSelectionButtonIcon() //update device icon on call control bar
+        didSelectAudioDevice()
         dismissDrawer()
     }
 
@@ -71,8 +71,4 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
 
         return cell
     }
-}
-
-protocol AudioDeviceButtonIconViewControllerDelegate: AnyObject {
-    func updateAudioDeviceSelectionButtonIcon()
 }
