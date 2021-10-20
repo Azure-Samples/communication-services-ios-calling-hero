@@ -85,7 +85,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     private func setupUI() {
         setupStartCallButton()
         setupNameTextField()
-        updateAudioDevice() // update audio icon at start of call
+        updateAudioDeviceButtonIcon()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -125,7 +125,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self  //delegate action to AudioDeviceSelectionDataSource
+        audioDeviceSelectionDataSource.audioDeviceSelectionDelegate = self
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -246,18 +246,11 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 
     // update the audio device icon with current selection
-    private func updateAudioDevice() {
-        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType() // Get the current audio selection
-        // set icon based on audio type
-        var deviceIcon: UIImage
-        switch currentAudioDeviceType {
-        case .receiver:
-            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_regular")!
-        case .speaker:
-            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_filled")!
-        }
-        self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal) //update the device icon
+    private func updateAudioDeviceButtonIcon() {
+        let deviceIcon = AudioSessionManager.selectedAudioDeviceButtonIcon()
+        self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal)
     }
+
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
            view.frame.origin.y == 0 {
@@ -348,9 +341,8 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
-extension LobbyViewController: AudioDeviceSelectionViewControllerDelegate {
-    // implement the update action
-    func updateDeviceAudioSelection() {
-        updateAudioDevice()
+extension LobbyViewController: AudioDeviceButtonIconViewControllerDelegate {
+    func updateAudioDeviceSelectionButtonIcon() {
+        updateAudioDeviceButtonIcon()
     }
 }
