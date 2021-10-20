@@ -633,7 +633,6 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
             bottomDrawerViewController.refreshBottomDrawer()
         }
     }
-    // update the audio device icon with current selection
     private func updateAudioDeviceButtonIcon() {
         let deviceIcon = AudioSessionManager.selectedAudioDeviceButtonIcon()
         self.verticalSelectAudioDeviceButton.setImage(deviceIcon, for: .normal)

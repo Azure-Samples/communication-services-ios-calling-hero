@@ -46,7 +46,6 @@ class AudioSessionManager {
             }
         }
     }
-    //get current selected device Button Icon
     public static func selectedAudioDeviceButtonIcon() -> UIImage {
         let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
         var deviceIcon: UIImage

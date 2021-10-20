@@ -247,7 +247,6 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         startCallButton.isEnabled = isDisplayNameValid && isPermissionValid
     }
 
-    // update the audio device icon with current selection
     private func updateAudioDeviceButtonIcon() {
         let deviceIcon = AudioSessionManager.selectedAudioDeviceButtonIcon()
         self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal)
