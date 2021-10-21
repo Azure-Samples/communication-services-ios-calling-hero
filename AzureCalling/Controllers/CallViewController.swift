@@ -152,7 +152,10 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
-        audioDeviceSelectionDataSource.didSelectAudioDevice = {
+        audioDeviceSelectionDataSource.didSelectAudioDevice = {[weak self] in
+            guard let self = self else {
+                return
+            }
             self.updateAudioDeviceButtonIcon()
         }
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
@@ -634,7 +637,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     private func updateAudioDeviceButtonIcon() {
-        let deviceIcon = AudioSessionManager.selectedAudioDeviceButtonIcon()
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
+        let deviceIcon = UIImage(named: currentAudioDeviceType.iconName)
         self.verticalSelectAudioDeviceButton.setImage(deviceIcon, for: .normal)
         self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal)
     }

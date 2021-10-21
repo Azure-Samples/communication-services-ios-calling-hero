@@ -28,15 +28,7 @@ class AudioDeviceSelectionDataSource: NSObject, BottomDrawerDataSource {
         for audioDeviceType in audioDeviceTypes {
 
             let accessoryImage = UIImage(named: "ic_fluent_checkmark_20_filled")!
-
-            var image: UIImage
-            switch audioDeviceType {
-            case .receiver:
-                image = UIImage(named: "ic_fluent_speaker_2_28_regular")!
-            case .speaker:
-                image = UIImage(named: "ic_fluent_speaker_2_28_filled")!
-            }
-
+            let image = UIImage(named: audioDeviceType.iconName)!
             let audioDeviceOption = BottomDrawerItem(avatar: image, title: audioDeviceType.name, accessoryImage: accessoryImage, enabled: audioDeviceType == currentAudioDeviceType)
             audioDeviceOptions.append(audioDeviceOption)
         }

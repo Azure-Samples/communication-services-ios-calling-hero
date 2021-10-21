@@ -46,15 +46,4 @@ class AudioSessionManager {
             }
         }
     }
-    public static func selectedAudioDeviceButtonIcon() -> UIImage {
-        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
-        var deviceIcon: UIImage
-        switch currentAudioDeviceType {
-        case .receiver:
-            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_regular")!
-        case .speaker:
-            deviceIcon = UIImage(named: "ic_fluent_speaker_2_28_filled")!
-        }
-        return deviceIcon
-    }
 }
