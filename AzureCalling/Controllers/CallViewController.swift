@@ -64,6 +64,7 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         toggleMuteButton.isSelected = joinCallConfig.isMicrophoneMuted
 
         updateToggleVideoButtonState()
+        updateAudioDeviceButtonIcon()
 
         localParticipantView.setOnSwitchCamera { [weak self] in
             guard let self = self else {
@@ -151,6 +152,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.didSelectAudioDevice = {[weak self] in
+            guard let self = self else {
+                return
+            }
+            self.updateAudioDeviceButtonIcon()
+        }
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -628,6 +635,12 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             bottomDrawerViewController.refreshBottomDrawer()
         }
+    }
+    private func updateAudioDeviceButtonIcon() {
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
+        let deviceIcon = UIImage(named: currentAudioDeviceType.iconName)
+        self.verticalSelectAudioDeviceButton.setImage(deviceIcon, for: .normal)
+        self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal)
     }
 
     @objc func onRemoteParticipantsUpdated(_ notification: Notification) {
