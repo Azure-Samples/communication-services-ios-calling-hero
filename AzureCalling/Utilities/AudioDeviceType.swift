@@ -13,4 +13,12 @@ enum AudioDeviceType: String {
     var name: String {
         return self.rawValue
     }
+    var iconName: String {
+        switch self {
+        case .receiver:
+            return "ic_fluent_speaker_2_28_regular"
+        case .speaker:
+            return "ic_fluent_speaker_2_28_filled"
+        }
+    }
 }

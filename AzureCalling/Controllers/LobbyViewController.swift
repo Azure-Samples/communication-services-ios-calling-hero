@@ -85,6 +85,7 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
     private func setupUI() {
         setupStartCallButton()
         setupNameTextField()
+        updateAudioDeviceButtonIcon()
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -124,6 +125,12 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
 
     private func openAudioDeviceDrawer() {
         let audioDeviceSelectionDataSource = AudioDeviceSelectionDataSource()
+        audioDeviceSelectionDataSource.didSelectAudioDevice = {[weak self] in
+            guard let self = self else {
+                return
+            }
+            self.updateAudioDeviceButtonIcon()
+        }
         let bottomDrawerViewController = BottomDrawerViewController(dataSource: audioDeviceSelectionDataSource, allowsSelection: true)
         present(bottomDrawerViewController, animated: false, completion: nil)
     }
@@ -241,6 +248,12 @@ class LobbyViewController: UIViewController, UITextFieldDelegate {
         let audioPermissionStatus = AVAudioSession.sharedInstance().recordPermission
         let isPermissionValid = audioPermissionStatus == .granted || audioPermissionStatus == .undetermined
         startCallButton.isEnabled = isDisplayNameValid && isPermissionValid
+    }
+
+    private func updateAudioDeviceButtonIcon() {
+        let currentAudioDeviceType = AudioSessionManager.getCurrentAudioDeviceType()
+        let deviceIcon = UIImage(named: currentAudioDeviceType.iconName)
+        self.selectAudioDeviceButton.setImage(deviceIcon, for: .normal)
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
