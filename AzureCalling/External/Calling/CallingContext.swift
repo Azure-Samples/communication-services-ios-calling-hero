@@ -36,8 +36,8 @@ class CallingContext: NSObject {
     private var callClient: CallClient?
     private var callAgent: CallAgent?
     private var call: Call?
-    private var callRecordingFeature: RecordingCallFeature?
-    private var callTranscriptionFeature: TranscriptionCallFeature?
+    private var recordingCallFeature: RecordingCallFeature?
+    private var transcriptionCallFeature: TranscriptionCallFeature?
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
     private (set) var currentScreenSharingParticipant: RemoteParticipant?
@@ -132,10 +132,10 @@ class CallingContext: NSObject {
                 self.displayName = joinConfig.displayName
                 self.isCameraPreferredOn = joinConfig.isCameraOn
 
-                self.callRecordingFeature = self.call?.feature(Features.recording)
-                self.callTranscriptionFeature = self.call?.feature(Features.transcription)
-                self.callRecordingFeature?.delegate = self
-                self.callTranscriptionFeature?.delegate = self
+                self.recordingCallFeature = self.call?.feature(Features.recording)
+                self.transcriptionCallFeature = self.call?.feature(Features.transcription)
+                self.recordingCallFeature?.delegate = self
+                self.transcriptionCallFeature?.delegate = self
                 completionHandler(.success(()))
             }
         }
