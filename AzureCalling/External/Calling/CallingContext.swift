@@ -464,8 +464,9 @@ class CallingContext: NSObject {
     }
 }
 
-extension CallingContext: CallDelegate, RecordingCallFeatureDelegate,
-                            TranscriptionCallFeatureDelegate {
+extension CallingContext: CallDelegate,
+                          RecordingCallFeatureDelegate,
+                          TranscriptionCallFeatureDelegate {
     func call(_ call: Call, didChangeState args: PropertyChangedEventArgs) {
         switch call.state {
         case .none:
