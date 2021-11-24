@@ -36,8 +36,8 @@ class CallingContext: NSObject {
     private var callClient: CallClient?
     private var callAgent: CallAgent?
     private var call: Call?
-    private var callRecordingFeature: RecordingFeature?
-    private var callTranscriptionFeature: TranscriptionFeature?
+    private var recordingCallFeature: RecordingCallFeature?
+    private var transcriptionCallFeature: TranscriptionCallFeature?
     private var deviceManager: DeviceManager?
     private var participantsEventsAdapter: ParticipantsEventsAdapter?
     private (set) var currentScreenSharingParticipant: RemoteParticipant?
@@ -132,10 +132,10 @@ class CallingContext: NSObject {
                 self.displayName = joinConfig.displayName
                 self.isCameraPreferredOn = joinConfig.isCameraOn
 
-                self.callRecordingFeature = self.call?.api(RecordingFeature.self)
-                self.callTranscriptionFeature = self.call?.api(TranscriptionFeature.self)
-                self.callRecordingFeature?.delegate = self
-                self.callTranscriptionFeature?.delegate = self
+                self.recordingCallFeature = self.call?.feature(Features.recording)
+                self.transcriptionCallFeature = self.call?.feature(Features.transcription)
+                self.recordingCallFeature?.delegate = self
+                self.transcriptionCallFeature?.delegate = self
                 completionHandler(.success(()))
             }
         }
@@ -466,8 +466,8 @@ class CallingContext: NSObject {
 }
 
 extension CallingContext: CallDelegate,
-                          RecordingFeatureDelegate,
-                          TranscriptionFeatureDelegate {
+                          RecordingCallFeatureDelegate,
+                          TranscriptionCallFeatureDelegate {
     func call(_ call: Call, didChangeState args: PropertyChangedEventArgs) {
         switch call.state {
         case .none:
@@ -499,16 +499,16 @@ extension CallingContext: CallDelegate,
         notifyRemoteParticipantsUpdated()
     }
 
-    func recordingFeature(_ recordingFeature: RecordingFeature, didChangeRecordingState args: PropertyChangedEventArgs) {
-        let newRecordingActive = recordingFeature.isRecordingActive
+    func recordingCallFeature(_ recordingCallFeature: RecordingCallFeature, didChangeRecordingState args: PropertyChangedEventArgs) {
+        let newRecordingActive = recordingCallFeature.isRecordingActive
         if newRecordingActive != isRecordingActive {
             isRecordingActive = newRecordingActive
             notifyOnRecordingActiveChangeUpdated()
         }
     }
 
-    func transcriptionFeature(_ transcriptionFeature: TranscriptionFeature, didChangeTranscriptionState args: PropertyChangedEventArgs) {
-        let newTranscriptionActive = transcriptionFeature.isTranscriptionActive
+    func transcriptionCallFeature(_ transcriptionCallFeature: TranscriptionCallFeature, didChangeTranscriptionState args: PropertyChangedEventArgs) {
+        let newTranscriptionActive = transcriptionCallFeature.isTranscriptionActive
         if newTranscriptionActive != isTranscriptionActive {
             isTranscriptionActive = newTranscriptionActive
             notifyOnTranscriptionActiveChangeUpdated()
