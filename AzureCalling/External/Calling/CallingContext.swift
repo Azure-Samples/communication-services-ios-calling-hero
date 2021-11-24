@@ -149,6 +149,8 @@ class CallingContext: NSObject {
                 completionHandler(.failure(error!))
                 return
             }
+
+            self.localVideoStream = nil
             print("Call ended successfully")
             completionHandler(.success(()))
         }
@@ -230,7 +232,6 @@ class CallingContext: NSObject {
                 completionHandler(.failure(error!))
                 return
             }
-            self.localVideoStream = nil
             print("Local video stopped successfully")
             completionHandler(.success(()))
         }
