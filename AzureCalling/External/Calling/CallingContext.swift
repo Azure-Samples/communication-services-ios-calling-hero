@@ -223,10 +223,7 @@ class CallingContext: NSObject {
             completionHandler(.success(()))
             return
         }
-        self.call?.stopVideo(stream: videoStream) { [weak self] (error) in
-            guard let self = self else {
-                return
-            }
+        self.call?.stopVideo(stream: videoStream) { (error) in
             if error != nil {
                 print("ERROR: Local video failed to stop. \(error!)")
                 completionHandler(.failure(error!))
