@@ -10,6 +10,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
     // MARK: Constants
 
     private let groupIdPlaceHolder: String = "ex. 4fe34380-81e5-11eb-a16e-6161a3176f61"
+    private let teamsLinkPlaceHolder: String = "ex. https://teams.microsoft.com/..."
 
     // MARK: Properties
 
@@ -21,6 +22,9 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var joinCallButton: UIRoundedButton!
     @IBOutlet weak var joinIdTextField: UITextField!
+    @IBOutlet weak var contentStackView: UIStackView!
+    @IBOutlet weak var groupIdButton: UIButton!
+    @IBOutlet weak var meetingLinkButton: UIButton!
 
     // MARK: UIViewController events
 
@@ -66,9 +70,17 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         let joinId = joinIdTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard UUID(uuidString: joinId) != nil else {
-            promptInvalidJoinIdInput()
-            return false
+        switch joinCallType {
+        case .groupCall:
+            guard UUID(uuidString: joinId) != nil else {
+                promptInvalidJoinIdInput()
+                return false
+            }
+        case .teamsMeeting:
+            guard URL(string: joinId) != nil else {
+                promptInvalidJoinIdInput()
+                return false
+            }
         }
         return true
     }
@@ -94,10 +106,36 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
         lobbyViewController.joinCallType = joinCallType
     }
 
-      private func promptInvalidJoinIdInput() {
-        let alertMessgae = "The meeting ID you entered is invalid. Please try again."
+    private func promptInvalidJoinIdInput() {
+        var alertMessgae = ""
+        switch joinCallType {
+        case .groupCall:
+            alertMessgae = "The meeting ID you entered is invalid. Please try again."
+        case .teamsMeeting:
+            alertMessgae = "The meeting link you entered is invalid. Please try again."
+        }
         let alert = UIAlertController(title: "Unable to join", message: alertMessgae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
         self.present(alert, animated: true, completion: nil)
+    }
+
+    // MARK: Actions
+
+    @IBAction func selectedGroupCall(_ sender: Any) {
+        joinIdTextField.removeFromSuperview()
+        contentStackView.insertArrangedSubview(joinIdTextField, at: 1)
+        joinIdTextField.placeholder = groupIdPlaceHolder
+        joinCallType = .groupCall
+        groupIdButton.isSelected = true
+        meetingLinkButton.isSelected = false
+    }
+
+    @IBAction func selectedTeamsMeeting(_ sender: Any) {
+        joinIdTextField.removeFromSuperview()
+        contentStackView.insertArrangedSubview(joinIdTextField, at: 2)
+        joinIdTextField.placeholder = teamsLinkPlaceHolder
+        joinCallType = .teamsMeeting
+        groupIdButton.isSelected = false
+        meetingLinkButton.isSelected = true
     }
 }
