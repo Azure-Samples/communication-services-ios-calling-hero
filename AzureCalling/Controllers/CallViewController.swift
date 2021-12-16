@@ -7,6 +7,11 @@ import UIKit
 import AVFoundation
 import AzureCommunicationCalling
 
+enum NoticeBannerType {
+    case recording
+    case transcription
+}
+
 class CallViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: Constants
@@ -40,6 +45,8 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var selectAudioDeviceButton: UIButton!
     @IBOutlet weak var showParticipantsButton: UIButton!
     @IBOutlet weak var infoHeaderView: InfoHeaderView!
+    @IBOutlet weak var noticeBannerStackView: NoticeBannerStackView!
+    @IBOutlet weak var waitAdmissionView: UIView!
     @IBOutlet weak var bottomControlBar: UIStackView!
     @IBOutlet weak var rightControlBar: UIStackView!
     @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
@@ -251,8 +258,15 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func onShare(_ sender: UIButton) {
-        let shareTitle = "Share Group Call ID"
+        var shareTitle: String!
+        switch callingContext.callType {
+        case .groupCall:
+            shareTitle = "Share Group Call ID"
+        case .teamsMeeting:
+            shareTitle = "Share Meeting Link"
+        }
         let shareItems = [JoinIdShareItem(joinId: callingContext.joinId, shareTitle: shareTitle)]
+
         let activityController = UIActivityViewController(activityItems: shareItems as [Any], applicationActivities: nil)
 
         // The UIActivityViewController's has non-null popoverPresentationController property when running on iPad
@@ -319,17 +333,22 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @IBAction func contentViewDidTapped(_ sender: UITapGestureRecognizer) {
-        infoHeaderView.toggleDisplay()
+        if callingContext.callingInterfaceState == .connected {
+            infoHeaderView.toggleDisplay()
+        }
     }
 
     private func onJoinCall() {
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantsUpdated(_:)), name: .remoteParticipantsUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(recordingActiveChangeUpdated(_:)), name: .onRecordingActiveChangeUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(transcriptionActiveChangeUpdated(_:)), name: .onTranscriptionActiveChangeUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onCallStateUpdated(_:)), name: .onCallStateUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onRemoteParticipantViewChanged(_:)), name: .remoteParticipantViewChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onIsMutedChanged(_:)), name: .onIsMutedChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appAssignActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
 
-        infoHeaderView.toggleDisplay()
+        onCallStateUpdated()
         meetingInfoViewUpdate()
         initParticipantViews()
         activityIndicator.stopAnimating()
@@ -649,6 +668,57 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         meetingInfoViewUpdate()
     }
 
+    private func showNoticeBanner(mode: NoticeBannerType) {
+        guard let isRecordingActive = callingContext?.isRecordingActive,
+              let isTranscriptionActive = callingContext?.isTranscriptionActive else {
+            return
+        }
+
+        let notificationText: NSAttributedString
+        switch (mode, isRecordingActive, isTranscriptionActive) {
+        case (_, true, true):
+            notificationText = meetingRecordingAndTranscriptionActiveText
+        case (.recording, true, false):
+            notificationText = meetingRecordingActiveText
+        case (.recording, false, true):
+            notificationText = meetingRecordingStopTranscriptionActiveText
+        case (.recording, false, false):
+            notificationText = meetingRecordingStopText
+        case (.transcription, true, false):
+            notificationText = meetingRecordingActiveTranscriptionStopText
+        case (.transcription, false, true):
+            notificationText = meetingTranscriptionActiveText
+        case (.transcription, false, false):
+            notificationText = meetingTranscriptionStopText
+        }
+
+        noticeBannerStackView.showBannerMessage(notificationText)
+    }
+
+    @objc func recordingActiveChangeUpdated(_ notification: Notification) {
+        showNoticeBanner(mode: NoticeBannerType.recording)
+    }
+
+    @objc func transcriptionActiveChangeUpdated(_ notification: Notification) {
+        showNoticeBanner(mode: NoticeBannerType.transcription)
+    }
+
+    @objc func onCallStateUpdated(_ notification: Notification? = nil) {
+        switch callingContext.callingInterfaceState {
+        case .connected:
+            waitAdmissionView.isHidden = true
+            infoHeaderView.toggleDisplay()
+        case .waitingAdmission:
+            waitAdmissionView.isHidden = false
+        case .removed:
+            promptForTeamsBeenRemoved()
+        case .admissionDenied:
+            promptForTeamsAdmissionDenied()
+        default:
+            break
+        }
+    }
+
     @objc func onRemoteParticipantViewChanged(_ notification: Notification) {
         queueParticipantViewsUpdate()
         participantListUpdate()
@@ -681,6 +751,33 @@ class CallViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         navigationController?.pushViewController(feedbackViewController, animated: true)
     }
+
+    private func promptForTeamsAdmissionDenied() {
+        presentAlert(title: "Sorry, you were denied access to the meeting") { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    private func promptForTeamsBeenRemoved() {
+        presentAlert(title: "You've been removed from this meeting") { [weak self] in
+            self?.promptForFeedback()
+        }
+    }
+
+    private func presentAlert(title: String, dismissHandler: @escaping (() -> Void)) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default) { _ in
+            dismissHandler()
+        })
+
+        if presentedViewController != nil {
+            dismiss(animated: false) { [weak self] in
+                self?.present(alertController, animated: true, completion: nil)
+            }
+        } else {
+            present(alertController, animated: true, completion: nil)
+        }
+    }
 }
 
 extension CallViewController: HangupConfirmationViewControllerDelegate {
@@ -688,5 +785,56 @@ extension CallViewController: HangupConfirmationViewControllerDelegate {
         endCall()
         promptForFeedback()
         cleanViewRendering()
+    }
+}
+
+extension CallViewController {
+    var meetingRecordingActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording has started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be recorded. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingRecordingStopText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording is being saved. ",
+                                                        body: "Recording has stopped. ",
+                                                        linkDisplay: "Learn more",
+                                                        link: "https://support.microsoft.com/en-us/office/record-a-meeting-in-teams-34dfbe7f-b07d-4a27-b4c6-de62f1348c24")
+    }
+
+    var meetingTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription has started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be transcribed. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingTranscriptionStopText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription is being saved. ",
+                                                        body: "Transcription has stopped. ",
+                                                        linkDisplay: "Learn more",
+                                                        link: "https://support.microsoft.com/en-us/office/record-a-meeting-in-teams-34dfbe7f-b07d-4a27-b4c6-de62f1348c24")
+    }
+
+    var meetingRecordingAndTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording and transcription have started. ",
+                                                        body: "By joining, you are giving consent for this meeting to be recorded and transcribed. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingRecordingStopTranscriptionActiveText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Recording has stopped. ",
+                                                        body: "You're now only transcribing this meeting. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
+    }
+
+    var meetingRecordingActiveTranscriptionStopText: NSAttributedString {
+        return AttributedStringFactory.customizedString(title: "Transcription has stopped. ",
+                                                        body: "You're now only recording this meeting. ",
+                                                        linkDisplay: "Privacy policy",
+                                                        link: "https://privacy.microsoft.com/en-US/privacystatement#mainnoticetoendusersmodule")
     }
 }
