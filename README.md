@@ -13,7 +13,6 @@ The sample is a native iOS application that uses the Azure Communication Service
 
 Additional documentation for this sample can be found on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/communication-services/samples/calling-hero-sample?pivots=platform-ios). See this sample's wiki to see updated information on [known issues](https://github.com/Azure-Samples/communication-services-ios-calling-hero/wiki/Known-Issues)
 
-A separate version of the Calling Sample is available with **Teams Interop** support ([Teams Interop Sample](https://github.com/Azure-Samples/communication-services-ios-calling-hero/tree/feature/teams_interop)). Teams Interop is currently in **Public Preview**. Please use the main branch sample for any production scenarios.
 
 ## Features
 
