@@ -32,7 +32,7 @@ class ParticipantListDataSource: NSObject, BottomDrawerDataSource {
 
     private func createParticipantList() {
         let participantInfoList = self.participantsFetcher()
-        let accessoryImage = UIImage(named: "ic_fluent_mic_off_28_filled")!
+        let accessoryImage = UIImage(named: "ic_fluent_mic_off_24_filled")!
         let image = UIImage(named: "ic_fluent_person_48_filled")!
 
         for participantInfo in participantInfoList {
