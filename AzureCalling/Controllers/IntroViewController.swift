@@ -65,7 +65,7 @@ class IntroViewController: UIViewController {
             fatalError("Unexpected destination: \(destination)")
         }
 
-        joinCallViewController.callingContext = createCallingContextFunction()
+        joinCallViewController.createCallingContextFunction = createCallingContextFunction
     }
 
     // MARK: UI layout
