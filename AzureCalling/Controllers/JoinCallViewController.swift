@@ -14,7 +14,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: Properties
 
-    var callingContext: CallingContext!
+    var createCallingContextFunction: (() -> CallingContext)!
 
     private var joinCallType: JoinCallType = .groupCall
 
@@ -101,7 +101,7 @@ class JoinCallViewController: UIViewController, UITextFieldDelegate {
             fatalError("Unexpected destination: \(destination)")
         }
 
-        lobbyViewController.callingContext = callingContext
+        lobbyViewController.callingContext = createCallingContextFunction()
         lobbyViewController.joinInput = joinIdTextField.text!
         lobbyViewController.joinCallType = joinCallType
     }
