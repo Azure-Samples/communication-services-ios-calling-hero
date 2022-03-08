@@ -7,7 +7,7 @@ products:
 - azure-communication-services
 ---
 
-# Group Calling Sample
+# Group Calling Sampletest
 
 The sample is a native iOS application that uses the Azure Communication Services iOS client libraries to build a calling experience that features both voice and video calling. The application uses a server-side component to provision access tokens that are then used to initialize the Azure Communication Services client library. To configure this server-side component, feel free to follow the [Trusted Service with Azure Functions](https://docs.microsoft.com/azure/communication-services/tutorials/trusted-service-tutorial) tutorial.
 
