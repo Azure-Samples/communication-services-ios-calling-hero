@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>communicationTokenFetchUrl</key>
-	<string></string>
+	<string>https://acs-token-auth.azurewebsites.net/api/Auth?code=ECCHapGpOGo7KLqwsCrHZt9z5W7mKYEeCgFVnJjPxltPl1faCmfaNw==</string>
 	<key>isAADAuthEnabled</key>
-	<false/>
+	<true/>
 	<key>aadClientId</key>
 	<string></string>
 	<key>aadTenantId</key>

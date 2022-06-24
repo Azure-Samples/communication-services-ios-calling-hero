@@ -204,6 +204,8 @@ class AADAuthHandler {
 
     private func updateCurrentAccount(_ account: MSALAccount?) {
         self.currentAccount = account
+        let ss = account?.username
+        print("-----------------\(ss)")
     }
 
     private func updateAccessToken(_ token: String?) {

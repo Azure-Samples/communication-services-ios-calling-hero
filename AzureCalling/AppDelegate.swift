@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private (set) var appSettings: AppSettings!
     private (set) var authHandler: AADAuthHandler!
     private (set) var tokenService: TokenService!
+    private (set) var callingContext: CallingContext!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setAudioSessionOutputToSpeaker()
