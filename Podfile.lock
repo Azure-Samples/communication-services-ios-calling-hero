@@ -2,33 +2,205 @@ PODS:
   - AzureCommunicationCalling (2.2.0):
     - AzureCommunicationCommon (~> 1.0.2)
   - AzureCommunicationCommon (1.0.3)
+  - AzureCommunicationUICalling (1.0.0):
+    - AzureCommunicationCalling (= 2.2.0)
+    - MicrosoftFluentUI/ActivityIndicator_ios (= 0.3.9)
+    - MicrosoftFluentUI/Avatar_ios (= 0.3.9)
+    - MicrosoftFluentUI/BottomSheet_ios (= 0.3.9)
+    - MicrosoftFluentUI/Button_ios (= 0.3.9)
+    - MicrosoftFluentUI/PopupMenu_ios (= 0.3.9)
   - AzureCore (1.0.0-beta.12)
-  - MSAL (1.1.13):
-    - MSAL/app-lib (= 1.1.13)
-  - MSAL/app-lib (1.1.13)
+  - MicrosoftFluentUI (0.3.9):
+    - MicrosoftFluentUI/ActivityIndicator_ios (= 0.3.9)
+    - MicrosoftFluentUI/Appearance_mac (= 0.3.9)
+    - MicrosoftFluentUI/Avatar_ios (= 0.3.9)
+    - MicrosoftFluentUI/AvatarGroup_ios (= 0.3.9)
+    - MicrosoftFluentUI/AvatarView_mac (= 0.3.9)
+    - MicrosoftFluentUI/BadgeField_ios (= 0.3.9)
+    - MicrosoftFluentUI/BadgeView_mac (= 0.3.9)
+    - MicrosoftFluentUI/BarButtonItems_ios (= 0.3.9)
+    - MicrosoftFluentUI/BottomCommanding_ios (= 0.3.9)
+    - MicrosoftFluentUI/BottomSheet_ios (= 0.3.9)
+    - MicrosoftFluentUI/Button_ios (= 0.3.9)
+    - MicrosoftFluentUI/Button_mac (= 0.3.9)
+    - MicrosoftFluentUI/Calendar_ios (= 0.3.9)
+    - MicrosoftFluentUI/Card_ios (= 0.3.9)
+    - MicrosoftFluentUI/CardNudge_ios (= 0.3.9)
+    - MicrosoftFluentUI/CommandBar_ios (= 0.3.9)
+    - MicrosoftFluentUI/Core_ios (= 0.3.9)
+    - MicrosoftFluentUI/Core_mac (= 0.3.9)
+    - MicrosoftFluentUI/DatePicker_mac (= 0.3.9)
+    - MicrosoftFluentUI/DotView_ios (= 0.3.9)
+    - MicrosoftFluentUI/Drawer_ios (= 0.3.9)
+    - MicrosoftFluentUI/DynamicColor_mac (= 0.3.9)
+    - MicrosoftFluentUI/EasyTapButton_ios (= 0.3.9)
+    - MicrosoftFluentUI/HUD_ios (= 0.3.9)
+    - MicrosoftFluentUI/IndeterminateProgressBar_ios (= 0.3.9)
+    - MicrosoftFluentUI/Label_ios (= 0.3.9)
+    - MicrosoftFluentUI/Link_mac (= 0.3.9)
+    - MicrosoftFluentUI/Navigation_ios (= 0.3.9)
+    - MicrosoftFluentUI/Notification_ios (= 0.3.9)
+    - MicrosoftFluentUI/Obscurable_ios (= 0.3.9)
+    - MicrosoftFluentUI/OtherCells_ios (= 0.3.9)
+    - MicrosoftFluentUI/PeoplePicker_ios (= 0.3.9)
+    - MicrosoftFluentUI/PersonaButton_ios (= 0.3.9)
+    - MicrosoftFluentUI/PersonaButtonCarousel_ios (= 0.3.9)
+    - MicrosoftFluentUI/PillButtonBar_ios (= 0.3.9)
+    - MicrosoftFluentUI/PopupMenu_ios (= 0.3.9)
+    - MicrosoftFluentUI/Presenters_ios (= 0.3.9)
+    - MicrosoftFluentUI/ResizingHandleView_ios (= 0.3.9)
+    - MicrosoftFluentUI/SegmentedControl_ios (= 0.3.9)
+    - MicrosoftFluentUI/Separator_ios (= 0.3.9)
+    - MicrosoftFluentUI/Separator_mac (= 0.3.9)
+    - MicrosoftFluentUI/Shimmer_ios (= 0.3.9)
+    - MicrosoftFluentUI/TabBar_ios (= 0.3.9)
+    - MicrosoftFluentUI/TableView_ios (= 0.3.9)
+    - MicrosoftFluentUI/Tooltip_ios (= 0.3.9)
+    - MicrosoftFluentUI/TouchForwardingView_ios (= 0.3.9)
+    - MicrosoftFluentUI/TwoLineTitleView_ios (= 0.3.9)
+    - MicrosoftFluentUI/Utilities_ios (= 0.3.9)
+  - MicrosoftFluentUI/ActivityIndicator_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Avatar_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/AvatarGroup_ios (0.3.9):
+    - MicrosoftFluentUI/Avatar_ios
+  - MicrosoftFluentUI/BadgeField_ios (0.3.9):
+    - MicrosoftFluentUI/Label_ios
+  - MicrosoftFluentUI/BarButtonItems_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/BottomCommanding_ios (0.3.9):
+    - MicrosoftFluentUI/BottomSheet_ios
+    - MicrosoftFluentUI/OtherCells_ios
+    - MicrosoftFluentUI/Separator_ios
+    - MicrosoftFluentUI/TabBar_ios
+    - MicrosoftFluentUI/TableView_ios
+  - MicrosoftFluentUI/BottomSheet_ios (0.3.9):
+    - MicrosoftFluentUI/Obscurable_ios
+    - MicrosoftFluentUI/ResizingHandleView_ios
+  - MicrosoftFluentUI/Button_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Calendar_ios (0.3.9):
+    - MicrosoftFluentUI/BarButtonItems_ios
+    - MicrosoftFluentUI/DotView_ios
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/Presenters_ios
+    - MicrosoftFluentUI/SegmentedControl_ios
+    - MicrosoftFluentUI/Separator_ios
+    - MicrosoftFluentUI/TwoLineTitleView_ios
+  - MicrosoftFluentUI/Card_ios (0.3.9):
+    - MicrosoftFluentUI/Label_ios
+  - MicrosoftFluentUI/CardNudge_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/CommandBar_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Core_ios (0.3.9)
+  - MicrosoftFluentUI/DotView_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Drawer_ios (0.3.9):
+    - MicrosoftFluentUI/Obscurable_ios
+    - MicrosoftFluentUI/ResizingHandleView_ios
+    - MicrosoftFluentUI/Separator_ios
+    - MicrosoftFluentUI/TouchForwardingView_ios
+  - MicrosoftFluentUI/EasyTapButton_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/HUD_ios (0.3.9):
+    - MicrosoftFluentUI/ActivityIndicator_ios
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/TouchForwardingView_ios
+  - MicrosoftFluentUI/IndeterminateProgressBar_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Label_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Navigation_ios (0.3.9):
+    - MicrosoftFluentUI/ActivityIndicator_ios
+    - MicrosoftFluentUI/Avatar_ios
+    - MicrosoftFluentUI/Separator_ios
+    - MicrosoftFluentUI/TwoLineTitleView_ios
+  - MicrosoftFluentUI/Notification_ios (0.3.9):
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/Obscurable_ios
+    - MicrosoftFluentUI/Separator_ios
+  - MicrosoftFluentUI/Obscurable_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/OtherCells_ios (0.3.9):
+    - MicrosoftFluentUI/ActivityIndicator_ios
+    - MicrosoftFluentUI/TableView_ios
+  - MicrosoftFluentUI/PeoplePicker_ios (0.3.9):
+    - MicrosoftFluentUI/Avatar_ios
+    - MicrosoftFluentUI/BadgeField_ios
+    - MicrosoftFluentUI/OtherCells_ios
+    - MicrosoftFluentUI/Separator_ios
+  - MicrosoftFluentUI/PersonaButton_ios (0.3.9):
+    - MicrosoftFluentUI/Avatar_ios
+  - MicrosoftFluentUI/PersonaButtonCarousel_ios (0.3.9):
+    - MicrosoftFluentUI/PersonaButton_ios
+  - MicrosoftFluentUI/PillButtonBar_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/PopupMenu_ios (0.3.9):
+    - MicrosoftFluentUI/Drawer_ios
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/Separator_ios
+    - MicrosoftFluentUI/TableView_ios
+  - MicrosoftFluentUI/Presenters_ios (0.3.9):
+    - MicrosoftFluentUI/Obscurable_ios
+  - MicrosoftFluentUI/ResizingHandleView_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/SegmentedControl_ios (0.3.9):
+    - MicrosoftFluentUI/Separator_ios
+  - MicrosoftFluentUI/Separator_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/Shimmer_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+    - MicrosoftFluentUI/Utilities_ios
+  - MicrosoftFluentUI/TabBar_ios (0.3.9):
+    - MicrosoftFluentUI/Avatar_ios
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/Separator_ios
+  - MicrosoftFluentUI/TableView_ios (0.3.9):
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/Separator_ios
+  - MicrosoftFluentUI/Tooltip_ios (0.3.9):
+    - MicrosoftFluentUI/Label_ios
+    - MicrosoftFluentUI/TouchForwardingView_ios
+  - MicrosoftFluentUI/TouchForwardingView_ios (0.3.9):
+    - MicrosoftFluentUI/Core_ios
+  - MicrosoftFluentUI/TwoLineTitleView_ios (0.3.9):
+    - MicrosoftFluentUI/EasyTapButton_ios
+    - MicrosoftFluentUI/Label_ios
+  - MicrosoftFluentUI/Utilities_ios (0.3.9)
+  - MSAL (1.2.2):
+    - MSAL/app-lib (= 1.2.2)
+  - MSAL/app-lib (1.2.2)
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
   - AzureCommunicationCalling (= 2.2.0)
+  - AzureCommunicationUICalling (= 1.0.0)
   - AzureCore (= 1.0.0-beta.12)
-  - MSAL (= 1.1.13)
+  - MicrosoftFluentUI
+  - MSAL (= 1.2.2)
   - SwiftLint (= 0.42.0)
 
 SPEC REPOS:
   trunk:
     - AzureCommunicationCalling
     - AzureCommunicationCommon
+    - AzureCommunicationUICalling
     - AzureCore
+    - MicrosoftFluentUI
     - MSAL
     - SwiftLint
 
 SPEC CHECKSUMS:
   AzureCommunicationCalling: 38d174fc96f252aaaff5f758029623656b6c6349
   AzureCommunicationCommon: 85a3f0ab952db4f88e03bbdb03e79197f90f1d5d
+  AzureCommunicationUICalling: 5a5f658305244525498d3977895b03bb5a8918be
   AzureCore: 2e029168d18ade4f2e8cc59a96f6d8b26acad2b2
-  MSAL: 291d1cfc8d095a6bfe669e4beda2c5be6774a4ff
+  MicrosoftFluentUI: a1e8f35e43e615a3522c53492f1bc52e9d2a191e
+  MSAL: 0d9a8472c4ac734413325e8a257af6833d943318
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 982153a94491d74f23bf9a75c22d9f104a7cbd8c
+PODFILE CHECKSUM: 45a077e47c14bf76050cb12ae3f33fb6f314aa20
 
 COCOAPODS: 1.11.3
