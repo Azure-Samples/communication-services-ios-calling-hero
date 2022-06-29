@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B4A-Cy-PGy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B4A-Cy-PGy">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -266,7 +266,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IntroGraphic" translatesAutoresizingMaskIntoConstraints="NO" id="YWT-6U-h8L">
-                                <rect key="frame" x="107" y="217" width="200" height="120"/>
+                                <rect key="frame" x="131.5" y="248" width="151" height="89"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="120" id="42h-xk-UK4"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="fLk-84-hvf"/>
@@ -1086,11 +1086,11 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="sMD-yp-j0r"/>
+        <segue reference="l4x-m1-4xa"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" name="primaryColor"/>
     <resources>
-        <image name="IntroGraphic" width="1191" height="712"/>
+        <image name="IntroGraphic" width="151" height="89"/>
         <image name="ic_fluent_call_end_28_filled" width="28" height="28"/>
         <image name="ic_fluent_camera_switch_24_regular" width="24" height="24"/>
         <image name="ic_fluent_checkmark_circle_24_filled" width="24" height="24"/>
