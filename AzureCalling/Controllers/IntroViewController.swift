@@ -151,9 +151,16 @@ class IntroViewController: UIViewController {
     }
 
     private func layoutMainContainer() {
-        let view = UIView()
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                titleLabel,
+                builtWithView
+            ]
+        )
+        stackView.axis = .vertical
 
-        view.addSubview(titleLabel)
+        view.addSubview(stackView)
+        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
     }
 
     private func layoutButtons() {
@@ -181,6 +188,22 @@ class IntroViewController: UIViewController {
 
         sampleLabel.text = "Video calling sample"
         return sampleLabel
+    }()
+
+    private var builtWithView: UIView = {
+        let builtWithLabel = FluentUI.Label(style: .body)
+        builtWithLabel.text = "Built with"
+
+        let acsImageLabel = FluentUI.Label(style: .button1)
+        acsImageLabel.text = "Azure Communication Services"
+
+        let vertStack = UIStackView(arrangedSubviews: [
+            builtWithLabel,
+            acsImageLabel
+        ])
+        vertStack.axis = .vertical
+
+        return vertStack
     }()
 
     private lazy var signinButton: FluentUI.Button = {
