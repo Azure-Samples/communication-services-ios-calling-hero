@@ -7,18 +7,18 @@ import Foundation
 import MSAL
 
 enum AADAuthStatus {
-    case noAuthRequire
-    case waitingAuth
+    case noAuthRequired
+    case unauthorized
+    case authorizing
     case authorized
 }
 
 class AADAuthHandler {
     // MARK: Constants
-
-    private let kAADAuthority: String = "https://login.microsoftonline.com"
+    private let kAADAuthority: String = "https://login.microsoftonline.com/common"
+    private let kGraphHost: String = "https://graph.microsoft.com/v1.0"
 
     // MARK: Properties
-
     private (set) var authStatus: AADAuthStatus
     private (set) var authToken: String?
     private (set) var userAvatar: UIImage?
@@ -30,11 +30,21 @@ class AADAuthHandler {
 
     init(appSettings: AppSettings) {
         self.appSettings = appSettings
-        authStatus = self.appSettings.isAADAuthEnabled ? .waitingAuth : .noAuthRequire
+        authStatus = self.appSettings.isAADAuthEnabled ? .unauthorized : .noAuthRequired
 
         guard appSettings.isAADAuthEnabled,
               !appSettings.aadClientId.isEmpty,
               let authUrl = URL(string: kAADAuthority) else {
+            assert(!appSettings.communicationTokenFetchUrl.isEmpty,
+            """
+            *****************************
+
+            You don't have Azure Active Directory enabled and also don't have a token URL setup.
+            Please configure the AppSettings.plist file appropriately
+
+            *****************************
+
+            """)
             return
         }
 
@@ -55,18 +65,23 @@ class AADAuthHandler {
     }
 
     // MARK: Public API
+    func login(presentVc: UIViewController,
+               completionHandler: @escaping (Error?) -> Void) {
+
+    }
 
     func loadAccountAndSilentlyLogin(from viewController: UIViewController,
                                      completionHandler: @escaping () -> Void) {
         loadAccount { [weak self] account in
             guard let account = account else {
+                print("ERROR: Missing MSAL Account")
                 completionHandler()
                 return
             }
 
-            self?.acquireTokenSilently(from: viewController, account: account) {
-                completionHandler()
-            }
+            self?.acquireTokenSilently(from: viewController,
+                                       account: account,
+                                       completionHandler: completionHandler)
         }
     }
 
@@ -136,6 +151,39 @@ class AADAuthHandler {
 
     // MARK: Private Functions
 
+    private func getProfile(completion: @escaping () -> Void) {
+        guard let avatarUrl = URL(string: kGraphHost.appending("/me/photos/48x48/$value")),
+              let detailsUrl = URL(string: kGraphHost.appending("/me")),
+              let accessToken = authToken else {
+            return
+        }
+        var detailsRequest = URLRequest(url: detailsUrl)
+        detailsRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        var request = URLRequest(url: avatarUrl)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: detailsRequest) { (data, _, _) in
+            if let jsonData = data,
+               let profile = try? JSONDecoder().decode(UserDetails.self, from: jsonData) {
+                self.userDisplayName = profile.displayName
+            }
+
+            URLSession.shared.dataTask(with: request) { imageData, _, error in
+                if let data = imageData {
+                    if let image = UIImage(data: data) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.userAvatar = image
+                            completion()
+                        }
+                    }
+                } else if let err = error {
+                    print(err)
+                    completion()
+                }
+            }.resume()
+        }.resume()
+    }
+
     private func loadAccount(completionHandler: @escaping (MSALAccount?) -> Void) {
         guard let applicationContext = self.applicationContext else {
             completionHandler(nil)
@@ -200,7 +248,7 @@ class AADAuthHandler {
 
             self?.updateAccessToken(result.accessToken)
             self?.updateCurrentAccount(result.account)
-            completionHandler()
+            self?.getProfile(completion: completionHandler)
         }
     }
 
@@ -211,7 +259,7 @@ class AADAuthHandler {
     private func updateAccessToken(_ token: String?) {
         self.authToken = token
         if token?.isEmpty ?? true {
-            self.authStatus = appSettings.isAADAuthEnabled ? .waitingAuth : .noAuthRequire
+            self.authStatus = appSettings.isAADAuthEnabled ? .unauthorized : .noAuthRequired
         } else {
             self.authStatus = .authorized
         }

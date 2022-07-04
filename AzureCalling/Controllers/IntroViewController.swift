@@ -160,25 +160,26 @@ class IntroViewController: UIViewController {
     }
 
     // MARK: - Authentication State Handling
-    private func setupAuthAndUI() {
-        authHandler.loadAccountAndSilentlyLogin(from: self) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.handleAuthState()
-        }
-    }
-
     private func handleAuthState() {
+        userAvatar.state.image = authHandler.userAvatar
+        userAvatar.state.primaryText = authHandler.userDisplayName
+
         switch authHandler.authStatus {
         case .authorized:
             hideLoginButtonAndDisplayCallingButtons()
+            topBar.isHidden = false
 
-        case .noAuthRequire:
+        case .noAuthRequired:
             hideLoginButtonAndDisplayCallingButtons()
+            topBar.isHidden = true
 
-        case .waitingAuth:
+        case .unauthorized:
+            topBar.isHidden = true
             showLoginButtonAndHideCallingButtons()
+
+        case .authorizing:
+            // TODO: show busy state, lock controls
+            break
         }
     }
 
@@ -223,7 +224,7 @@ class IntroViewController: UIViewController {
 
     // MARK: Action Handling
     private func loginAAD() {
-        authHandler.acquireTokenInteractively(from: self) { [weak self] in
+        authHandler.loadAccountAndSilentlyLogin(from: self) { [weak self] in
             guard let self = self else {
                 return
             }

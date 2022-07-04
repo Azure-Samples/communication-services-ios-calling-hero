@@ -38,6 +38,7 @@
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
 		75495F59286E1910004E4313 /* LayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F58286E1910004E4313 /* LayoutHelpers.swift */; };
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
+		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
 		8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743152263373C5000D0BCE /* AudioSessionManager.swift */; };
 		8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */; };
@@ -105,6 +106,7 @@
 		6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.release.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.release.xcconfig"; sourceTree = "<group>"; };
 		75495F58286E1910004E4313 /* LayoutHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutHelpers.swift; sourceTree = "<group>"; };
 		755732FD28733B410072A021 /* FluentUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluentUiExtensions.swift; sourceTree = "<group>"; };
+		7557330028739D8E0072A021 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
 		8D743152263373C5000D0BCE /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelectionDataSource.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */,
+				7557330028739D8E0072A021 /* UserDetails.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */,
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
 				985A0CEC2641E71600147676 /* BottomDrawerViewController.swift in Sources */,
+				7557330128739D8E0072A021 /* UserDetails.swift in Sources */,
 				1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */,
 				1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */,
 				8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */,
