@@ -21,6 +21,8 @@ class AADAuthHandler {
 
     private (set) var authStatus: AADAuthStatus
     private (set) var authToken: String?
+    private (set) var userAvatar: UIImage?
+    private (set) var userDisplayName: String?
 
     private var appSettings: AppSettings
     private var applicationContext: MSALPublicClientApplication?

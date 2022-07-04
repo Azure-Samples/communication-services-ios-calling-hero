@@ -11,14 +11,25 @@ let learnMoreURL = "https://aka.ms/ACS-CallingSample-iOS"
 class IntroViewController: UIViewController {
 
     // MARK: Properties
-
     var authHandler: AADAuthHandler!
     var createCallingContextFunction: (() -> CallingContext)!
 
+    private var signinButton: FluentUI.Button!
+    private var startCallButton: FluentUI.Button!
+    private var joinCallButton: FluentUI.Button!
+    private var signOutButton: FluentUI.Button!
+    private var topBar: UIView!
+    private var userAvatar: MSFAvatar!
+    private var userDisplayName: FluentUI.Label!
+
+    // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupAuthAndUI()
+        createControls()
+        layoutView()
+
+        handleAuthState()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -32,11 +43,124 @@ class IntroViewController: UIViewController {
     }
 
     // MARK: UI layout
+    private func createControls() {
+        signinButton = FluentUI.Button.createWith(
+            style: .primaryFilled,
+            title: "Sign in",
+            action: { [weak self] _ in self?.loginAAD() }
+        )
+        startCallButton = FluentUI.Button.createWith(
+            style: .primaryFilled,
+            title: "Start a call",
+            action: { [weak self] _ in self?.startCall() }
+        )
+        joinCallButton = FluentUI.Button.createWith(
+            style: .primaryOutline,
+            title: "Join a call",
+            action: { [weak self] _ in self?.joinCall() }
+        )
+        signOutButton = FluentUI.Button.createWith(
+            style: .borderless, title: "Sign out",
+            action: { [weak self] _ in self?.showSignOutAlert() }
+        )
+    }
 
+    private func layoutView() {
+        view.backgroundColor = ThemeColor.lightSurfacesSecondary
+        layoutButtons()
+        layoutMainContainer()
+        layoutTopBar()
+    }
+
+    private func layoutButtons() {
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                signinButton,
+                startCallButton,
+                joinCallButton
+            ]
+        )
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        view.addSubview(stackView)
+        signinButton.expandHorizontallyInSuperView()
+        startCallButton.expandHorizontallyInSuperView()
+        joinCallButton.expandHorizontallyInSuperView()
+        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
+        stackView.pinToBottom()
+    }
+
+    private func layoutMainContainer() {
+        let titleLabel = FluentUI.Label(style: .title1)
+        titleLabel.text = "Video calling sample"
+
+        let builtWithLabel = FluentUI.Label(style: .body)
+        builtWithLabel.text = "Built with"
+        builtWithLabel.directionalLayoutMargins.top = 24
+
+        let acsImageLabel = FluentUI.Label(style: .button1)
+        acsImageLabel.text = "Azure Communication Services"
+        acsImageLabel.textColor = ThemeColor.primary
+
+        let acsLabelStack = UIStackView(arrangedSubviews: [
+            UIImageView(image: UIImage(named: "acsLogo")),
+            acsImageLabel
+        ])
+
+        let labelContainer = UIView()
+        labelContainer.translatesAutoresizingMaskIntoConstraints = false
+        labelContainer.addSubview(builtWithLabel)
+        labelContainer.addSubview(acsLabelStack)
+        builtWithLabel.centerHorizontallyInContainer()
+        acsLabelStack.centerHorizontallyInContainer()
+
+        labelContainer.layer.cornerRadius = 12
+        labelContainer.backgroundColor = ThemeColor.lightSurfacesPrimary
+        NSLayoutConstraint.activate(
+            NSLayoutConstraint.constraints(
+                withVisualFormat: "V:|-24-[builtWith]-[labelStack]-24-|",
+                metrics: nil,
+                views: ["builtWith": builtWithLabel,
+                        "labelStack": acsLabelStack]
+            )
+        )
+
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, labelContainer])
+        labelContainer.expandHorizontallyInSuperView()
+
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 32
+        view.addSubview(stackView)
+
+        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
+        stackView.centerVerticallyInContainer()
+    }
+
+    private func layoutTopBar() {
+        let container = UIView()
+        topBar = container
+        view.addSubview(container)
+        topBar.pinToTop()
+        topBar.expandHorizontallyInSuperView()
+        topBar.addSubview(signOutButton)
+        signOutButton.pinToRight()
+
+        userAvatar = MSFAvatar(style: .default, size: .small)
+        userDisplayName = FluentUI.Label(style: .title2, colorStyle: .primary)
+
+        let userDetails = UIStackView(arrangedSubviews: [
+            userAvatar.view,
+            userDisplayName
+        ])
+        userDetails.spacing = 8
+
+        topBar.addSubview(userDetails)
+        userDetails.pinToLeft(withMargin: 16)
+    }
+
+    // MARK: - Authentication State Handling
     private func setupAuthAndUI() {
-        view.backgroundColor = .white
-        self.layoutButtons()
-
         authHandler.loadAccountAndSilentlyLogin(from: self) { [weak self] in
             guard let self = self else {
                 return
@@ -48,35 +172,26 @@ class IntroViewController: UIViewController {
     private func handleAuthState() {
         switch authHandler.authStatus {
         case .authorized:
-            hideLoginButtonAndDisplayCallingButton()
-            showSignOutButton()
+            hideLoginButtonAndDisplayCallingButtons()
+
         case .noAuthRequire:
-            hideLoginButtonAndDisplayCallingButton()
-            hideSignOutButton()
+            hideLoginButtonAndDisplayCallingButtons()
+
         case .waitingAuth:
-            showLoginButtonAndHideCallingButton()
-            hideSignOutButton()
+            showLoginButtonAndHideCallingButtons()
         }
     }
 
-    private func hideLoginButtonAndDisplayCallingButton() {
+    private func hideLoginButtonAndDisplayCallingButtons() {
         signinButton.isHidden = true
         startCallButton.isHidden = false
         joinCallButton.isHidden = false
     }
 
-    private func showLoginButtonAndHideCallingButton() {
+    private func showLoginButtonAndHideCallingButtons() {
         signinButton.isHidden = false
         startCallButton.isHidden = true
         joinCallButton.isHidden = true
-    }
-
-    private func showSignOutButton() {
-        signOutButton.isHidden = false
-    }
-
-    private func hideSignOutButton() {
-        signOutButton.isHidden = true
     }
 
     private func showSignOutAlert() {
@@ -106,8 +221,7 @@ class IntroViewController: UIViewController {
         UIApplication.shared.open(urlLink)
     }
 
-    // MARK: Private Functions
-
+    // MARK: Action Handling
     private func loginAAD() {
         authHandler.acquireTokenInteractively(from: self) { [weak self] in
             guard let self = self else {
@@ -126,115 +240,15 @@ class IntroViewController: UIViewController {
         }
     }
 
-    @objc func loginButtonPressed(_ sender: UIButton) {
-        loginAAD()
-    }
-
-    @objc func joinCallPressed(_ sender: UIButton) {
+    private func joinCall() {
         let joinCallVc = JoinCallViewController()
         joinCallVc.createCallingContextFunction = createCallingContextFunction
         navigationController?.pushViewController(joinCallVc, animated: true)
     }
 
-    @objc func startCallPressed(_ sender: UIButton) {
+    private func startCall() {
         let lobbyVc = LobbyViewController()
         lobbyVc.callingContext = createCallingContextFunction()
         navigationController?.pushViewController(lobbyVc, animated: true)
     }
-
-    @objc func signOutButtonPressed(_ sender: UIButton) {
-        showSignOutAlert()
-    }
-
-    private func layoutTopBar() {
-
-    }
-
-    private func layoutMainContainer() {
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                titleLabel,
-                builtWithView
-            ]
-        )
-        stackView.axis = .vertical
-
-        view.addSubview(stackView)
-        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
-    }
-
-    private func layoutButtons() {
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                signinButton,
-                startCallButton,
-                joinCallButton
-            ]
-        )
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        view.addSubview(stackView)
-        signinButton.expandHorizontallyInSuperView()
-        startCallButton.expandHorizontallyInSuperView()
-        joinCallButton.expandHorizontallyInSuperView()
-        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
-
-        stackView.pinToBottom(withMargin: view.safeAreaInsets.bottom + 34)
-    }
-
-    // MARK: - Control constructors
-    private var titleLabel: FluentUI.Label = {
-        let sampleLabel = FluentUI.Label(style: .title1)
-
-        sampleLabel.text = "Video calling sample"
-        return sampleLabel
-    }()
-
-    private var builtWithView: UIView = {
-        let builtWithLabel = FluentUI.Label(style: .body)
-        builtWithLabel.text = "Built with"
-
-        let acsImageLabel = FluentUI.Label(style: .button1)
-        acsImageLabel.text = "Azure Communication Services"
-
-        let vertStack = UIStackView(arrangedSubviews: [
-            builtWithLabel,
-            acsImageLabel
-        ])
-        vertStack.axis = .vertical
-
-        return vertStack
-    }()
-
-    private lazy var signinButton: FluentUI.Button = {
-        let button = FluentUI.Button(style: .primaryFilled)
-        button.setTitle("Sign in", for: .normal)
-        button.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
-
-        return button
-    }()
-
-    private lazy var startCallButton: FluentUI.Button = {
-        let button = FluentUI.Button(style: .primaryFilled)
-        button.setTitle("Start a call", for: .normal)
-        button.addTarget(self, action: #selector(startCallPressed), for: .touchUpInside)
-
-        return button
-    }()
-
-    private lazy var joinCallButton: FluentUI.Button = {
-        let button = FluentUI.Button(style: .primaryOutline)
-        button.setTitle("Join a call", for: .normal)
-        button.addTarget(self, action: #selector(joinCallPressed), for: .touchUpInside)
-
-        return button
-    }()
-
-    private lazy var signOutButton: FluentUI.Button = {
-        let button = FluentUI.Button(style: .secondaryOutline)
-        button.setTitle("Sign out", for: .normal)
-        button.addTarget(self, action: #selector(signOutButtonPressed), for: .touchUpInside)
-
-        return button
-    }()
 }
