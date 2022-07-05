@@ -164,6 +164,7 @@ class IntroViewController: UIViewController {
     private func handleAuthState() {
         userAvatar.state.image = authHandler.userAvatar
         userAvatar.state.primaryText = authHandler.userDisplayName
+        userDisplayName.text = authHandler.userDisplayName
 
         switch authHandler.authStatus {
         case .authorized:
