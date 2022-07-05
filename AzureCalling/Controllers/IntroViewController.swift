@@ -146,6 +146,7 @@ class IntroViewController: UIViewController {
         topBar.pinToTop()
         topBar.expandHorizontallyInSuperView()
         topBar.addSubview(signOutButton)
+        signOutButton.expandVerticallyInSuperView()
         signOutButton.pinToRight()
 
         userAvatar = MSFAvatar(style: .default, size: .small)

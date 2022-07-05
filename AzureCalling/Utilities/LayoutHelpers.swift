@@ -16,6 +16,16 @@ extension UIView {
             trailingAnchor.constraint(equalTo: superView.trailingAnchor, constant: -offset)
         ])
     }
+    func expandVerticallyInSuperView(withEqualMargin offset: CGFloat = 0) {
+        guard let superView = self.superview else {
+            return
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: superView.topAnchor, constant: offset),
+            bottomAnchor.constraint(equalTo: superView.bottomAnchor, constant: -offset)
+        ])
+    }
 
     func pinToBottom(withMargin offset: CGFloat = 8) {
         guard let superView = self.superview else {

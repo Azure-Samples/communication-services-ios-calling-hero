@@ -80,18 +80,17 @@ class AADAuthHandler {
         // Attempt silent login with existing account, falling back to interactive.
         Task {
             do {
-                guard let account = try await loadMsalAccount() else {
-                    completionHandler(AADAuthError.noMsalAccount)
-                    return
+                var result: MSALResult?
+                if let account = try await loadMsalAccount() {
+                    result = try? await loginSilently(account: account)
                 }
-                var result = try? await loginSilently(account: account)
 
                 if result == nil {
                     result = try await loginInteractively(from: presentingVc)
                 }
 
                 updateAccessToken(result?.accessToken)
-                currentAccount = result?.account ?? account
+                currentAccount = result?.account
 
                 let profile = try await getProfile()
                 userDisplayName = profile.displayName
@@ -130,6 +129,7 @@ class AADAuthHandler {
     }
 
     // MARK: Private Functions
+    @MainActor
     private func signOut(from viewController: UIViewController) async throws {
         guard let appContext = self.applicationContext,
               let account = self.currentAccount else {
@@ -173,16 +173,17 @@ class AADAuthHandler {
         return try await appContext.acquireTokenSilent(with: parameters)
     }
 
+    @MainActor
     private func loginInteractively(from viewController: UIViewController) async throws -> MSALResult {
         guard let appContext = applicationContext else {
             throw AADAuthError.noApplicationContext
         }
 
-        let webViewParamaters = MSALWebviewParameters(authPresentationViewController: viewController)
-        webViewParamaters.webviewType = .wkWebView
+        let webViewParameters = MSALWebviewParameters(authPresentationViewController: viewController)
+        webViewParameters.webviewType = .wkWebView
 
         let parameters = MSALInteractiveTokenParameters(scopes: appSettings.aadScopes,
-                                                        webviewParameters: webViewParamaters)
+                                                        webviewParameters: webViewParameters)
         parameters.promptType = .selectAccount
         return try await appContext.acquireToken(with: parameters)
     }
