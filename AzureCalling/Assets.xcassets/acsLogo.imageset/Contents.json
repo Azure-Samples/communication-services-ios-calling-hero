@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "beab6721 a8e3 4493 b90b 351ab8c715db.png",
+      "filename" : "acsLogo@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "beab6721 a8e3 4493 b90b 351ab8c715db-2.png",
+      "filename" : "acsLogo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "beab6721 a8e3 4493 b90b 351ab8c715db-3.png",
+      "filename" : "acsLogo@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
