@@ -107,6 +107,7 @@ class IntroViewController: UIViewController {
             UIImageView(image: UIImage(named: "acsLogo")),
             acsImageLabel
         ])
+        acsLabelStack.spacing = 8
 
         let labelContainer = UIView()
         labelContainer.translatesAutoresizingMaskIntoConstraints = false
