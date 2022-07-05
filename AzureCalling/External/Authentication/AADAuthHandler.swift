@@ -13,6 +13,15 @@ enum AADAuthStatus {
     case authorized
 }
 
+enum AADAuthError: Error {
+    case msalNotConfigured
+    case noApplicationContext
+    case noMsalAccount
+    case missingAuthToken
+    case jsonParsingFailed
+    case badImageData
+}
+
 class AADAuthHandler {
     // MARK: Constants
     private let kAADAuthority: String = "https://login.microsoftonline.com/common"
@@ -65,195 +74,166 @@ class AADAuthHandler {
     }
 
     // MARK: Public API
-    func login(presentVc: UIViewController,
+    func login(presentingVc: UIViewController,
                completionHandler: @escaping (Error?) -> Void) {
 
-    }
-
-    func loadAccountAndSilentlyLogin(from viewController: UIViewController,
-                                     completionHandler: @escaping () -> Void) {
-        loadAccount { [weak self] account in
-            guard let account = account else {
-                print("ERROR: Missing MSAL Account")
-                completionHandler()
-                return
-            }
-
-            self?.acquireTokenSilently(from: viewController,
-                                       account: account,
-                                       completionHandler: completionHandler)
-        }
-    }
-
-    func acquireTokenInteractively(from viewController: UIViewController,
-                                   completionHandler: @escaping () -> Void) {
-        guard let applicationContext = self.applicationContext else {
-            return
-        }
-        let webViewParamaters = MSALWebviewParameters(authPresentationViewController: viewController)
-        webViewParamaters.webviewType = .wkWebView
-
-        let parameters = MSALInteractiveTokenParameters(scopes: appSettings.aadScopes, webviewParameters: webViewParamaters)
-        parameters.promptType = .selectAccount
-        parameters.completionBlockQueue = DispatchQueue.main
-
-        applicationContext.acquireToken(with: parameters) { [weak self] (result, error) in
-
-            if let error = error {
-                print("Could not acquire token: \(error)")
-                completionHandler()
-                return
-            }
-
-            guard let result = result else {
-                print("Could not acquire token: No result returned")
-                completionHandler()
-                return
-            }
-
-            self?.updateAccessToken(result.accessToken)
-            self?.updateCurrentAccount(result.account)
-            completionHandler()
-
-        }
-    }
-
-    func signOutCurrentAccount(from viewController: UIViewController,
-                               completionHandler: @escaping () -> Void) {
-        guard let applicationContext = self.applicationContext,
-              let account = self.currentAccount else {
-            completionHandler()
-            return
-        }
-
-        let webViewParamaters = MSALWebviewParameters(authPresentationViewController: viewController)
-
-        do {
-            let signoutParameters = MSALSignoutParameters(webviewParameters: webViewParamaters)
-            signoutParameters.signoutFromBrowser = false
-            signoutParameters.completionBlockQueue = DispatchQueue.main
-
-            applicationContext.signout(with: account, signoutParameters: signoutParameters) { [weak self] (_, error) in
-
-                if let error = error {
-                    print("MSAL couldn't sign out account with error: \(error)")
-                    completionHandler()
+        // Attempt silent login with existing account, falling back to interactive.
+        Task {
+            do {
+                guard let account = try await loadMsalAccount() else {
+                    completionHandler(AADAuthError.noMsalAccount)
                     return
                 }
+                var result = try? await loginSilently(account: account)
 
+                if result == nil {
+                    result = try await loginInteractively(from: presentingVc)
+                }
+
+                updateAccessToken(result?.accessToken)
+                currentAccount = result?.account ?? account
+
+                let profile = try await getProfile()
+                userDisplayName = profile.displayName
+
+                // Uncomment to obtain the user's avatar image if they have one
+//                let avatar = try? await getAvatarImage()
+//                userAvatar = avatar
+
+                DispatchQueue.main.async {
+                    completionHandler(nil)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completionHandler(error)
+                }
+            }
+        }
+    }
+
+    func signOut(presentingVc viewController: UIViewController,
+                 completionHandler: @escaping (Error?) -> Void) {
+        Task {
+            do {
+                try await signOut(from: viewController)
                 print("MSAL sign out completed")
-                self?.updateAccessToken(nil)
-                self?.updateCurrentAccount(nil)
-                completionHandler()
+                DispatchQueue.main.async {
+                    completionHandler(nil)
+                }
+            } catch {
+                print("MSAL couldn't sign out account with error: \(error)")
+                DispatchQueue.main.async {
+                    completionHandler(error)
+                }
             }
         }
     }
 
     // MARK: Private Functions
-
-    private func getProfile(completion: @escaping () -> Void) {
-        guard let avatarUrl = URL(string: kGraphHost.appending("/me/photos/48x48/$value")),
-              let detailsUrl = URL(string: kGraphHost.appending("/me")),
-              let accessToken = authToken else {
-            return
+    private func signOut(from viewController: UIViewController) async throws {
+        guard let appContext = self.applicationContext,
+              let account = self.currentAccount else {
+            throw AADAuthError.noApplicationContext
         }
-        var detailsRequest = URLRequest(url: detailsUrl)
-        detailsRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+        let signoutParameters = MSALSignoutParameters(
+            webviewParameters: MSALWebviewParameters(authPresentationViewController: viewController)
+        )
+        signoutParameters.signoutFromBrowser = false
+
+        try await appContext.signout(with: account, signoutParameters: signoutParameters)
+        updateAccessToken(nil)
+        currentAccount = nil
+        userAvatar = nil
+        userDisplayName = nil
+    }
+
+    private func loadMsalAccount() async throws -> MSALAccount? {
+        guard let applicationContext = self.applicationContext else {
+            throw AADAuthError.noApplicationContext
+        }
+        return try await withCheckedThrowingContinuation({ continuation in
+            let msalParameters = MSALParameters()
+            applicationContext.getCurrentAccount(with: msalParameters) { currentAccount, _, error in
+                if let err = error {
+                    continuation.resume(throwing: err)
+                } else {
+                    continuation.resume(returning: currentAccount)
+                }
+            }
+        })
+    }
+
+    private func loginSilently(account: MSALAccount) async throws -> MSALResult {
+        guard let appContext = applicationContext else {
+            throw AADAuthError.noApplicationContext
+        }
+
+        let parameters = MSALSilentTokenParameters(scopes: appSettings.aadScopes, account: account)
+        return try await appContext.acquireTokenSilent(with: parameters)
+    }
+
+    private func loginInteractively(from viewController: UIViewController) async throws -> MSALResult {
+        guard let appContext = applicationContext else {
+            throw AADAuthError.noApplicationContext
+        }
+
+        let webViewParamaters = MSALWebviewParameters(authPresentationViewController: viewController)
+        webViewParamaters.webviewType = .wkWebView
+
+        let parameters = MSALInteractiveTokenParameters(scopes: appSettings.aadScopes,
+                                                        webviewParameters: webViewParamaters)
+        parameters.promptType = .selectAccount
+        return try await appContext.acquireToken(with: parameters)
+    }
+
+    private func getProfile() async throws -> UserDetails {
+        guard let detailsUrl = URL(string: kGraphHost.appending("/me")),
+              let accessToken = authToken else {
+            throw AADAuthError.missingAuthToken
+        }
+        var request = URLRequest(url: detailsUrl)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+        return try await withCheckedThrowingContinuation({ continuation in
+            URLSession.shared.dataTask(with: request) { (data, _, error) in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                if let jsonData = data,
+                   let profile = try? JSONDecoder().decode(UserDetails.self, from: jsonData) {
+                    continuation.resume(returning: profile)
+                } else {
+                    continuation.resume(throwing: AADAuthError.jsonParsingFailed)
+                }
+            }.resume()
+        })
+    }
+
+    private func getAvatarImage() async throws -> UIImage {
+        guard let avatarUrl = URL(string: kGraphHost.appending("/me/photos/48x48/$value")),
+              let accessToken = authToken else {
+            throw AADAuthError.missingAuthToken
+        }
         var request = URLRequest(url: avatarUrl)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
-        URLSession.shared.dataTask(with: detailsRequest) { (data, _, _) in
-            if let jsonData = data,
-               let profile = try? JSONDecoder().decode(UserDetails.self, from: jsonData) {
-                self.userDisplayName = profile.displayName
-            }
-
+        return try await withCheckedThrowingContinuation({ continuation in
             URLSession.shared.dataTask(with: request) { imageData, _, error in
-                if let data = imageData {
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.userAvatar = image
-                            completion()
-                        }
-                    }
-                } else if let err = error {
-                    print(err)
-                    completion()
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                if let data = imageData,
+                   let image = UIImage(data: data) {
+                    continuation.resume(returning: image)
+                } else {
+                    continuation.resume(throwing: AADAuthError.badImageData)
                 }
             }.resume()
-        }.resume()
-    }
-
-    private func loadAccount(completionHandler: @escaping (MSALAccount?) -> Void) {
-        guard let applicationContext = self.applicationContext else {
-            completionHandler(nil)
-            return
-        }
-
-        let msalParameters = MSALParameters()
-        msalParameters.completionBlockQueue = DispatchQueue.main
-
-        applicationContext.getCurrentAccount(with: msalParameters) { [weak self] (currentAccount, _, error) in
-
-            if let error = error {
-                print("Couldn't query current account with error: \(error)")
-                completionHandler(nil)
-                return
-            }
-
-            if let currentAccount = currentAccount {
-                self?.updateCurrentAccount(currentAccount)
-                completionHandler(currentAccount)
-                return
-            }
-
-            self?.updateCurrentAccount(nil)
-            completionHandler(nil)
-        }
-    }
-
-    func acquireTokenSilently(from viewController: UIViewController,
-                              account: MSALAccount,
-                              completionHandler: @escaping () -> Void) {
-        guard let applicationContext = self.applicationContext else {
-            completionHandler()
-            return
-        }
-        let parameters = MSALSilentTokenParameters(scopes: appSettings.aadScopes, account: account)
-        parameters.completionBlockQueue = DispatchQueue.main
-
-        applicationContext.acquireTokenSilent(with: parameters) { [weak self] (result, error) in
-
-            if let error = error {
-                let nsError = error as NSError
-                if nsError.domain == MSALErrorDomain {
-                    if nsError.code == MSALError.interactionRequired.rawValue {
-                        DispatchQueue.main.async {
-                            self?.acquireTokenInteractively(from: viewController, completionHandler: completionHandler)
-                        }
-                        completionHandler()
-                        return
-                    }
-                }
-                print("Could not acquire token silently: \(error)")
-                completionHandler()
-                return
-            }
-
-            guard let result = result else {
-                print("Could not acquire token: No result returned")
-                completionHandler()
-                return
-            }
-
-            self?.updateAccessToken(result.accessToken)
-            self?.updateCurrentAccount(result.account)
-            self?.getProfile(completion: completionHandler)
-        }
-    }
-
-    private func updateCurrentAccount(_ account: MSALAccount?) {
-        self.currentAccount = account
+        })
     }
 
     private func updateAccessToken(_ token: String?) {

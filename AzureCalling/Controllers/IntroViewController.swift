@@ -60,7 +60,8 @@ class IntroViewController: UIViewController {
             action: { [weak self] _ in self?.joinCall() }
         )
         signOutButton = FluentUI.Button.createWith(
-            style: .borderless, title: "Sign out",
+            style: .borderless,
+            title: "Sign out",
             action: { [weak self] _ in self?.showSignOutAlert() }
         )
     }
@@ -224,18 +225,24 @@ class IntroViewController: UIViewController {
 
     // MARK: Action Handling
     private func loginAAD() {
-        authHandler.loadAccountAndSilentlyLogin(from: self) { [weak self] in
+        authHandler.login(presentingVc: self) { [weak self] error in
             guard let self = self else {
                 return
+            }
+            if let error = error {
+                print(error)
             }
             self.handleAuthState()
         }
     }
 
     private func signOutAAD() {
-        authHandler.signOutCurrentAccount(from: self) { [weak self] in
+        authHandler.signOut(presentingVc: self) { [weak self] error in
             guard let self = self else {
                 return
+            }
+            if let error = error {
+                print(error)
             }
             self.handleAuthState()
         }
