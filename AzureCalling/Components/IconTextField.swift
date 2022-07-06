@@ -8,9 +8,9 @@ import FluentUI
 
 @IBDesignable
 
-open class IconTextField: UITextField {
+final class IconTextField: UITextField {
 
-    open override var placeholder: String? {
+    override var placeholder: String? {
         didSet {
             let placeHolderColor = FluentUI.Colors.textSecondary
             self.attributedPlaceholder = NSAttributedString(string: placeholder ?? "",
@@ -18,7 +18,7 @@ open class IconTextField: UITextField {
         }
     }
 
-    open var image: UIImage? {
+    var image: UIImage? {
         didSet {
             guard image != nil else {
                 removeImage()
@@ -28,7 +28,7 @@ open class IconTextField: UITextField {
         }
     }
 
-    open var imageSize: CGSize? {
+    var imageSize: CGSize? {
         didSet {
             guard imageSize != nil else {
                 return
@@ -37,35 +37,35 @@ open class IconTextField: UITextField {
         }
     }
 
-    open var leftPadding: CGFloat = 22 {
+    var leftPadding: CGFloat = 22 {
         didSet {
             self.setNeedsDisplay()
         }
     }
 
-    open var imageViewLeftPadding: CGFloat = 20 {
+    var imageViewLeftPadding: CGFloat = 20 {
         didSet {
             self.setNeedsDisplay()
         }
     }
 
-    open var rightPadding: CGFloat = 16 {
+    var rightPadding: CGFloat = 16 {
         didSet {
             self.setNeedsDisplay()
         }
     }
 
-    public init() {
+    init() {
         super.init(frame: .zero)
         initialize()
     }
 
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
     }
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
@@ -104,19 +104,19 @@ open class IconTextField: UITextField {
         return UIEdgeInsets(top: 0, left: left, bottom: 0, right: rightPadding)
     }
 
-    open override func textRect(forBounds bounds: CGRect) -> CGRect {
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: getPaddingEdgeInsets())
     }
 
-    open override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: getPaddingEdgeInsets())
     }
 
-    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: getPaddingEdgeInsets())
     }
 
-    open override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         let leftViewWidth = leftView?.frame.size.width ?? 0
         let leftViewHeight = leftView?.frame.size.height ?? 0
         let verticalCenteredInset = (bounds.height - leftViewHeight) / 2
