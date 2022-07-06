@@ -30,8 +30,6 @@ class AADAuthHandler {
     // MARK: Properties
     private (set) var authStatus: AADAuthStatus
     private (set) var authToken: String?
-    private (set) var userAvatar: UIImage?
-    private (set) var userDisplayName: String?
 
     private var appSettings: AppSettings
     private var applicationContext: MSALPublicClientApplication?
@@ -74,58 +72,32 @@ class AADAuthHandler {
     }
 
     // MARK: Public API
-    func login(presentingVc: UIViewController,
-               completionHandler: @escaping (Error?) -> Void) {
-
+    func login(presentingVc: UIViewController) async throws -> UserDetails {
         // Attempt silent login with existing account, falling back to interactive.
-        Task {
-            do {
-                var result: MSALResult?
-                if let account = try await loadMsalAccount() {
-                    result = try? await loginSilently(account: account)
-                }
-
-                if result == nil {
-                    result = try await loginInteractively(from: presentingVc)
-                }
-
-                updateAccessToken(result?.accessToken)
-                currentAccount = result?.account
-
-                let profile = try await getProfile()
-                userDisplayName = profile.displayName
-
-                // Uncomment to obtain the user's avatar image if they have one
-//                let avatar = try? await getAvatarImage()
-//                userAvatar = avatar
-
-                DispatchQueue.main.async {
-                    completionHandler(nil)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completionHandler(error)
-                }
-            }
+        var result: MSALResult?
+        if let account = try await loadMsalAccount() {
+            result = try? await loginSilently(account: account)
         }
+
+        if result == nil {
+            result = try await loginInteractively(from: presentingVc)
+        }
+
+        var userDetails = UserDetails(authToken: result?.accessToken)
+        updateAccessToken(result?.accessToken)
+        currentAccount = result?.account
+
+        userDetails.userProfile = try await getProfile()
+
+        // Uncomment to obtain the user's avatar image if they have one
+        let avatar = try? await getAvatarImage()
+        userDetails.avatar = avatar
+        return userDetails
     }
 
-    func signOut(presentingVc viewController: UIViewController,
-                 completionHandler: @escaping (Error?) -> Void) {
-        Task {
-            do {
-                try await signOut(from: viewController)
-                print("MSAL sign out completed")
-                DispatchQueue.main.async {
-                    completionHandler(nil)
-                }
-            } catch {
-                print("MSAL couldn't sign out account with error: \(error)")
-                DispatchQueue.main.async {
-                    completionHandler(error)
-                }
-            }
-        }
+    func signOut(presentingVc viewController: UIViewController) async throws {
+        try await signOut(from: viewController)
+        print("MSAL sign out completed")
     }
 
     // MARK: Private Functions
@@ -144,8 +116,6 @@ class AADAuthHandler {
         try await appContext.signout(with: account, signoutParameters: signoutParameters)
         updateAccessToken(nil)
         currentAccount = nil
-        userAvatar = nil
-        userDisplayName = nil
     }
 
     private func loadMsalAccount() async throws -> MSALAccount? {
@@ -188,7 +158,7 @@ class AADAuthHandler {
         return try await appContext.acquireToken(with: parameters)
     }
 
-    private func getProfile() async throws -> UserDetails {
+    private func getProfile() async throws -> UserProfile {
         guard let detailsUrl = URL(string: kGraphHost.appending("/me")),
               let accessToken = authToken else {
             throw AADAuthError.missingAuthToken
@@ -204,7 +174,7 @@ class AADAuthHandler {
                 }
 
                 if let jsonData = data,
-                   let profile = try? JSONDecoder().decode(UserDetails.self, from: jsonData) {
+                   let profile = try? JSONDecoder().decode(UserProfile.self, from: jsonData) {
                     continuation.resume(returning: profile)
                 } else {
                     continuation.resume(throwing: AADAuthError.jsonParsingFailed)

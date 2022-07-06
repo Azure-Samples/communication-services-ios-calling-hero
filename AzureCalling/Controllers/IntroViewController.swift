@@ -14,6 +14,8 @@ class IntroViewController: UIViewController {
     var authHandler: AADAuthHandler!
     var createCallingContextFunction: (() -> CallingContext)!
 
+    private var userDetails: UserDetails?
+
     private var signinButton: FluentUI.Button!
     private var startCallButton: FluentUI.Button!
     private var joinCallButton: FluentUI.Button!
@@ -164,9 +166,9 @@ class IntroViewController: UIViewController {
 
     // MARK: - Authentication State Handling
     private func handleAuthState() {
-        userAvatar.state.image = authHandler.userAvatar
-        userAvatar.state.primaryText = authHandler.userDisplayName
-        userDisplayName.text = authHandler.userDisplayName
+        userAvatar.state.image = userDetails?.avatar
+        userAvatar.state.primaryText = userDetails?.userProfile?.displayName
+        userDisplayName.text = userDetails?.userProfile?.displayName
 
         switch authHandler.authStatus {
         case .authorized:
@@ -228,26 +230,24 @@ class IntroViewController: UIViewController {
 
     // MARK: Action Handling
     private func loginAAD() {
-        authHandler.login(presentingVc: self) { [weak self] error in
-            guard let self = self else {
-                return
-            }
-            if let error = error {
+        Task {
+            do {
+                userDetails = try await authHandler.login(presentingVc: self)
+                handleAuthState()
+            } catch {
                 print(error)
             }
-            self.handleAuthState()
         }
     }
 
     private func signOutAAD() {
-        authHandler.signOut(presentingVc: self) { [weak self] error in
-            guard let self = self else {
-                return
+        Task {
+            do {
+                try await authHandler.signOut(presentingVc: self)
+                handleAuthState()
+            } catch {
+                print("MSAL couldn't sign out account with error: \(error)")
             }
-            if let error = error {
-                print(error)
-            }
-            self.handleAuthState()
         }
     }
 
