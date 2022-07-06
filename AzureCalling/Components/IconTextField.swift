@@ -37,19 +37,13 @@ final class IconTextField: UITextField {
         }
     }
 
-    var leftPadding: CGFloat = 22 {
+    var padding = UIEdgeInsets(top: 13, left: 22, bottom: 13, right: 16) {
         didSet {
-            self.setNeedsDisplay()
+            setNeedsDisplay()
         }
     }
 
     var imageViewLeftPadding: CGFloat = 20 {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-
-    var rightPadding: CGFloat = 16 {
         didSet {
             self.setNeedsDisplay()
         }
@@ -96,13 +90,16 @@ final class IconTextField: UITextField {
     }
 
     private func getPaddingEdgeInsets() -> UIEdgeInsets {
-        var left = leftPadding
+        var left = padding.left
         if image != nil {
             let leftViewOriginX = leftView?.frame.origin.x ?? 0
             let leftViewWidth = leftView?.frame.size.width ?? 0
-            left = leftViewOriginX + leftViewWidth + leftPadding
+            left = leftViewOriginX + leftViewWidth
         }
-        return UIEdgeInsets(top: 0, left: left, bottom: 0, right: rightPadding)
+        return UIEdgeInsets(top: padding.top,
+                            left: left,
+                            bottom: padding.bottom,
+                            right: padding.right)
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
