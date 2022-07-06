@@ -14,7 +14,7 @@ final class IconTextField: UITextField {
         didSet {
             let placeHolderColor = FluentUI.Colors.textSecondary
             self.attributedPlaceholder = NSAttributedString(string: placeholder ?? "",
-                                                            attributes: [.foregroundColor: placeHolderColor])
+                                                            attributes: [.foregroundColor: placeHolderColor, .font: FluentUI.Fonts.body])
         }
     }
 
@@ -73,6 +73,7 @@ final class IconTextField: UITextField {
     private func initialize() {
         self.backgroundColor = .white
         self.textColor = FluentUI.Colors.textPrimary
+        self.font = FluentUI.Fonts.body
         UITextField.appearance().tintColor = FluentUI.Colors.iconSecondary
         self.translatesAutoresizingMaskIntoConstraints = false
     }
