@@ -21,11 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window = UIWindow(windowScene: winScene)
-        let navVc = UINavigationController(rootViewController: RootViewController())
+        let navVc = UINavigationController(rootViewController: IntroViewController())
         window?.rootViewController = navVc
 
         if let navigationViewController = window?.rootViewController as? UINavigationController,
-           let rootVc = navigationViewController.visibleViewController as? RootViewController,
+           let rootVc = navigationViewController.visibleViewController as? IntroViewController,
            let appDelegate = UIApplication.shared.delegate as? AppDelegate {
 
             rootVc.authHandler = appDelegate.authHandler
