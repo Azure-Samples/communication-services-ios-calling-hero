@@ -25,7 +25,7 @@ class IntroViewController: UIViewController {
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = ThemeColor.lightSurfacesSecondary
         createControls()
         layoutView()
 
@@ -67,7 +67,6 @@ class IntroViewController: UIViewController {
     }
 
     private func layoutView() {
-        view.backgroundColor = ThemeColor.lightSurfacesSecondary
         layoutButtons()
         layoutMainContainer()
         layoutTopBar()

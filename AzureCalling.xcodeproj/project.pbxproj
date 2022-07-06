@@ -39,6 +39,7 @@
 		75495F59286E1910004E4313 /* LayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F58286E1910004E4313 /* LayoutHelpers.swift */; };
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
 		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
+		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
 		8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743152263373C5000D0BCE /* AudioSessionManager.swift */; };
 		8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */; };
@@ -107,6 +108,7 @@
 		75495F58286E1910004E4313 /* LayoutHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutHelpers.swift; sourceTree = "<group>"; };
 		755732FD28733B410072A021 /* FluentUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluentUiExtensions.swift; sourceTree = "<group>"; };
 		7557330028739D8E0072A021 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
+		755733042875E9F00072A021 /* PaddingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingContainer.swift; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
 		8D743152263373C5000D0BCE /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelectionDataSource.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */,
+				1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -198,10 +201,11 @@
 				1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */,
 				8D74315C26337420000D0BCE /* AudioDeviceType.swift */,
 				8D743152263373C5000D0BCE /* AudioSessionManager.swift */,
+				755732FD28733B410072A021 /* FluentUiExtensions.swift */,
 				75495F58286E1910004E4313 /* LayoutHelpers.swift */,
 				1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */,
+				755733042875E9F00072A021 /* PaddingContainer.swift */,
 				1F2BEA39262A46EC00D98266 /* ThemeColor.swift */,
-				755732FD28733B410072A021 /* FluentUiExtensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -263,7 +267,6 @@
 				1F7CD3ED25C1E9E80081D8F1 /* CallViewController.swift */,
 				1F7CD3EE25C1E9E80081D8F1 /* HangupConfirmationViewController.swift */,
 				1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */,
-				1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */,
 				985A0CEB2641E71600147676 /* BottomDrawerViewController.swift */,
 				1F7CD3DE25C1E9E80081D8F1 /* Main.storyboard */,
 			);
@@ -453,6 +456,7 @@
 				986654FD264352A000395329 /* ActiveSpeakerView.swift in Sources */,
 				8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */,
 				21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */,
+				755733052875E9F00072A021 /* PaddingContainer.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
 				1F25182425EF00C3004A9143 /* JoinCallType.swift in Sources */,
