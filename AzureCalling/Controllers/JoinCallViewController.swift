@@ -139,18 +139,34 @@ private extension JoinCallViewController {
         ])
         callTypeSelector.backgroundColor = .white
         callTypeSelector.addAction(UIAction(handler: handleSegmentChanged), for: .valueChanged)
-        view.addSubview(callTypeSelector)
-        callTypeSelector.expandHorizontallyInSuperView()
-        callTypeSelector.pinToTop()
 
-        let scroller = UIScrollView()
         let formView = setUpForm()
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                callTypeSelector,
+                formView
+            ])
+        stackView.axis = .vertical
+
+        view.addSubview(stackView)
+        stackView.pinToTop()
+        stackView.expandHorizontallyInSuperView()
+
+//        view.addSubview(callTypeSelector)
+//        callTypeSelector.expandHorizontallyInSuperView()
+//        callTypeSelector.pinToTop()
+
+//        let scroller = UIScrollView()
+
+//        view.addSubview(formView)
+//        formView.expandHorizontallyInSuperView()
+//        formView.pinTopTo(view: callTypeSelector)
 
         actionButton = FluentUI.Button.createWith(
             style: .primaryFilled, title: "Next",
             action: { [weak self] _ in self?.handleAction() }
         )
-        view.addSubview(scroller)
+//        view.addSubview(scroller)
         actionButton.pinToBottom()
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
     }
@@ -159,12 +175,13 @@ private extension JoinCallViewController {
         typeTitle = FluentUI.Label.createWith(style: .footnote,
                                                    colorStyle: .secondary,
                                                    value: "Group Call ID")
-        joinIdTextField = UITextField()
+        joinIdTextField = IconTextField()
         joinIdTextField.delegate = self
-        joinIdTextField.attributedPlaceholder = NSAttributedString(
-            string: groupIdPlaceHolder,
-            attributes: [.foregroundColor: ThemeColor.gray300]
-        )
+        joinIdTextField.placeholder = groupIdPlaceHolder
+//        joinIdTextField.attributedPlaceholder = NSAttributedString(
+//            string: groupIdPlaceHolder,
+//            attributes: [.foregroundColor: ThemeColor.gray300]
+//        )
 
         let paddedTextField = PaddingContainer(
             containing: joinIdTextField,

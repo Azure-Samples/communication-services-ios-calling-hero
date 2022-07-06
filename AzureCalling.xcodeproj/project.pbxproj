@@ -36,14 +36,11 @@
 		1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3FA25C1E9E80081D8F1 /* SceneDelegate.swift */; };
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
+		69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* IconTextField.swift */; };
 		75495F59286E1910004E4313 /* LayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F58286E1910004E4313 /* LayoutHelpers.swift */; };
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
 		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
 		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
-		69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* IconTextField.swift */; };
-		75495F55286CF6D7004E4313 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F54286CF6D7004E4313 /* LoginViewController.swift */; };
-		75495F57286CF8D0004E4313 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F56286CF8D0004E4313 /* RootViewController.swift */; };
-		75AC9828286CCE230000D79A /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75AC9827286CCE230000D79A /* IntroViewController.xib */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
 		8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743152263373C5000D0BCE /* AudioSessionManager.swift */; };
 		8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */; };
@@ -150,7 +147,7 @@
 				1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */,
 				1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */,
 				1F7CD3E825C1E9E80081D8F1 /* AzureCalling.entitlements */,
-                69900DF128756613005C9EF5 /* Components */,
+				69900DF128756613005C9EF5 /* Components */,
 				1F7CD3EA25C1E9E80081D8F1 /* Controllers */,
 				1F7CD3E125C1E9E80081D8F1 /* External */,
 				1F7CD3F925C1E9E80081D8F1 /* Info.plist */,
@@ -158,7 +155,6 @@
 				75495F53286CF680004E4313 /* PreviousVersion */,
 				1F7CD3FA25C1E9E80081D8F1 /* SceneDelegate.swift */,
 				21C19BD125C8098F00EB0991 /* Utilities */,
-				755732FF28735CBC0072A021 /* Views */,
 			);
 			path = AzureCalling;
 			sourceTree = "<group>";
@@ -285,13 +281,6 @@
 				1F7CD3DE25C1E9E80081D8F1 /* Main.storyboard */,
 			);
 			path = PreviousVersion;
-			sourceTree = "<group>";
-		};
-		755732FF28735CBC0072A021 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		989F61952649D72F000C5668 /* DataSource */ = {
