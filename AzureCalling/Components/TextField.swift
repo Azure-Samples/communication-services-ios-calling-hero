@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import FluentUI
 
 @IBDesignable
 
@@ -11,7 +12,7 @@ open class TextField: UITextField {
 
     open override var placeholder: String? {
         didSet {
-            let placeHolderColor = ThemeColor.textSecondary
+            let placeHolderColor = FluentUI.Colors.textSecondary
             self.attributedPlaceholder = NSAttributedString(string: placeholder ?? "",
                                                             attributes: [.foregroundColor: placeHolderColor])
         }
@@ -69,23 +70,24 @@ open class TextField: UITextField {
         initialize()
     }
 
-    open func initialize() {
+    private func initialize() {
         self.backgroundColor = .white
-        UITextField.appearance().tintColor = ThemeColor.iconSecondary
+        self.textColor = FluentUI.Colors.textPrimary
+        UITextField.appearance().tintColor = FluentUI.Colors.iconSecondary
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setImage() {
+    private func setImage() {
         self.leftViewMode = .always
         let imageRect = CGRect(x: 0, y: 0, width: imageSize?.width ?? 0, height: imageSize?.height ?? 0)
         let imageView = UIImageView(frame: imageRect)
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
-        imageView.tintColor = ThemeColor.iconSecondary
+        imageView.tintColor = FluentUI.Colors.iconSecondary
         self.leftView = imageView
     }
 
-    func removeImage() {
+    private func removeImage() {
         leftViewMode = .never
         leftView = nil
         self.imageSize = nil
