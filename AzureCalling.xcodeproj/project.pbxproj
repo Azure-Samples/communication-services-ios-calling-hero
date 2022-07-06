@@ -37,7 +37,7 @@
 		1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3FA25C1E9E80081D8F1 /* SceneDelegate.swift */; };
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
-		69900DF92875FDDE005C9EF5 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* TextField.swift */; };
+		69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* IconTextField.swift */; };
 		75495F55286CF6D7004E4313 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F54286CF6D7004E4313 /* LoginViewController.swift */; };
 		75495F57286CF8D0004E4313 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F56286CF8D0004E4313 /* RootViewController.swift */; };
 		75AC9828286CCE230000D79A /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75AC9827286CCE230000D79A /* IntroViewController.xib */; };
@@ -104,7 +104,7 @@
 		21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedView.swift; sourceTree = "<group>"; };
 		21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedButton.swift; sourceTree = "<group>"; };
 		21F3B94725473BF600BD9F91 /* AzureCalling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzureCalling.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		69900DF82875FDDD005C9EF5 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		69900DF82875FDDD005C9EF5 /* IconTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextField.swift; sourceTree = "<group>"; };
 		6D911F99B1E08BC60AF9272D /* Pods-AzureCalling.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.debug.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.debug.xcconfig"; sourceTree = "<group>"; };
 		6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.release.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.release.xcconfig"; sourceTree = "<group>"; };
 		75495F54286CF6D7004E4313 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -259,7 +259,7 @@
 		69900DF128756613005C9EF5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				69900DF82875FDDD005C9EF5 /* TextField.swift */,
+				69900DF82875FDDD005C9EF5 /* IconTextField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -460,7 +460,7 @@
 				986654FD264352A000395329 /* ActiveSpeakerView.swift in Sources */,
 				8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */,
 				21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */,
-				69900DF92875FDDE005C9EF5 /* TextField.swift in Sources */,
+				69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
 				1F25182425EF00C3004A9143 /* JoinCallType.swift in Sources */,

@@ -8,7 +8,7 @@ import FluentUI
 
 @IBDesignable
 
-open class TextField: UITextField {
+open class IconTextField: UITextField {
 
     open override var placeholder: String? {
         didSet {
