@@ -11,7 +11,9 @@ enum ThemeColor {
 
     static var gray300 = UIColor(named: "gray300")!
 
-    static let iconSecondary = UIColor(named: "iconSecondary")!
+    static var iconSecondary = UIColor(named: "iconSecondary")!
+
+    static var textPrimary = UIColor(named: "textPrimary")!
 
     static var textSecondary = UIColor(named: "textSecondary")!
 
