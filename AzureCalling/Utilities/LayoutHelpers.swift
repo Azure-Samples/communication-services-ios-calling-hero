@@ -47,6 +47,16 @@ extension UIView {
         ])
     }
 
+    func flexibleTopPin(withMargin offset: CGFloat = 8) {
+        guard let superView = self.superview else {
+            return
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(greaterThanOrEqualTo: superView.safeAreaLayoutGuide.topAnchor, constant: offset)
+        ])
+    }
+
     func pinToLeft(withMargin offset: CGFloat = 8) {
         guard let superView = self.superview else {
             return

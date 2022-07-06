@@ -14,12 +14,13 @@ class JoinCallViewController: UIViewController {
 
     // MARK: Properties
     var createCallingContextFunction: (() -> CallingContext)?
+    var displayName: String?
 
     private var joinCallType: JoinCallType = .groupCall
 
     private var typeTitle: FluentUI.Label!
-    private var joinIdTextField: UITextField!
-    private var displayNameField: UITextField!
+    private var joinIdTextField: IconTextField!
+    private var displayNameField: IconTextField!
     private var callTypeSelector: FluentUI.SegmentedControl!
     private var actionButton: FluentUI.Button!
 
@@ -87,14 +88,14 @@ class JoinCallViewController: UIViewController {
 //    }
 
     private func promptInvalidJoinIdInput() {
-        var alertMessgae = ""
+        var alertMessage = ""
         switch joinCallType {
         case .groupCall:
-            alertMessgae = "The meeting ID you entered is invalid. Please try again."
+            alertMessage = "The meeting ID you entered is invalid. Please try again."
         case .teamsMeeting:
-            alertMessgae = "The meeting link you entered is invalid. Please try again."
+            alertMessage = "The meeting link you entered is invalid. Please try again."
         }
-        let alert = UIAlertController(title: "Unable to join", message: alertMessgae, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Unable to join", message: alertMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
         self.present(alert, animated: true, completion: nil)
     }
@@ -102,10 +103,13 @@ class JoinCallViewController: UIViewController {
     // MARK: Actions
     private func handleSegmentChanged(action: UIAction) {
         if let callType = JoinCallType(rawValue: callTypeSelector.selectedSegmentIndex) {
-
+            switch callType {
+            case .groupCall:
+                typeTitle.text = "Group call"
+            case .teamsMeeting:
+                typeTitle.text = "Teams meeting"
+            }
         }
-
-        print(action)
     }
 
     // Action button
@@ -123,8 +127,17 @@ extension JoinCallViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
-        updateJoinCallButton(forInput: updatedString)
+
+        if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
+            // TODO: add validation here
+            if textField == displayNameField {
+                displayName = updatedString
+            } else {
+                // TODO: validate the group/meeting ID
+                let isValid = UUID(uuidString: updatedString) != nil
+
+            }
+        }
         return true
     }
 }
@@ -147,28 +160,28 @@ private extension JoinCallViewController {
                 formView
             ])
         stackView.axis = .vertical
-
+        stackView.spacing = 8
         view.addSubview(stackView)
         stackView.pinToTop()
         stackView.expandHorizontallyInSuperView()
 
-//        view.addSubview(callTypeSelector)
-//        callTypeSelector.expandHorizontallyInSuperView()
-//        callTypeSelector.pinToTop()
-
-//        let scroller = UIScrollView()
-
-//        view.addSubview(formView)
-//        formView.expandHorizontallyInSuperView()
-//        formView.pinTopTo(view: callTypeSelector)
+        let buttonContainer = UIView()
+        buttonContainer.backgroundColor = ThemeColor.lightSurfacesSecondary
 
         actionButton = FluentUI.Button.createWith(
             style: .primaryFilled, title: "Next",
             action: { [weak self] _ in self?.handleAction() }
         )
-//        view.addSubview(scroller)
+        buttonContainer.addSubview(actionButton)
+        actionButton.flexibleTopPin()
         actionButton.pinToBottom()
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
+        view.addSubview(buttonContainer)
+        buttonContainer.expandHorizontallyInSuperView()
+        buttonContainer.pinToBottom()
+        NSLayoutConstraint.activate([
+            buttonContainer.topAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
     }
 
     func setUpForm() -> UIView {
@@ -178,29 +191,13 @@ private extension JoinCallViewController {
         joinIdTextField = IconTextField()
         joinIdTextField.delegate = self
         joinIdTextField.placeholder = groupIdPlaceHolder
-//        joinIdTextField.attributedPlaceholder = NSAttributedString(
-//            string: groupIdPlaceHolder,
-//            attributes: [.foregroundColor: ThemeColor.gray300]
-//        )
+        joinIdTextField.padding = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
 
-        let paddedTextField = PaddingContainer(
-            containing: joinIdTextField,
-            padding: UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
-        )
-        paddedTextField.backgroundColor = .white
-
-        displayNameField = UITextField()
+        displayNameField = IconTextField()
         displayNameField.delegate = self
-        displayNameField.attributedPlaceholder = NSAttributedString(
-            string: "Enter a name",
-            attributes: [.foregroundColor: ThemeColor.gray300]
-        )
-
-        let paddedNameField = PaddingContainer(
-            containing: displayNameField,
-            padding: UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
-        )
-        paddedNameField.backgroundColor = .white
+        displayNameField.placeholder = "Enter a name"
+        displayNameField.text = displayName
+        displayNameField.padding = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
 
         // Add controls to the stack
         let formStack = UIStackView(arrangedSubviews: [
@@ -208,7 +205,7 @@ private extension JoinCallViewController {
                 containing: typeTitle,
                 padding: UIEdgeInsets(top: 24, left: 16, bottom: 8, right: 16)
             ),
-            paddedTextField,
+            joinIdTextField,
             PaddingContainer(
                 containing:
                     FluentUI.Label.createWith(
@@ -226,7 +223,7 @@ private extension JoinCallViewController {
                 ),
                 padding: UIEdgeInsets(top: 24, left: 16, bottom: 8, right: 16)
             ),
-            paddedNameField,
+            displayNameField,
             PaddingContainer(
                 containing:
                     FluentUI.Label.createWith(
