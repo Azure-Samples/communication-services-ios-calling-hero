@@ -94,4 +94,11 @@ extension UIView {
             heightAnchor.constraint(equalToConstant: size.height)
         ])
     }
+
+    func fixHeightTo(height: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
 }

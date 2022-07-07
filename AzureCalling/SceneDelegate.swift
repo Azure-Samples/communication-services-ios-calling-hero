@@ -5,6 +5,7 @@
 
 import UIKit
 import MSAL
+import FluentUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,8 +22,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window = UIWindow(windowScene: winScene)
-        let navVc = UINavigationController(rootViewController: IntroViewController())
-        window?.rootViewController = navVc
+        let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
+        fluentNavVc.view.backgroundColor = .white
+        fluentNavVc.view.tintColor = FluentUI.Colors.textSecondary
+        fluentNavVc.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
+
+        fluentNavVc.navigationBar.backgroundColor = .white
+        fluentNavVc.navigationBar.topItem?.backButtonDisplayMode = .minimal
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        fluentNavVc.navigationBar.scrollEdgeAppearance = appearance
+        window?.rootViewController = fluentNavVc
 
         if let navigationViewController = window?.rootViewController as? UINavigationController,
            let rootVc = navigationViewController.visibleViewController as? IntroViewController,

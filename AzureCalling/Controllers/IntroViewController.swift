@@ -258,8 +258,7 @@ class IntroViewController: UIViewController {
     }
 
     private func startCall() {
-        let lobbyVc = LobbyViewController()
-        lobbyVc.callingContext = createCallingContextFunction()
-        navigationController?.pushViewController(lobbyVc, animated: true)
+        let startCallVc = StartCallViewController()
+        navigationController?.pushViewController(startCallVc, animated: true)
     }
 }
