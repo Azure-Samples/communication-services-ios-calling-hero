@@ -24,15 +24,25 @@ class JoinCallViewController: UIViewController {
     private var callTypeSelector: FluentUI.SegmentedControl!
     private var actionButton: FluentUI.Button!
 
+    // Handle keyboard scrolling the content
+    private var bottomConstraint: NSLayoutConstraint!
+    private var keyboardObserver: NSObjectProtocol!
+
     // MARK: UIViewController lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Join"
+        view.backgroundColor = .white
 
         setupUI()
 
         updateJoinCallButton(forInput: nil)
 
+        keyboardObserver = NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil, queue: .main,
+            using: handleKeyboardNotification(notification:)
+        )
         // Dismiss keyboard if tapping outside
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
@@ -41,9 +51,35 @@ class JoinCallViewController: UIViewController {
     deinit {
         displayNameField?.delegate = nil
         joinIdTextField?.delegate = nil
+        NotificationCenter.default.removeObserver(keyboardObserver as Any)
     }
 
     // MARK: Private Functions
+    private func handleKeyboardNotification(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let timing = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber,
+              let curve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber,
+              let frameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let window = view.window else {
+            return
+        }
+
+        let endRect = frameEnd.cgRectValue
+        let options = UIView.AnimationOptions(rawValue: curve.uintValue << 16)
+        let duration = timing.doubleValue
+
+        // Get keyboard height.
+        let keyboardFrame = view.convert(endRect, from: window)
+        let intersection = view.bounds.intersection(keyboardFrame)
+        let keyboardHeight = intersection.isNull ? 0 : intersection.size.height
+
+        UIView.animate(withDuration: duration, delay: 0, options: options) { [weak self] in
+            let bottomInset = keyboardHeight > 0 ? keyboardHeight : self?.view.safeAreaInsets.bottom
+            self?.bottomConstraint?.constant = -(bottomInset ?? 0)
+            self?.view.layoutIfNeeded()
+        }
+    }
+
     private func updateJoinCallButton(forInput string: String?) {
 
     }
@@ -129,8 +165,13 @@ extension JoinCallViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
 
         if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
+
             // TODO: add validation here
             if textField == displayNameField {
+                // Display name is not allowed to be too long
+                if updatedString.lengthOfBytes(using: .utf8) > 256 {
+                    return false
+                }
                 displayName = updatedString
             } else {
                 // TODO: validate the group/meeting ID
@@ -145,26 +186,57 @@ extension JoinCallViewController: UITextFieldDelegate {
 // MARK: - UI Layout
 private extension JoinCallViewController {
     func setupUI() {
+        let content = UIView()
+        content.translatesAutoresizingMaskIntoConstraints = false
 
+        // Add type selector
+        createCallTypeSelector()
+
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                callTypeSelector,
+                setUpForm()
+            ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        content.addSubview(stackView)
+        stackView.pinToTop()
+        stackView.expandHorizontallyInSuperView()
+
+        // Add the next button
+        let buttonContainer = createNextButton()
+        content.addSubview(buttonContainer)
+        buttonContainer.expandHorizontallyInSuperView()
+        buttonContainer.pinToBottom()
+        NSLayoutConstraint.activate([
+            buttonContainer.topAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
+
+        // Add content to a scrollview
+        let scroller = content.wrapInScrollview()
+        view.addSubview(scroller)
+        scroller.translatesAutoresizingMaskIntoConstraints = false
+
+        bottomConstraint = scroller.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+
+        NSLayoutConstraint.activate([
+            scroller.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            bottomConstraint,
+            scroller.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            scroller.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+        ])
+    }
+
+    func createCallTypeSelector() {
         callTypeSelector = FluentUI.SegmentedControl(items: [
             SegmentItem(title: "Group call"),
             SegmentItem(title: "Teams meeting")
         ])
         callTypeSelector.backgroundColor = .white
         callTypeSelector.addAction(UIAction(handler: handleSegmentChanged), for: .valueChanged)
+    }
 
-        let formView = setUpForm()
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                callTypeSelector,
-                formView
-            ])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        view.addSubview(stackView)
-        stackView.pinToTop()
-        stackView.expandHorizontallyInSuperView()
-
+    func createNextButton() -> UIView {
         let buttonContainer = UIView()
         buttonContainer.backgroundColor = ThemeColor.lightSurfacesSecondary
 
@@ -176,12 +248,8 @@ private extension JoinCallViewController {
         actionButton.flexibleTopPin()
         actionButton.pinToBottom()
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
-        view.addSubview(buttonContainer)
-        buttonContainer.expandHorizontallyInSuperView()
-        buttonContainer.pinToBottom()
-        NSLayoutConstraint.activate([
-            buttonContainer.topAnchor.constraint(equalTo: stackView.bottomAnchor)
-        ])
+
+        return buttonContainer
     }
 
     func setUpForm() -> UIView {

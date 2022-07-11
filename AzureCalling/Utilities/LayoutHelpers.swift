@@ -104,4 +104,29 @@ extension UIView {
             heightAnchor.constraint(equalToConstant: size.height)
         ])
     }
+
+    func wrapInScrollview() -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(self)
+
+        let verticalConstraint = NSLayoutConstraint(
+            item: self, attribute: .height,
+            relatedBy: .equal,
+            toItem: scrollView.frameLayoutGuide, attribute: .height,
+            multiplier: 1, constant: 0
+        )
+        verticalConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollView.contentLayoutGuide.leftAnchor.constraint(equalTo: self.leftAnchor),
+            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            scrollView.contentLayoutGuide.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            verticalConstraint
+        ])
+
+        return scrollView
+    }
 }
