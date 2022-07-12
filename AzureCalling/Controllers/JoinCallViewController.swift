@@ -87,38 +87,40 @@ class JoinCallViewController: UIViewController {
     }
 
     private func validateMeetingLink() -> Bool {
-        if let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            switch joinCallType {
-            case .groupCall:
-                guard UUID(uuidString: joinId) != nil else {
-                    promptInvalidJoinIdInput(value: joinId)
-                    return false
-                }
-            case .teamsMeeting:
-                guard URL(string: joinId) != nil else {
-                    promptInvalidJoinIdInput(value: joinId)
-                    return false
-                }
-            }
-            return true
+        guard let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !joinId.isEmpty else {
+            return false
         }
-        return false
+
+        switch joinCallType {
+        case .groupCall:
+            guard UUID(uuidString: joinId) != nil else {
+                promptInvalidJoinIdInput(value: joinId)
+                return false
+            }
+        case .teamsMeeting:
+            guard URL(string: joinId) != nil else {
+                promptInvalidJoinIdInput(value: joinId)
+                return false
+            }
+        }
+        return true
     }
 
     private func handleFormState() {
-        if validateMeetingLink() {
-            // Have a valid meeting link
-            if !(displayNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false) {
-                // Have a valid display name
-                navigateToCall()
-            } else {
-                let notification = FluentUI.NotificationView()
-                notification.setup(style: .dangerToast, message: "Display name is missing")
-                notification.show(in: contentView)
-                notification.hide(after: kToastTimeout, animated: true, completion: nil)
-            }
-        } else {
+        guard validateMeetingLink() else {
             joinIdTextField.becomeFirstResponder()
+            return
+        }
+
+        if !(displayNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false) {
+            // Have a valid display name
+            navigateToCall()
+        } else {
+            let notification = FluentUI.NotificationView()
+            notification.setup(style: .dangerToast, message: "Display name is missing")
+            notification.show(in: contentView)
+            notification.hide(after: kToastTimeout, animated: true, completion: nil)
         }
     }
 
@@ -174,14 +176,13 @@ extension JoinCallViewController: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
 
-        if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
-            if textField == displayNameField {
-                // Display name is not allowed to be too long
-                if updatedString.lengthOfBytes(using: .utf8) > kMaxDisplayNameSize {
-                    return false
-                }
-                displayName = updatedString
+        if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string),
+           textField == displayNameField {
+            // Display name is not allowed to be too long
+            if updatedString.lengthOfBytes(using: .utf8) > kMaxDisplayNameSize {
+                return false
             }
+            displayName = updatedString
         }
         return true
     }
