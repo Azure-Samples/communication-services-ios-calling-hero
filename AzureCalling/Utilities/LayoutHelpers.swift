@@ -116,7 +116,7 @@ extension UIView {
             toItem: scrollView.frameLayoutGuide, attribute: .height,
             multiplier: 1, constant: 0
         )
-        verticalConstraint.priority = .defaultHigh
+        verticalConstraint.priority = .defaultLow
 
         NSLayoutConstraint.activate([
             scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),

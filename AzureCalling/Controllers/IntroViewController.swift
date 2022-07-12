@@ -89,7 +89,7 @@ class IntroViewController: UIViewController {
         startCallButton.expandHorizontallyInSuperView()
         joinCallButton.expandHorizontallyInSuperView()
         stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
-        stackView.pinToBottom()
+        stackView.pinToBottom(withMargin: 16)
     }
 
     private func layoutMainContainer() {

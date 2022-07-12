@@ -43,7 +43,7 @@ final class IconTextField: UITextField {
         }
     }
 
-    var imageViewLeftPadding: CGFloat = 20 {
+    var imageViewPadding = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 16) {
         didSet {
             self.setNeedsDisplay()
         }
@@ -74,7 +74,11 @@ final class IconTextField: UITextField {
 
     private func setImage() {
         self.leftViewMode = .always
-        let imageRect = CGRect(x: 0, y: 0, width: imageSize?.width ?? 0, height: imageSize?.height ?? 0)
+        let imageRect = CGRect(
+            x: 0, y: 0,
+            width: imageSize?.width ?? image?.size.width ?? 0,
+            height: imageSize?.height ?? image?.size.height ?? 0
+        )
         let imageView = UIImageView(frame: imageRect)
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
@@ -94,7 +98,7 @@ final class IconTextField: UITextField {
         if image != nil {
             let leftViewOriginX = leftView?.frame.origin.x ?? 0
             let leftViewWidth = leftView?.frame.size.width ?? 0
-            left = leftViewOriginX + leftViewWidth
+            left = leftViewOriginX + leftViewWidth + imageViewPadding.right
         }
         return UIEdgeInsets(top: padding.top,
                             left: left,
@@ -118,6 +122,6 @@ final class IconTextField: UITextField {
         let leftViewWidth = leftView?.frame.size.width ?? 0
         let leftViewHeight = leftView?.frame.size.height ?? 0
         let verticalCenteredInset = (bounds.height - leftViewHeight) / 2
-        return CGRect(x: imageViewLeftPadding, y: verticalCenteredInset, width: leftViewWidth, height: leftViewHeight)
+        return CGRect(x: imageViewPadding.left, y: verticalCenteredInset, width: leftViewWidth, height: leftViewHeight)
     }
 }

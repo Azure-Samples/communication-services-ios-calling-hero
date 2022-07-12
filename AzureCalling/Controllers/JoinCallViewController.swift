@@ -9,8 +9,9 @@ import UIKit
 class JoinCallViewController: UIViewController {
 
     // MARK: Constants
-    private let groupIdPlaceHolder: String = "ex. 4fe34380-81e5-11eb-a16e-6161a3176f61"
-    private let teamsLinkPlaceHolder: String = "ex. https://teams.microsoft.com/..."
+    private let kGroupIdPlaceHolder: String = "Enter call ID"
+    private let kTeamsLinkPlaceHolder: String = "Enter invite link"
+    private let kToastTimeout: TimeInterval = 5
 
     // MARK: Properties
     var createCallingContextFunction: (() -> CallingContext)?
@@ -23,6 +24,7 @@ class JoinCallViewController: UIViewController {
     private var displayNameField: IconTextField!
     private var callTypeSelector: FluentUI.SegmentedControl!
     private var actionButton: FluentUI.Button!
+    private var contentView: UIView!
 
     // Handle keyboard scrolling the content
     private var bottomConstraint: NSLayoutConstraint!
@@ -34,9 +36,8 @@ class JoinCallViewController: UIViewController {
         title = "Join"
         view.backgroundColor = .white
 
-        setupUI()
-
-        updateJoinCallButton(forInput: nil)
+        contentView = setupUI()
+        joinIdTextField.becomeFirstResponder()
 
         keyboardObserver = NotificationCenter.default.addObserver(
             forName: UIResponder.keyboardWillChangeFrameNotification,
@@ -80,77 +81,81 @@ class JoinCallViewController: UIViewController {
         }
     }
 
-    private func updateJoinCallButton(forInput string: String?) {
-
+    private func validateMeetingLink() -> Bool {
+        if let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            switch joinCallType {
+            case .groupCall:
+                guard UUID(uuidString: joinId) != nil else {
+                    promptInvalidJoinIdInput(value: joinId)
+                    return false
+                }
+            case .teamsMeeting:
+                guard URL(string: joinId) != nil else {
+                    promptInvalidJoinIdInput(value: joinId)
+                    return false
+                }
+            }
+            return true
+        }
+        return false
     }
 
-    // MARK: Navigation
-//    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-//        let joinId = joinIdTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-//        switch joinCallType {
-//        case .groupCall:
-//            guard UUID(uuidString: joinId) != nil else {
-//                promptInvalidJoinIdInput()
-//                return false
-//            }
-//        case .teamsMeeting:
-//            guard URL(string: joinId) != nil else {
-//                promptInvalidJoinIdInput()
-//                return false
-//            }
-//        }
-//        return true
-//    }
+    private func handleFormState() {
+        if validateMeetingLink() {
+            // Have a valid meeting link
+            if !(displayNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false) {
+                // Have a valid display name
+                navigateToCall()
+            } else {
+                let notification = FluentUI.NotificationView()
+                notification.setup(style: .dangerToast, message: "Display name is missing")
+                notification.show(in: contentView)
+                notification.hide(after: kToastTimeout, animated: true, completion: nil)
+            }
+        } else {
+            joinIdTextField.becomeFirstResponder()
+        }
+    }
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        super.prepare(for: segue, sender: sender)
-//
-//        switch segue.identifier {
-//        case "JoinCallToLobby":
-//            prepareSetupCall(destination: segue.destination)
-//        default:
-//            fatalError("Unexpected Segue Identifier: \(segue.identifier ?? "")")
-//        }
-//    }
-//
-//    private func prepareSetupCall(destination: UIViewController) {
-//        guard let lobbyViewController = destination as? LobbyViewController else {
-//            fatalError("Unexpected destination: \(destination)")
-//        }
-//
-//        lobbyViewController.callingContext = createCallingContextFunction()
-//        lobbyViewController.joinInput = joinIdTextField.text!
-//        lobbyViewController.joinCallType = joinCallType
-//    }
-
-    private func promptInvalidJoinIdInput() {
+    private func promptInvalidJoinIdInput(value: String) {
         var alertMessage = ""
         switch joinCallType {
         case .groupCall:
-            alertMessage = "The meeting ID you entered is invalid. Please try again."
+            alertMessage = value.isEmpty ? "Group call ID required" : "We can't find that call\nCheck the call ID and try again"
         case .teamsMeeting:
-            alertMessage = "The meeting link you entered is invalid. Please try again."
+            alertMessage = value.isEmpty ? "Teams link required" : "We can't find that meeting\nCheck the call ID and try again"
         }
-        let alert = UIAlertController(title: "Unable to join", message: alertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
-        self.present(alert, animated: true, completion: nil)
+        let notification = FluentUI.NotificationView()
+        notification.setup(style: .dangerToast, message: alertMessage)
+        notification.show(in: contentView)
+        notification.hide(after: kToastTimeout, animated: true, completion: nil)
     }
 
-    // MARK: Actions
+    // MARK: Navigation
+    func navigateToCall() {
+        // TODO: create calling VC and add details, then push
+    }
+
+    // MARK: User interaction handling
     private func handleSegmentChanged(action: UIAction) {
         if let callType = JoinCallType(rawValue: callTypeSelector.selectedSegmentIndex) {
+            joinCallType = callType
             switch callType {
             case .groupCall:
                 typeTitle.text = "Group call"
+                joinIdTextField.placeholder = kGroupIdPlaceHolder
+                joinIdTextField.image = nil
             case .teamsMeeting:
                 typeTitle.text = "Teams meeting"
+                joinIdTextField.placeholder = kTeamsLinkPlaceHolder
+                joinIdTextField.image = UIImage(named: "linkIcon")
             }
         }
     }
 
     // Action button
     private func handleAction() {
-
+        handleFormState()
     }
 }
 
@@ -165,18 +170,12 @@ extension JoinCallViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
 
         if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
-
-            // TODO: add validation here
             if textField == displayNameField {
                 // Display name is not allowed to be too long
                 if updatedString.lengthOfBytes(using: .utf8) > 256 {
                     return false
                 }
                 displayName = updatedString
-            } else {
-                // TODO: validate the group/meeting ID
-                let isValid = UUID(uuidString: updatedString) != nil
-
             }
         }
         return true
@@ -185,7 +184,7 @@ extension JoinCallViewController: UITextFieldDelegate {
 
 // MARK: - UI Layout
 private extension JoinCallViewController {
-    func setupUI() {
+    func setupUI() -> UIView {
         let content = UIView()
         content.translatesAutoresizingMaskIntoConstraints = false
 
@@ -207,7 +206,7 @@ private extension JoinCallViewController {
         let buttonContainer = createNextButton()
         content.addSubview(buttonContainer)
         buttonContainer.expandHorizontallyInSuperView()
-        buttonContainer.pinToBottom()
+        buttonContainer.pinToBottom(withMargin: 16)
         NSLayoutConstraint.activate([
             buttonContainer.topAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
@@ -225,6 +224,8 @@ private extension JoinCallViewController {
             scroller.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             scroller.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
         ])
+
+        return content
     }
 
     func createCallTypeSelector() {
@@ -246,7 +247,7 @@ private extension JoinCallViewController {
         )
         buttonContainer.addSubview(actionButton)
         actionButton.flexibleTopPin()
-        actionButton.pinToBottom()
+        actionButton.pinToBottom(withMargin: 0)
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
 
         return buttonContainer
@@ -258,10 +259,14 @@ private extension JoinCallViewController {
                                                    value: "Group Call ID")
         joinIdTextField = IconTextField()
         joinIdTextField.delegate = self
-        joinIdTextField.placeholder = groupIdPlaceHolder
+        joinIdTextField.placeholder = kGroupIdPlaceHolder
         joinIdTextField.padding = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
+        joinIdTextField.keyboardType = .asciiCapable
+        joinIdTextField.autocorrectionType = .no
+        joinIdTextField.autocapitalizationType = .none
 
         displayNameField = IconTextField()
+        displayNameField.image = UIImage(named: "avatarIcon")
         displayNameField.delegate = self
         displayNameField.placeholder = "Enter a name"
         displayNameField.text = displayName
@@ -306,8 +311,5 @@ private extension JoinCallViewController {
         formStack.backgroundColor = ThemeColor.lightSurfacesSecondary
 
         return formStack
-    }
-
-    func setupNavBar() {
     }
 }
