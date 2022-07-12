@@ -11,6 +11,7 @@ class JoinCallViewController: UIViewController {
     // MARK: Constants
     private let kGroupIdPlaceHolder: String = "Enter call ID"
     private let kTeamsLinkPlaceHolder: String = "Enter invite link"
+    private let kMaxDisplayNameSize: Int = 256
     private let kToastTimeout: TimeInterval = 5
 
     // MARK: Properties
@@ -176,7 +177,7 @@ extension JoinCallViewController: UITextFieldDelegate {
         if let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
             if textField == displayNameField {
                 // Display name is not allowed to be too long
-                if updatedString.lengthOfBytes(using: .utf8) > 256 {
+                if updatedString.lengthOfBytes(using: .utf8) > kMaxDisplayNameSize {
                     return false
                 }
                 displayName = updatedString
@@ -250,7 +251,7 @@ private extension JoinCallViewController {
             action: { [weak self] _ in self?.handleAction() }
         )
         buttonContainer.addSubview(actionButton)
-        actionButton.flexibleTopPin()
+        actionButton.flexibleTopPin(withMargin: 36)
         actionButton.pinToBottom(withMargin: 0)
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
 
