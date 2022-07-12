@@ -37,7 +37,6 @@ class JoinCallViewController: UIViewController {
         view.backgroundColor = .white
 
         contentView = setupUI()
-        joinIdTextField.becomeFirstResponder()
 
         keyboardObserver = NotificationCenter.default.addObserver(
             forName: UIResponder.keyboardWillChangeFrameNotification,
@@ -53,6 +52,11 @@ class JoinCallViewController: UIViewController {
         displayNameField?.delegate = nil
         joinIdTextField?.delegate = nil
         NotificationCenter.default.removeObserver(keyboardObserver as Any)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        joinIdTextField.becomeFirstResponder()
     }
 
     // MARK: Private Functions
