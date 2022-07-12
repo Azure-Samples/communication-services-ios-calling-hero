@@ -251,7 +251,7 @@ private extension JoinCallViewController {
             action: { [weak self] _ in self?.handleAction() }
         )
         buttonContainer.addSubview(actionButton)
-        actionButton.flexibleTopPin(withMargin: 36)
+        actionButton.flexibleTopPin(withMargin: 16)
         actionButton.pinToBottom(withMargin: 0)
         actionButton.expandHorizontallyInSuperView(withEqualMargin: 16)
 
@@ -276,6 +276,8 @@ private extension JoinCallViewController {
         displayNameField.placeholder = "Enter a name"
         displayNameField.text = displayName
         displayNameField.padding = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
+        displayNameField.keyboardType = .asciiCapable
+        displayNameField.autocorrectionType = .no
 
         // Add controls to the stack
         let formStack = UIStackView(arrangedSubviews: [
