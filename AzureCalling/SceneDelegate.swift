@@ -3,9 +3,9 @@
 //  Licensed under the MIT License.
 //
 
-import UIKit
-import MSAL
 import FluentUI
+import MSAL
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -24,14 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: winScene)
         let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
         fluentNavVc.view.backgroundColor = .white
-        fluentNavVc.view.tintColor = FluentUI.Colors.textSecondary
-        fluentNavVc.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
-
         fluentNavVc.navigationBar.backgroundColor = .white
-        fluentNavVc.navigationBar.topItem?.backButtonDisplayMode = .minimal
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
-        fluentNavVc.navigationBar.scrollEdgeAppearance = appearance
         window?.rootViewController = fluentNavVc
 
         if let navigationViewController = window?.rootViewController as? UINavigationController,
