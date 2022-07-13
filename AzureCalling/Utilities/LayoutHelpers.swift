@@ -47,6 +47,16 @@ extension UIView {
         ])
     }
 
+    func flexibleTopPin(withMargin offset: CGFloat = 8) {
+        guard let superView = self.superview else {
+            return
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(greaterThanOrEqualTo: superView.safeAreaLayoutGuide.topAnchor, constant: offset)
+        ])
+    }
+
     func pinToLeft(withMargin offset: CGFloat = 8) {
         guard let superView = self.superview else {
             return
@@ -93,5 +103,30 @@ extension UIView {
             widthAnchor.constraint(equalToConstant: size.width),
             heightAnchor.constraint(equalToConstant: size.height)
         ])
+    }
+
+    func wrapInScrollview() -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(self)
+
+        let verticalConstraint = NSLayoutConstraint(
+            item: self, attribute: .height,
+            relatedBy: .equal,
+            toItem: scrollView.frameLayoutGuide, attribute: .height,
+            multiplier: 1, constant: 0
+        )
+        verticalConstraint.priority = .defaultLow
+
+        NSLayoutConstraint.activate([
+            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollView.contentLayoutGuide.leftAnchor.constraint(equalTo: self.leftAnchor),
+            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            scrollView.contentLayoutGuide.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            verticalConstraint
+        ])
+
+        return scrollView
     }
 }

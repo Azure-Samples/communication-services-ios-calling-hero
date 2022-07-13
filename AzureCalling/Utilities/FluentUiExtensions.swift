@@ -20,3 +20,15 @@ extension FluentUI.Button {
         return button
     }
 }
+
+extension FluentUI.Label {
+
+    static func createWith(style: TextStyle,
+                           colorStyle: TextColorStyle,
+                           value: String? = nil) -> FluentUI.Label {
+        let label = FluentUI.Label(style: style, colorStyle: colorStyle)
+        label.text = value
+
+        return label
+    }
+}

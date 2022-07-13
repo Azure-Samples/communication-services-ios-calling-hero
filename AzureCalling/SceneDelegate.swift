@@ -3,8 +3,9 @@
 //  Licensed under the MIT License.
 //
 
-import UIKit
+import FluentUI
 import MSAL
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,8 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window = UIWindow(windowScene: winScene)
-        let navVc = UINavigationController(rootViewController: IntroViewController())
-        window?.rootViewController = navVc
+        let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
+        fluentNavVc.view.backgroundColor = .white
+        fluentNavVc.navigationBar.backgroundColor = .white
+        window?.rootViewController = fluentNavVc
 
         if let navigationViewController = window?.rootViewController as? UINavigationController,
            let rootVc = navigationViewController.visibleViewController as? IntroViewController,

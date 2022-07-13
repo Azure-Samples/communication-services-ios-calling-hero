@@ -5,7 +5,16 @@
 
 import Foundation
 
-enum JoinCallType {
+enum JoinCallType: Int, RawRepresentable, CustomStringConvertible {
     case groupCall
     case teamsMeeting
+
+    var description: String {
+        switch self {
+        case .groupCall:
+            return "Group call"
+        case .teamsMeeting:
+            return "Teams meeting"
+        }
+    }
 }

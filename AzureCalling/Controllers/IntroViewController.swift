@@ -27,7 +27,7 @@ class IntroViewController: UIViewController {
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = ThemeColor.lightSurfacesSecondary
         createControls()
         layoutView()
 
@@ -69,7 +69,6 @@ class IntroViewController: UIViewController {
     }
 
     private func layoutView() {
-        view.backgroundColor = ThemeColor.lightSurfacesSecondary
         layoutButtons()
         layoutMainContainer()
         layoutTopBar()
@@ -90,7 +89,7 @@ class IntroViewController: UIViewController {
         startCallButton.expandHorizontallyInSuperView()
         joinCallButton.expandHorizontallyInSuperView()
         stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
-        stackView.pinToBottom()
+        stackView.pinToBottom(withMargin: 16)
     }
 
     private func layoutMainContainer() {
@@ -254,6 +253,8 @@ class IntroViewController: UIViewController {
     private func joinCall() {
         let joinCallVc = JoinCallViewController()
         joinCallVc.createCallingContextFunction = createCallingContextFunction
+        joinCallVc.displayName = userDetails?.userProfile?.displayName
+
         navigationController?.pushViewController(joinCallVc, animated: true)
     }
 
