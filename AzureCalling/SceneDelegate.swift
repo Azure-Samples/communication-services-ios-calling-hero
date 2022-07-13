@@ -22,10 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window = UIWindow(windowScene: winScene)
-        let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
-        fluentNavVc.view.backgroundColor = .white
-        fluentNavVc.navigationBar.backgroundColor = .white
-        window?.rootViewController = fluentNavVc
+        window?.rootViewController = setupNavigationController()
 
         if let navigationViewController = window?.rootViewController as? UINavigationController,
            let rootVc = navigationViewController.visibleViewController as? IntroViewController,
@@ -83,6 +80,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let sourceApp = urlContext.options.sourceApplication
 
         MSALPublicClientApplication.handleMSALResponse(url, sourceApplication: sourceApp)
+    }
+
+    private func setupNavigationController() -> UIViewController {
+        let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
+        fluentNavVc.view.backgroundColor = .white
+        fluentNavVc.view.tintColor = FluentUI.Colors.textSecondary
+        fluentNavVc.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
+
+        fluentNavVc.navigationBar.backgroundColor = .white
+        fluentNavVc.navigationBar.topItem?.backButtonDisplayMode = .minimal
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        fluentNavVc.navigationBar.scrollEdgeAppearance = appearance
+        return fluentNavVc
     }
 
 }
