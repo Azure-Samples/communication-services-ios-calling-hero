@@ -107,7 +107,7 @@ extension StartCallViewController: UITextFieldDelegate {
 
 // MARK: - UI Layout
 private extension StartCallViewController {
-    private func setupUI() -> UIView {
+    func setupUI() -> UIView {
         let content = UIView()
         content.translatesAutoresizingMaskIntoConstraints = false
 
@@ -141,7 +141,7 @@ private extension StartCallViewController {
         return content
     }
 
-    private func setupLabels() {
+    func setupLabels() {
         displayNameLabel = FluentUI.Label.createWith(style: .footnote,
                                                       colorStyle: .secondary,
                                                       value: "Display name")
@@ -151,7 +151,7 @@ private extension StartCallViewController {
                                                  value: "Name shown the others on the call.")
     }
 
-    private func setupDisplayNameTextField() {
+    func setupDisplayNameTextField() {
         displayNameTextField = IconTextField()
         displayNameTextField.placeholder = "Enter a name"
         displayNameTextField.image = UIImage(named: "ic_fluent_person_20_regular")
@@ -161,7 +161,7 @@ private extension StartCallViewController {
         displayNameTextField.delegate = self
     }
 
-    private func setupNextButton() {
+    func setupNextButton() {
         nextButton = FluentUI.Button.createWith(
             style: .primaryFilled,
             title: "Next",
@@ -169,7 +169,7 @@ private extension StartCallViewController {
         )
     }
 
-    private func setupForm() -> UIStackView {
+    func setupForm() -> UIStackView {
         let formStack = UIStackView(arrangedSubviews: [
             PaddingContainer(
                 containing: displayNameLabel,
