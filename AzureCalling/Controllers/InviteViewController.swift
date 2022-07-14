@@ -76,12 +76,12 @@ class InviteViewController: UIViewController {
         view.addSubview(mainContainer)
         mainContainer.expandHorizontallyInSuperView(withEqualMargin: 16)
         mainContainer.pinToTop(withMargin: 0)
-        mainContainer.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -12).isActive = true
+        continueButton.topAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: 12).isActive = true
 
         let iconContainer = PaddingContainer(containing: iconImageView, padding: UIEdgeInsets(top: 29, left: 0, bottom: 4, right: 0))
         iconImageView.fixHeightTo(height: 28)
 
-        let buttonContainer = PaddingContainer(containing: shareButton, padding: UIEdgeInsets(top: 32, left: 76.5, bottom: 12, right: 76.5))
+        let buttonContainer = PaddingContainer(containing: shareButton, padding: UIEdgeInsets(top: 32, left: 76, bottom: 12, right: 76))
         shareButton.fixHeightTo(height: 48)
 
         let stackView = UIStackView(arrangedSubviews: [iconContainer, titleLabel, subtitleLabel, buttonContainer])
