@@ -105,6 +105,14 @@ extension UIView {
         ])
     }
 
+    func fixHeightTo(height: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: height)
+        ])
+
+    }
+
     func wrapInScrollview() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
