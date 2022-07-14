@@ -80,7 +80,7 @@ class StartCallViewController: UIViewController {
 
     // MARK: Action Handling
     private func onNextButtonTapped() {
-        let inviteVc = UIViewController()
+        let inviteVc = InviteViewController()
         navigationController?.pushViewController(inviteVc, animated: true)
     }
 }

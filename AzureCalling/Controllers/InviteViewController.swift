@@ -101,7 +101,5 @@ class InviteViewController: UIViewController {
     }
 
     private func onContinueButtonTapped() {
-        let inviteVc = UIViewController()
-        navigationController?.pushViewController(inviteVc, animated: true)
     }
 }
