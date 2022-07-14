@@ -37,6 +37,7 @@
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
 		69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* IconTextField.swift */; };
+		69900DFF28778204005C9EF5 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DFE28778204005C9EF5 /* InviteViewController.swift */; };
 		69900DFD2876328A005C9EF5 /* StartCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DFC2876328A005C9EF5 /* StartCallViewController.swift */; };
 		75495F59286E1910004E4313 /* LayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75495F58286E1910004E4313 /* LayoutHelpers.swift */; };
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
@@ -106,6 +107,7 @@
 		21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedButton.swift; sourceTree = "<group>"; };
 		21F3B94725473BF600BD9F91 /* AzureCalling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzureCalling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69900DF82875FDDD005C9EF5 /* IconTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextField.swift; sourceTree = "<group>"; };
+		69900DFE28778204005C9EF5 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		69900DFC2876328A005C9EF5 /* StartCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartCallViewController.swift; sourceTree = "<group>"; };
 		6D911F99B1E08BC60AF9272D /* Pods-AzureCalling.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.debug.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.debug.xcconfig"; sourceTree = "<group>"; };
 		6E8B22F0F730B9A7FF0B41EE /* Pods-AzureCalling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzureCalling.release.xcconfig"; path = "Target Support Files/Pods-AzureCalling/Pods-AzureCalling.release.xcconfig"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */,
 				69900DFC2876328A005C9EF5 /* StartCallViewController.swift */,
 				1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */,
+				69900DFE28778204005C9EF5 /* InviteViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 				1F7AFEE125D6F35800E0029C /* NoticeBannerStackView.swift in Sources */,
 				1F7CD40F25C1E9E80081D8F1 /* InfoHeaderView.swift in Sources */,
 				75495F59286E1910004E4313 /* LayoutHelpers.swift in Sources */,
+				69900DFF28778204005C9EF5 /* InviteViewController.swift in Sources */,
 				987C3DC62624DE6200E296D0 /* ParticipantLabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

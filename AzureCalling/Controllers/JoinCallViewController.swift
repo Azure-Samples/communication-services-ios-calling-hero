@@ -80,8 +80,13 @@ class JoinCallViewController: UIViewController {
         let keyboardHeight = intersection.isNull ? 0 : intersection.size.height
 
         UIView.animate(withDuration: duration, delay: 0, options: options) { [weak self] in
-            let bottomInset = keyboardHeight > 0 ? keyboardHeight : self?.view.safeAreaInsets.bottom
-            self?.bottomConstraint?.constant = -(bottomInset ?? 0)
+            if keyboardHeight > 0,
+                let bottomInsets = self?.view.safeAreaInsets.bottom,
+                bottomInsets > 0 {
+                self?.bottomConstraint?.constant = -keyboardHeight + bottomInsets
+            } else {
+                self?.bottomConstraint?.constant = -keyboardHeight
+            }
             self?.view.layoutIfNeeded()
         }
     }

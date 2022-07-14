@@ -42,6 +42,11 @@ class StartCallViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayNameTextField.becomeFirstResponder()
@@ -72,15 +77,20 @@ class StartCallViewController: UIViewController {
         let keyboardHeight = intersection.isNull ? 0 : intersection.size.height
 
         UIView.animate(withDuration: duration, delay: 0, options: options) { [weak self] in
-            let bottomInset = keyboardHeight > 0 ? keyboardHeight : self?.view.safeAreaInsets.bottom
-            self?.bottomConstraint?.constant = -(bottomInset ?? 0)
+            if keyboardHeight > 0,
+                let bottomInsets = self?.view.safeAreaInsets.bottom,
+                bottomInsets > 0 {
+                self?.bottomConstraint?.constant = -keyboardHeight + bottomInsets
+            } else {
+                self?.bottomConstraint?.constant = -keyboardHeight
+            }
             self?.view.layoutIfNeeded()
         }
     }
 
     // MARK: Action Handling
     private func onNextButtonTapped() {
-        let inviteVc = UIViewController()
+        let inviteVc = InviteViewController()
         navigationController?.pushViewController(inviteVc, animated: true)
     }
 }
