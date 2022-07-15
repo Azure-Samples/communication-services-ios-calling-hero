@@ -92,22 +92,32 @@ class JoinCallViewController: UIViewController {
     }
 
     private func validateMeetingLink() -> Bool {
-        guard let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-              !joinId.isEmpty else {
+        guard let fieldValue = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
             return false
         }
 
         switch joinCallType {
         case .groupCall:
-            guard UUID(uuidString: joinId) != nil else {
-                promptInvalidJoinIdInput(value: joinId)
+            guard UUID(uuidString: fieldValue) != nil else {
+                promptInvalidJoinIdInput(value: fieldValue)
                 return false
             }
         case .teamsMeeting:
-            guard URL(string: joinId) != nil else {
-                promptInvalidJoinIdInput(value: joinId)
+            guard isValidTeamsUrl(url: URL(string: fieldValue)) else {
+                promptInvalidJoinIdInput(value: fieldValue)
                 return false
             }
+        }
+        return true
+    }
+
+    private func isValidTeamsUrl(url: URL?) -> Bool {
+        guard let url = url,
+              url.scheme == "https",
+              let host = url.host,
+              host.count > 5 else {
+            return false
+
         }
         return true
     }
@@ -115,8 +125,10 @@ class JoinCallViewController: UIViewController {
     private func handleFormState() {
         guard validateMeetingLink() else {
             joinIdTextField.becomeFirstResponder()
+            typeTitle.colorStyle = .error
             return
         }
+        typeTitle.colorStyle = .secondary
 
         if !(displayNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false) {
             // Have a valid display name
@@ -135,7 +147,7 @@ class JoinCallViewController: UIViewController {
         case .groupCall:
             alertMessage = value.isEmpty ? "Group call ID required" : "We can't find that call\nCheck the call ID and try again"
         case .teamsMeeting:
-            alertMessage = value.isEmpty ? "Teams link required" : "We can't find that meeting\nCheck the call ID and try again"
+            alertMessage = value.isEmpty ? "Teams link required" : "We can't find that meeting\nCheck the link and try again"
         }
         let notification = FluentUI.NotificationView()
         notification.setup(style: .dangerToast, message: alertMessage)
