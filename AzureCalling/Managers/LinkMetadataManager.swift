@@ -6,7 +6,6 @@
 import LinkPresentation
 
 final class LinkMetadataManager: NSObject, UIActivityItemSource {
-    var linkMetadata = LPLinkMetadata()
     var title: String
     var text: String
     var iconImage: UIImage?
