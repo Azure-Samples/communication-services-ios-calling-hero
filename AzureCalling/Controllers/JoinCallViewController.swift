@@ -145,7 +145,11 @@ class JoinCallViewController: UIViewController {
 
     // MARK: Navigation
     func navigateToCall() {
-        // TODO: create calling VC and add details, then push
+        let inviteVc = InviteViewController()
+        let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        inviteVc.createCallingContextFunction = createCallingContextFunction
+        inviteVc.groupCallId = joinId
+        navigationController?.pushViewController(inviteVc, animated: true)
     }
 
     // MARK: User interaction handling

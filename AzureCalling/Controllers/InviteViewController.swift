@@ -7,6 +7,9 @@ import FluentUI
 
 class InviteViewController: UIViewController {
     // MARK: Properties
+    var createCallingContextFunction: (() -> CallingContext)?
+    var groupCallId: String?
+
     private var iconImageView: UIImageView!
     private var titleLabel: FluentUI.Label!
     private var subtitleLabel: FluentUI.Label!
@@ -98,6 +101,14 @@ class InviteViewController: UIViewController {
 
     // MARK: Action Handling
     private func onShareButtonTapped() {
+        let image = UIImage(named: "ic_fluent_key_20_regular")
+        let textToShare = LinkMetadataManager(title: "Group call ID",
+                                              text: groupCallId ?? "",
+                                              iconImage: image)
+        let objectsToShare = [textToShare] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare,
+                                                  applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
 
     private func onContinueButtonTapped() {
