@@ -55,6 +55,11 @@ class JoinCallViewController: UIViewController {
         NotificationCenter.default.removeObserver(keyboardObserver as Any)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         joinIdTextField.becomeFirstResponder()

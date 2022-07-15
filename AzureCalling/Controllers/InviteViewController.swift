@@ -102,10 +102,10 @@ class InviteViewController: UIViewController {
     // MARK: Action Handling
     private func onShareButtonTapped() {
         let image = UIImage(named: "ic_fluent_key_20_regular")
-        let textToShare = LinkMetadataManager(title: "Group call ID",
+        let objectsToShare: [Any] = [LinkMetadataManager(title: "Group call ID",
                                               text: groupCallId ?? "",
-                                              iconImage: image)
-        let objectsToShare = [textToShare] as [Any]
+                                              iconImage: image)]
+
         let activityVC = UIActivityViewController(activityItems: objectsToShare,
                                                   applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
