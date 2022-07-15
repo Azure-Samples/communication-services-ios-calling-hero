@@ -12,6 +12,8 @@ class StartCallViewController: UIViewController {
     private let maxDisplayNameSize: Int = 256
 
     // MARK: Properties
+    var createCallingContextFunction: (() -> CallingContext)?
+
     private var contentView: UIView!
     private var displayNameStackView: UIStackView!
     private var displayNameLabel: FluentUI.Label!
@@ -91,6 +93,8 @@ class StartCallViewController: UIViewController {
     // MARK: Action Handling
     private func onNextButtonTapped() {
         let inviteVc = InviteViewController()
+        inviteVc.createCallingContextFunction = createCallingContextFunction
+        inviteVc.groupCallId = "InviteVc groupCallId"
         navigationController?.pushViewController(inviteVc, animated: true)
     }
 }

@@ -55,6 +55,11 @@ class JoinCallViewController: UIViewController {
         NotificationCenter.default.removeObserver(keyboardObserver as Any)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         joinIdTextField.becomeFirstResponder()
@@ -145,7 +150,11 @@ class JoinCallViewController: UIViewController {
 
     // MARK: Navigation
     func navigateToCall() {
-        // TODO: create calling VC and add details, then push
+        let inviteVc = InviteViewController()
+        let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        inviteVc.createCallingContextFunction = createCallingContextFunction
+        inviteVc.groupCallId = joinId
+        navigationController?.pushViewController(inviteVc, animated: true)
     }
 
     // MARK: User interaction handling
