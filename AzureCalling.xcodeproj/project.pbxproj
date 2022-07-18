@@ -44,6 +44,7 @@
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
 		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
 		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
+		756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DE3082885C6B500A943CF /* BusyOverlay.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
 		8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743152263373C5000D0BCE /* AudioSessionManager.swift */; };
 		8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */; };
@@ -117,6 +118,7 @@
 		755732FD28733B410072A021 /* FluentUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluentUiExtensions.swift; sourceTree = "<group>"; };
 		7557330028739D8E0072A021 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		755733042875E9F00072A021 /* PaddingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingContainer.swift; sourceTree = "<group>"; };
+		756DE3082885C6B500A943CF /* BusyOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyOverlay.swift; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
 		8D743152263373C5000D0BCE /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		8D743154263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelectionDataSource.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				69900DF82875FDDD005C9EF5 /* IconTextField.swift */,
+				756DE3082885C6B500A943CF /* BusyOverlay.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */,
 				8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */,
 				1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */,
+				756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */,
 				755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */,
 				1F7AFEE125D6F35800E0029C /* NoticeBannerStackView.swift in Sources */,
 				1F7CD40F25C1E9E80081D8F1 /* InfoHeaderView.swift in Sources */,

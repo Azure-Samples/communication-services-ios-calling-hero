@@ -23,6 +23,7 @@ class IntroViewController: UIViewController {
     private var topBar: UIView!
     private var userAvatar: MSFAvatar!
     private var userDisplayName: FluentUI.Label!
+    private let busyOverlay = BusyOverlay(frame: .zero)
 
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
@@ -72,6 +73,14 @@ class IntroViewController: UIViewController {
         layoutButtons()
         layoutMainContainer()
         layoutTopBar()
+        layoutBusyOverlay()
+    }
+
+    private func layoutBusyOverlay() {
+        view.addSubview(busyOverlay)
+        busyOverlay.expandVerticallyInSuperView()
+        busyOverlay.expandHorizontallyInSuperView()
+        busyOverlay.isHidden = true
     }
 
     private func layoutButtons() {
@@ -173,18 +182,20 @@ class IntroViewController: UIViewController {
         case .authorized:
             hideLoginButtonAndDisplayCallingButtons()
             topBar.isHidden = false
+            busyOverlay.isHidden = true
 
         case .noAuthRequired:
             hideLoginButtonAndDisplayCallingButtons()
             topBar.isHidden = true
+            busyOverlay.isHidden = true
 
         case .unauthorized:
             topBar.isHidden = true
             showLoginButtonAndHideCallingButtons()
+            busyOverlay.isHidden = true
 
         case .authorizing:
-            // TODO: show busy state, lock controls
-            break
+            busyOverlay.isHidden = false
         }
     }
 
@@ -231,6 +242,7 @@ class IntroViewController: UIViewController {
     private func loginAAD() {
         Task {
             do {
+                busyOverlay.isHidden = false
                 userDetails = try await authHandler.login(presentingVc: self)
                 handleAuthState()
             } catch {
@@ -242,6 +254,7 @@ class IntroViewController: UIViewController {
     private func signOutAAD() {
         Task {
             do {
+                busyOverlay.isHidden = false
                 try await authHandler.signOut(presentingVc: self)
                 handleAuthState()
             } catch {
