@@ -160,7 +160,7 @@ class IntroViewController: UIViewController {
         signOutButton.pinToRight()
 
         userAvatar = MSFAvatar(style: .default, size: .small)
-        userDisplayName = FluentUI.Label(style: .title2, colorStyle: .primary)
+        userDisplayName = FluentUI.Label(style: .body, colorStyle: .regular)
 
         let userDetails = UIStackView(arrangedSubviews: [
             userAvatar.view,
