@@ -22,17 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-
-        if let keywindow = UIApplication.shared.windows.filter({$0.isKeyWindow}).first,
-            let navigationController = keywindow.rootViewController as? UINavigationController {
-
-            if navigationController.visibleViewController is CallViewController {
-                return UIInterfaceOrientationMask.all
-            } else {
-                return UIInterfaceOrientationMask.portrait
-            }
-        }
-
         return UIInterfaceOrientationMask.portrait
     }
     // MARK: UISceneSession Lifecycle
