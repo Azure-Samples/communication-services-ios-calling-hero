@@ -15,7 +15,7 @@ class JoinCallViewController: UIViewController {
     private let kToastTimeout: TimeInterval = 5
 
     // MARK: Properties
-    var createCallingContextFunction: (() -> CallingContext)?
+    var callingContext: CallingContext!
     var displayName: String?
 
     private var joinCallType: JoinCallType = .groupCall
@@ -162,10 +162,11 @@ class JoinCallViewController: UIViewController {
 
     // MARK: Navigation
     func navigateToCall() {
-        let inviteVc = InviteViewController()
-        let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        inviteVc.groupCallId = joinId
-        navigationController?.pushViewController(inviteVc, animated: true)
+        guard let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            return
+        }
+        let callConfig = JoinCallConfig(joinId: joinId, displayName: displayName ?? "", callType: joinCallType)
+        callingContext.startCallComposite(callConfig)
     }
 
     // MARK: User interaction handling
