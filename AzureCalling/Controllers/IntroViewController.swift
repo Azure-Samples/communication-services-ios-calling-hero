@@ -260,6 +260,7 @@ class IntroViewController: UIViewController {
 
     private func startCall() {
         let startCallVc = StartCallViewController()
+        startCallVc.callingContext = createCallingContextFunction()
         navigationController?.pushViewController(startCallVc, animated: true)
     }
 }

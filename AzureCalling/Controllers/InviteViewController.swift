@@ -7,8 +7,9 @@ import FluentUI
 
 class InviteViewController: UIViewController {
     // MARK: Properties
-    var createCallingContextFunction: (() -> CallingContext)?
+    var callingContext: CallingContext!
     var groupCallId: String?
+    var displayName: String?
 
     private var iconImageView: UIImageView!
     private var titleLabel: FluentUI.Label!
@@ -112,5 +113,7 @@ class InviteViewController: UIViewController {
     }
 
     private func onContinueButtonTapped() {
+        let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
+        callingContext.startCallComposite(callConfig)
     }
 }

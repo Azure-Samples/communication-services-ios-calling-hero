@@ -12,7 +12,7 @@ class StartCallViewController: UIViewController {
     private let maxDisplayNameSize: Int = 256
 
     // MARK: Properties
-    var createCallingContextFunction: (() -> CallingContext)?
+    var callingContext: CallingContext!
 
     private var contentView: UIView!
     private var displayNameStackView: UIStackView!
@@ -93,8 +93,9 @@ class StartCallViewController: UIViewController {
     // MARK: Action Handling
     private func onNextButtonTapped() {
         let inviteVc = InviteViewController()
-        inviteVc.createCallingContextFunction = createCallingContextFunction
-        inviteVc.groupCallId = "InviteVc groupCallId"
+        inviteVc.callingContext = callingContext
+        inviteVc.groupCallId = UUID().uuidString
+        inviteVc.displayName = displayNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         navigationController?.pushViewController(inviteVc, animated: true)
     }
 }

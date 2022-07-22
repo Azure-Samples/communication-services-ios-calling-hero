@@ -7,8 +7,6 @@ import AVFoundation
 
 struct JoinCallConfig {
     let joinId: String?
-    let isMicrophoneMuted: Bool
-    let isCameraOn: Bool
     let displayName: String
     let callType: JoinCallType
 }

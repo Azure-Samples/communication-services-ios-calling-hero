@@ -7,27 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F25182425EF00C3004A9143 /* JoinCallType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25182325EF00C3004A9143 /* JoinCallType.swift */; };
 		1F25182625EF4CEB004A9143 /* AttributedStringFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */; };
 		1F2BEA3A262A46EC00D98266 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BEA39262A46EC00D98266 /* ThemeColor.swift */; };
-		1F5FAD8E25FAC62900E2365F /* CommunicationIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */; };
-		1F5FADB225FFC76A00E2365F /* ParticipantsEventsAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */; };
-		1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AFED225D5A71C00E0029C /* JoinCallConfig.swift */; };
 		1F7AFEE125D6F35800E0029C /* NoticeBannerStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AFEE025D6F35800E0029C /* NoticeBannerStackView.swift */; };
 		1F7CD3FB25C1E9E80081D8F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3DC25C1E9E80081D8F1 /* LaunchScreen.storyboard */; };
 		1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */; };
 		1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */; };
-		1F7CD3FF25C1E9E80081D8F1 /* CallingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */; };
 		1F7CD40025C1E9E80081D8F1 /* AADAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */; };
-		1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */; };
 		1F7CD40225C1E9E80081D8F1 /* MappedSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */; };
 		1F7CD40325C1E9E80081D8F1 /* AppSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */; };
 		1F7CD40425C1E9E80081D8F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */; };
 		1F7CD40525C1E9E80081D8F1 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */; };
 		1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EC25C1E9E80081D8F1 /* FeedbackViewController.swift */; };
-		1F7CD40725C1E9E80081D8F1 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3ED25C1E9E80081D8F1 /* CallViewController.swift */; };
 		1F7CD40825C1E9E80081D8F1 /* HangupConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EE25C1E9E80081D8F1 /* HangupConfirmationViewController.swift */; };
-		1F7CD40925C1E9E80081D8F1 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */; };
 		1F7CD40A25C1E9E80081D8F1 /* JoinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */; };
 		1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */; };
 		1F7CD40D25C1E9E80081D8F1 /* ParticipantView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */; };
@@ -37,6 +29,10 @@
 		21C19BBC25C4DE6400EB0991 /* UIRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBB25C4DE6400EB0991 /* UIRoundedView.swift */; };
 		21C19BBE25C4DEA600EB0991 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */; };
 		692001692880B71300148D07 /* LinkMetadataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692001682880B71300148D07 /* LinkMetadataManager.swift */; };
+		698B18FC28891C3B008EDF11 /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B18FB28891C3B008EDF11 /* TokenService.swift */; };
+		698B18FE28891C7F008EDF11 /* CallingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B18FD28891C7F008EDF11 /* CallingContext.swift */; };
+		698B19002889228A008EDF11 /* JoinCallType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B18FF2889228A008EDF11 /* JoinCallType.swift */; };
+		698B19022889285F008EDF11 /* JoinCallConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B19012889285F008EDF11 /* JoinCallConfig.swift */; };
 		69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DF82875FDDD005C9EF5 /* IconTextField.swift */; };
 		69900DFD2876328A005C9EF5 /* StartCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DFC2876328A005C9EF5 /* StartCallViewController.swift */; };
 		69900DFF28778204005C9EF5 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69900DFE28778204005C9EF5 /* InviteViewController.swift */; };
@@ -74,29 +70,21 @@
 
 /* Begin PBXFileReference section */
 		0E38634AEB8303571C810BCF /* Pods-ACSCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.debug.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.debug.xcconfig"; sourceTree = "<group>"; };
-		1F25182325EF00C3004A9143 /* JoinCallType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCallType.swift; sourceTree = "<group>"; };
 		1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringFactory.swift; sourceTree = "<group>"; };
 		1F2BEA39262A46EC00D98266 /* ThemeColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
-		1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationIdentifierExtension.swift; sourceTree = "<group>"; };
-		1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsEventsAdapter.swift; sourceTree = "<group>"; };
-		1F7AFED225D5A71C00E0029C /* JoinCallConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCallConfig.swift; sourceTree = "<group>"; };
 		1F7AFEE025D6F35800E0029C /* NoticeBannerStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBannerStackView.swift; sourceTree = "<group>"; };
 		1F7CD3DD25C1E9E80081D8F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F7CD3DF25C1E9E80081D8F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallingContext.swift; sourceTree = "<group>"; };
 		1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AADAuthHandler.swift; sourceTree = "<group>"; };
-		1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
 		1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappedSequence.swift; sourceTree = "<group>"; };
 		1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppSettings.plist; sourceTree = "<group>"; };
 		1F7CD3E825C1E9E80081D8F1 /* AzureCalling.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = AzureCalling.entitlements; sourceTree = "<group>"; };
 		1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		1F7CD3EC25C1E9E80081D8F1 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
-		1F7CD3ED25C1E9E80081D8F1 /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		1F7CD3EE25C1E9E80081D8F1 /* HangupConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangupConfirmationViewController.swift; sourceTree = "<group>"; };
-		1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinCallViewController.swift; sourceTree = "<group>"; };
 		1F7CD3F225C1E9E80081D8F1 /* ParticipantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
 		1F7CD3F425C1E9E80081D8F1 /* ParticipantView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantView.xib; sourceTree = "<group>"; };
@@ -108,6 +96,10 @@
 		21C19BBD25C4DEA600EB0991 /* UIRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedButton.swift; sourceTree = "<group>"; };
 		21F3B94725473BF600BD9F91 /* AzureCalling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzureCalling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		692001682880B71300148D07 /* LinkMetadataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMetadataManager.swift; sourceTree = "<group>"; };
+		698B18FB28891C3B008EDF11 /* TokenService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
+		698B18FD28891C7F008EDF11 /* CallingContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallingContext.swift; sourceTree = "<group>"; };
+		698B18FF2889228A008EDF11 /* JoinCallType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinCallType.swift; sourceTree = "<group>"; };
+		698B19012889285F008EDF11 /* JoinCallConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinCallConfig.swift; sourceTree = "<group>"; };
 		69900DF82875FDDD005C9EF5 /* IconTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextField.swift; sourceTree = "<group>"; };
 		69900DFC2876328A005C9EF5 /* StartCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartCallViewController.swift; sourceTree = "<group>"; };
 		69900DFE28778204005C9EF5 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -170,7 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				21C19BD225C80BE100EB0991 /* Authentication */,
-				21C19BD325C80BFF00EB0991 /* Calling */,
+				698B19032889291F008EDF11 /* Calling */,
 			);
 			path = External;
 			sourceTree = "<group>";
@@ -230,19 +222,6 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		21C19BD325C80BFF00EB0991 /* Calling */ = {
-			isa = PBXGroup;
-			children = (
-				1F7CD3E325C1E9E80081D8F1 /* CallingContext.swift */,
-				1F7CD3E525C1E9E80081D8F1 /* TokenService.swift */,
-				1F7AFED225D5A71C00E0029C /* JoinCallConfig.swift */,
-				1F25182325EF00C3004A9143 /* JoinCallType.swift */,
-				1F5FAD8D25FAC62900E2365F /* CommunicationIdentifierExtension.swift */,
-				1F5FADB125FFC76A00E2365F /* ParticipantsEventsAdapter.swift */,
-			);
-			path = Calling;
-			sourceTree = "<group>";
-		};
 		21F3B93E25473BF600BD9F91 = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +256,17 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		698B19032889291F008EDF11 /* Calling */ = {
+			isa = PBXGroup;
+			children = (
+				698B18FB28891C3B008EDF11 /* TokenService.swift */,
+				698B18FD28891C7F008EDF11 /* CallingContext.swift */,
+				698B18FF2889228A008EDF11 /* JoinCallType.swift */,
+				698B19012889285F008EDF11 /* JoinCallConfig.swift */,
+			);
+			path = Calling;
+			sourceTree = "<group>";
+		};
 		69900DF128756613005C9EF5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,9 +281,7 @@
 				1F7CD3F125C1E9E80081D8F1 /* Views */,
 				989F61952649D72F000C5668 /* DataSource */,
 				1F7CD3EC25C1E9E80081D8F1 /* FeedbackViewController.swift */,
-				1F7CD3ED25C1E9E80081D8F1 /* CallViewController.swift */,
 				1F7CD3EE25C1E9E80081D8F1 /* HangupConfirmationViewController.swift */,
-				1F7CD3EF25C1E9E80081D8F1 /* LobbyViewController.swift */,
 				985A0CEB2641E71600147676 /* BottomDrawerViewController.swift */,
 				1F7CD3DE25C1E9E80081D8F1 /* Main.storyboard */,
 			);
@@ -465,15 +453,15 @@
 				1F7CD40525C1E9E80081D8F1 /* IntroViewController.swift in Sources */,
 				1F2BEA3A262A46EC00D98266 /* ThemeColor.swift in Sources */,
 				8D743155263373E0000D0BCE /* AudioDeviceSelectionDataSource.swift in Sources */,
-				1F7CD40725C1E9E80081D8F1 /* CallViewController.swift in Sources */,
+				698B18FC28891C3B008EDF11 /* TokenService.swift in Sources */,
+				698B18FE28891C7F008EDF11 /* CallingContext.swift in Sources */,
 				1F7CD40825C1E9E80081D8F1 /* HangupConfirmationViewController.swift in Sources */,
 				98F49DA72654651B00EE4396 /* BottomDrawerDataSource.swift in Sources */,
-				1F5FAD8E25FAC62900E2365F /* CommunicationIdentifierExtension.swift in Sources */,
 				8D743159263373ED000D0BCE /* BottomDrawerCellView.swift in Sources */,
 				1F7CD40625C1E9E80081D8F1 /* FeedbackViewController.swift in Sources */,
-				1F7CD3FF25C1E9E80081D8F1 /* CallingContext.swift in Sources */,
 				69900DFD2876328A005C9EF5 /* StartCallViewController.swift in Sources */,
 				1F25182625EF4CEB004A9143 /* AttributedStringFactory.swift in Sources */,
+				698B19022889285F008EDF11 /* JoinCallConfig.swift in Sources */,
 				986654FD264352A000395329 /* ActiveSpeakerView.swift in Sources */,
 				692001692880B71300148D07 /* LinkMetadataManager.swift in Sources */,
 				8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */,
@@ -482,17 +470,13 @@
 				69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */,
 				1F7CD40E25C1E9E80081D8F1 /* JoinIdShareItem.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
-				1F25182425EF00C3004A9143 /* JoinCallType.swift in Sources */,
 				98AF5CDF263B4447007608CD /* ParticipantListDataSource.swift in Sources */,
-				1F7CD40925C1E9E80081D8F1 /* LobbyViewController.swift in Sources */,
-				1F5FADB225FFC76A00E2365F /* ParticipantsEventsAdapter.swift in Sources */,
 				1F7CD40225C1E9E80081D8F1 /* MappedSequence.swift in Sources */,
 				8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */,
+				698B19002889228A008EDF11 /* JoinCallType.swift in Sources */,
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
 				985A0CEC2641E71600147676 /* BottomDrawerViewController.swift in Sources */,
 				7557330128739D8E0072A021 /* UserDetails.swift in Sources */,
-				1F7CD40125C1E9E80081D8F1 /* TokenService.swift in Sources */,
-				1F7AFED325D5A71C00E0029C /* JoinCallConfig.swift in Sources */,
 				8D74315B263373F9000D0BCE /* BottomDrawerItem.swift in Sources */,
 				1F7CD40B25C1E9E80081D8F1 /* ParticipantView.swift in Sources */,
 				755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */,
