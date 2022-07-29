@@ -3,11 +3,12 @@
 //  Licensed under the MIT License.
 //
 
+import FluentUI
 import UIKit
 
 class BusyOverlay: UIView {
 
-    private let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let activityIndicator = MSFActivityIndicator(size: .large)
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -23,13 +24,59 @@ class BusyOverlay: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
 
         backgroundColor = .black.withAlphaComponent(0.3)
-        activityIndicator.startAnimating()
-        activityIndicator.color = .white
+        activityIndicator.state.color = Colors.gray400
+        activityIndicator.state.isAnimating = true
 
-        addSubview(activityIndicator)
-        activityIndicator.centerVerticallyInContainer()
-        activityIndicator.centerHorizontallyInContainer()
+        let containerView = UIView()
+        containerView.backgroundColor = Colors.gray800
+        containerView.clipsToBounds = false
+        containerView.layer.cornerRadius = 4
+
+        containerView.fixHeightTo(height: 100)
+        containerView.fixWidthTo(width: 100)
+        containerView.addSubview(activityIndicator.view)
+        activityIndicator.view.centerVerticallyInContainer()
+        activityIndicator.view.centerHorizontallyInContainer()
+
+        addSubview(containerView)
+        containerView.centerVerticallyInContainer()
+        containerView.centerHorizontallyInContainer()
 
         isUserInteractionEnabled = false
+    }
+}
+
+extension BusyOverlay {
+    func presentIn(view: UIView, animated: Bool = true) {
+        guard superview == nil else {
+            setVisible(visible: true, animated: animated)
+            return
+        }
+
+        view.addSubview(self)
+        expandVerticallyInSuperView()
+        expandHorizontallyInSuperView()
+        setVisible(visible: true, animated: animated)
+    }
+
+    func hide(animated: Bool = true) {
+        setVisible(visible: false, animated: animated)
+    }
+
+    private func setVisible(visible: Bool, animated: Bool) {
+        let targetOpacity: Float = visible ? 1.0 : 0.0
+        if animated {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                options: .curveEaseInOut
+            ) { [weak self] in
+                self?.layer.opacity = targetOpacity
+            } completion: { [weak self] _ in
+                self?.removeFromSuperview()
+            }
+        } else {
+            layer.opacity = targetOpacity
+        }
     }
 }

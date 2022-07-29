@@ -110,7 +110,13 @@ extension UIView {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: height)
         ])
+    }
 
+    func fixWidthTo(width: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: width)
+        ])
     }
 
     func wrapInScrollview() -> UIScrollView {
