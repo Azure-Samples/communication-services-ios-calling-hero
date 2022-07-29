@@ -60,6 +60,9 @@ extension BusyOverlay {
     }
 
     func hide(animated: Bool = true) {
+        guard superview != nil else {
+            return
+        }
         setVisible(visible: false, animated: animated)
     }
 
@@ -72,8 +75,10 @@ extension BusyOverlay {
                 options: .curveEaseInOut
             ) { [weak self] in
                 self?.layer.opacity = targetOpacity
-            } completion: { [weak self] _ in
-                self?.removeFromSuperview()
+            } completion: { [weak self] complete in
+                if complete && !visible {
+                    self?.removeFromSuperview()
+                }
             }
         } else {
             layer.opacity = targetOpacity
