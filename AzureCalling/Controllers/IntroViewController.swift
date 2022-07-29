@@ -160,9 +160,9 @@ class IntroViewController: UIViewController {
             userAvatar.view,
             userDisplayName
         ])
-        userDetails.spacing = 8
-
         topBar.addSubview(userDetails)
+        userDetails.spacing = 8
+        userDetails.centerVerticallyInContainer()
         userDetails.pinToLeft(withMargin: 16)
     }
 
