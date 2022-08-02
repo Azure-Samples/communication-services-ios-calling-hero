@@ -3,7 +3,7 @@
 //  Licensed under the MIT License.
 //
 
-import AVFoundation
+import Foundation
 
 struct JoinCallConfig {
     let joinId: String?
