@@ -23,6 +23,7 @@ class IntroViewController: UIViewController {
     private var topBar: UIView!
     private var userAvatar: MSFAvatar!
     private var userDisplayName: FluentUI.Label!
+    private let busyOverlay = BusyOverlay(frame: .zero)
 
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
@@ -51,6 +52,8 @@ class IntroViewController: UIViewController {
             title: "Sign in",
             action: { [weak self] _ in self?.loginAAD() }
         )
+        signinButton.setTitle("Signing in...", for: .disabled)
+
         startCallButton = FluentUI.Button.createWith(
             style: .primaryFilled,
             title: "Start a call",
@@ -151,15 +154,15 @@ class IntroViewController: UIViewController {
         signOutButton.pinToRight()
 
         userAvatar = MSFAvatar(style: .default, size: .small)
-        userDisplayName = FluentUI.Label(style: .title2, colorStyle: .primary)
+        userDisplayName = FluentUI.Label(style: .body, colorStyle: .regular)
 
         let userDetails = UIStackView(arrangedSubviews: [
             userAvatar.view,
             userDisplayName
         ])
-        userDetails.spacing = 8
-
         topBar.addSubview(userDetails)
+        userDetails.spacing = 8
+        userDetails.centerVerticallyInContainer()
         userDetails.pinToLeft(withMargin: 16)
     }
 
@@ -168,6 +171,7 @@ class IntroViewController: UIViewController {
         userAvatar.state.image = userDetails?.avatar
         userAvatar.state.primaryText = userDetails?.userProfile?.displayName
         userDisplayName.text = userDetails?.userProfile?.displayName
+        var showBusy = false
 
         switch authHandler.authStatus {
         case .authorized:
@@ -183,8 +187,15 @@ class IntroViewController: UIViewController {
             showLoginButtonAndHideCallingButtons()
 
         case .authorizing:
-            // TODO: show busy state, lock controls
-            break
+            showBusy = true
+        }
+
+        if showBusy {
+            busyOverlay.presentIn(view: view)
+            signinButton.isEnabled = false
+        } else {
+            busyOverlay.hide()
+            signinButton.isEnabled = true
         }
     }
 
@@ -231,6 +242,8 @@ class IntroViewController: UIViewController {
     private func loginAAD() {
         Task {
             do {
+                signinButton.isEnabled = false
+                busyOverlay.presentIn(view: view)
                 userDetails = try await authHandler.login(presentingVc: self)
                 handleAuthState()
             } catch {
@@ -242,6 +255,8 @@ class IntroViewController: UIViewController {
     private func signOutAAD() {
         Task {
             do {
+                signOutButton.isEnabled = false
+                busyOverlay.presentIn(view: view)
                 try await authHandler.signOut(presentingVc: self)
                 handleAuthState()
             } catch {

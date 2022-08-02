@@ -90,8 +90,8 @@ class AADAuthHandler {
         userDetails.userProfile = try await getProfile()
 
         // Uncomment to obtain the user's avatar image if they have one
-        let avatar = try? await getAvatarImage()
-        userDetails.avatar = avatar
+//        let avatar = try? await getAvatarImage()
+//        userDetails.avatar = avatar
         return userDetails
     }
 
