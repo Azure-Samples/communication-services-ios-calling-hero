@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F25182625EF4CEB004A9143 /* AttributedStringFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */; };
 		1F2BEA3A262A46EC00D98266 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BEA39262A46EC00D98266 /* ThemeColor.swift */; };
 		1F7CD3FB25C1E9E80081D8F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3DC25C1E9E80081D8F1 /* LaunchScreen.storyboard */; };
 		1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */; };
 		1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */; };
 		1F7CD40025C1E9E80081D8F1 /* AADAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */; };
-		1F7CD40225C1E9E80081D8F1 /* MappedSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */; };
 		1F7CD40325C1E9E80081D8F1 /* AppSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */; };
 		1F7CD40425C1E9E80081D8F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */; };
 		1F7CD40525C1E9E80081D8F1 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */; };
@@ -33,8 +31,6 @@
 		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
 		756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DE3082885C6B500A943CF /* BusyOverlay.swift */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
-		8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D743152263373C5000D0BCE /* AudioSessionManager.swift */; };
-		8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74315C26337420000D0BCE /* AudioDeviceType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,13 +48,11 @@
 
 /* Begin PBXFileReference section */
 		0E38634AEB8303571C810BCF /* Pods-ACSCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.debug.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.debug.xcconfig"; sourceTree = "<group>"; };
-		1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringFactory.swift; sourceTree = "<group>"; };
 		1F2BEA39262A46EC00D98266 /* ThemeColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		1F7CD3DD25C1E9E80081D8F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AADAuthHandler.swift; sourceTree = "<group>"; };
-		1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappedSequence.swift; sourceTree = "<group>"; };
 		1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppSettings.plist; sourceTree = "<group>"; };
 		1F7CD3E825C1E9E80081D8F1 /* AzureCalling.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = AzureCalling.entitlements; sourceTree = "<group>"; };
 		1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,8 +77,6 @@
 		755733042875E9F00072A021 /* PaddingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingContainer.swift; sourceTree = "<group>"; };
 		756DE3082885C6B500A943CF /* BusyOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyOverlay.swift; sourceTree = "<group>"; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
-		8D743152263373C5000D0BCE /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
-		8D74315C26337420000D0BCE /* AudioDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceType.swift; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -143,12 +135,8 @@
 		21C19BD125C8098F00EB0991 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				1F25182525EF4CEB004A9143 /* AttributedStringFactory.swift */,
-				8D74315C26337420000D0BCE /* AudioDeviceType.swift */,
-				8D743152263373C5000D0BCE /* AudioSessionManager.swift */,
 				755732FD28733B410072A021 /* FluentUiExtensions.swift */,
 				75495F58286E1910004E4313 /* LayoutHelpers.swift */,
-				1F7CD3E625C1E9E80081D8F1 /* MappedSequence.swift */,
 				755733042875E9F00072A021 /* PaddingContainer.swift */,
 				1F2BEA39262A46EC00D98266 /* ThemeColor.swift */,
 			);
@@ -371,15 +359,11 @@
 				698B18FC28891C3B008EDF11 /* TokenService.swift in Sources */,
 				698B18FE28891C7F008EDF11 /* CallingContext.swift in Sources */,
 				69900DFD2876328A005C9EF5 /* StartCallViewController.swift in Sources */,
-				1F25182625EF4CEB004A9143 /* AttributedStringFactory.swift in Sources */,
 				698B19022889285F008EDF11 /* JoinCallConfig.swift in Sources */,
 				692001692880B71300148D07 /* LinkMetadataManager.swift in Sources */,
-				8D743153263373C5000D0BCE /* AudioSessionManager.swift in Sources */,
 				755733052875E9F00072A021 /* PaddingContainer.swift in Sources */,
 				69900DF92875FDDE005C9EF5 /* IconTextField.swift in Sources */,
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
-				1F7CD40225C1E9E80081D8F1 /* MappedSequence.swift in Sources */,
-				8D74315D26337420000D0BCE /* AudioDeviceType.swift in Sources */,
 				698B19002889228A008EDF11 /* JoinCallType.swift in Sources */,
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
 				7557330128739D8E0072A021 /* UserDetails.swift in Sources */,
