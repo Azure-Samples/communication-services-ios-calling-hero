@@ -6,11 +6,10 @@
 import Foundation
 import AzureCommunicationCalling
 import AzureCommunicationUICalling
-import AVFoundation
 
 public typealias TokenFetcher = (@escaping (String?, Error?) -> Void) -> Void
 
-class CallingContext: NSObject {
+final class CallingContext {
     // MARK: Constants
     private static let remoteParticipantsDisplayed: Int = 5
 
