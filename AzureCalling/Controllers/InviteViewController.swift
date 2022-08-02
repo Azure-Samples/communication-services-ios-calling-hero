@@ -109,6 +109,15 @@ class InviteViewController: UIViewController {
 
         let activityVC = UIActivityViewController(activityItems: objectsToShare,
                                                   applicationActivities: nil)
+
+        // On iPad the UIActivityViewController will be displayed as a popover.
+        // It requires to set a non-nil sourceView to specify the anchor location for the popover.
+        if let popoverPresentationController = activityVC.popoverPresentationController {
+             popoverPresentationController.sourceView = self.view
+             popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            //Remove the arrow
+             popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
+        }
         self.present(activityVC, animated: true, completion: nil)
     }
 
