@@ -54,9 +54,24 @@ final class CallingContext {
             return
         }
 
-        let remoteOptions = RemoteOptions(for: .groupCall(groupId: uuid),
-                                          credential: communicationTokenCredential,
-                                          displayName: displayName)
-        self.callComposite?.launch(remoteOptions: remoteOptions)
+        switch joinConfig.callType {
+        case .groupCall:
+            self.callComposite?.launch(
+                remoteOptions: RemoteOptions(
+                    for: .groupCall(groupId: uuid),
+                    credential: communicationTokenCredential,
+                    displayName: displayName
+                )
+            )
+
+        case .teamsMeeting:
+            self.callComposite?.launch(
+                remoteOptions: RemoteOptions(
+                    for: .teamsMeeting(teamsLink: joinIdStr),
+                    credential: communicationTokenCredential,
+                    displayName: displayName
+                )
+            )
+        }
     }
 }
