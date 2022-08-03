@@ -60,9 +60,30 @@ class JoinCallViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Set up any developer overrides from the AppConfig.xcconfig file
+        let appSettings = AppSettings()
+        if displayNameField.text?.isEmpty ?? true,
+            !appSettings.displayName.isEmpty {
+            displayNameField.text = appSettings.displayName
+        }
+        if let teamsUrl = appSettings.teamsUrl,
+            isValidTeamsUrl(url: teamsUrl) {
+            callTypeSelector.selectedSegmentIndex = JoinCallType.teamsMeeting.rawValue
+            joinIdTextField.text = teamsUrl.absoluteString
+        } else if let groupCallUuid = appSettings.groupCallUuid {
+            callTypeSelector.selectedSegmentIndex = JoinCallType.groupCall.rawValue
+            joinIdTextField.text = groupCallUuid.uuidString
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        joinIdTextField.becomeFirstResponder()
+        if joinIdTextField.text?.isEmpty ?? true {
+            joinIdTextField.becomeFirstResponder()
+        }
     }
 
     // MARK: Private Functions

@@ -49,9 +49,17 @@ class StartCallViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        displayNameTextField.becomeFirstResponder()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Set up any developer overrides from the AppConfig.xcconfig file
+        let appSettings = AppSettings()
+        if displayNameTextField.text?.isEmpty ?? true,
+            !appSettings.displayName.isEmpty {
+            displayNameTextField.text = appSettings.displayName
+        } else {
+            displayNameTextField.becomeFirstResponder()
+        }
     }
 
     deinit {
