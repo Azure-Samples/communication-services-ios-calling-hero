@@ -26,6 +26,7 @@ class JoinCallViewController: UIViewController {
     private var callTypeSelector: FluentUI.SegmentedControl!
     private var actionButton: FluentUI.Button!
     private var contentView: UIView!
+    private let busyOverlay = BusyOverlay(frame: .zero)
 
     // Handle keyboard scrolling the content
     private var bottomConstraint: NSLayoutConstraint!
@@ -166,7 +167,12 @@ class JoinCallViewController: UIViewController {
             return
         }
         let callConfig = JoinCallConfig(joinId: joinId, displayName: displayName ?? "", callType: joinCallType)
-        callingContext.startCallComposite(callConfig)
+        busyOverlay.presentIn(view: view)
+        self.callingContext.startCallComposite(callConfig, completionHandler: { [weak self] in
+            DispatchQueue.main.async {
+                self?.busyOverlay.hide()
+            }
+        })
     }
 
     // MARK: User interaction handling

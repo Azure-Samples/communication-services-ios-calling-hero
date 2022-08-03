@@ -27,22 +27,36 @@ final class CallingContext {
         self.tokenFetcher = tokenFetcher
     }
 
-    // MARK: Public API
-
-    func getTokenCredential() -> CommunicationTokenCredential? {
-        var tokenCredential: CommunicationTokenCredential
-        let tokenCredentialOptions = CommunicationTokenRefreshOptions(initialToken: nil, refreshProactively: true, tokenRefresher: tokenFetcher)
-
-        do {
-            tokenCredential = try CommunicationTokenCredential(withOptions: tokenCredentialOptions)
-        } catch {
-            print("ERROR: It was not possible to create user credential.")
-            return nil
+    // MARK: Private function
+    private func fetchInitialToken(completionHandler: @escaping (String?) -> Void) {
+        tokenFetcher { token, error in
+            guard error == nil else {
+                print("ERROR: Failed to fetch initial token. \(error?.localizedDescription ?? "")")
+                return
+            }
+            completionHandler(token)
         }
-        return tokenCredential
     }
 
-    func startCallComposite(_ joinConfig: JoinCallConfig) {
+    // MARK: Public API
+    func getTokenCredential(completionHandler: @escaping (CommunicationTokenCredential?) -> Void) {
+        fetchInitialToken { [weak self] token in
+            guard let self = self else {
+                return
+            }
+            let tokenCredentialOptions = CommunicationTokenRefreshOptions(initialToken: token, refreshProactively: true, tokenRefresher: self.tokenFetcher)
+
+            do {
+                let tokenCredential = try CommunicationTokenCredential(withOptions: tokenCredentialOptions)
+                completionHandler(tokenCredential)
+            } catch {
+                print("ERROR: It was not possible to create user credential.")
+                completionHandler(nil)
+            }
+        }
+    }
+
+    func startCallComposite(_ joinConfig: JoinCallConfig, completionHandler: @escaping () -> Void) {
         let callCompositeOptions = CallCompositeOptions()
         self.callComposite = CallComposite(withOptions: callCompositeOptions)
 
@@ -50,28 +64,34 @@ final class CallingContext {
         let uuid = UUID(uuidString: joinIdStr) ?? UUID()
         let displayName = joinConfig.displayName
 
-        guard let communicationTokenCredential = self.getTokenCredential() else {
-            return
-        }
+        self.getTokenCredential { [weak self] communicationTokenCredential in
+            guard let communicationTokenCredential = communicationTokenCredential else {
+                print("ERROR: Cannot start or join a call due to user credential creating failure.")
+                completionHandler()
+                return
+            }
+            DispatchQueue.main.async {
+                switch joinConfig.callType {
+                case .groupCall:
+                    self?.callComposite?.launch(
+                        remoteOptions: RemoteOptions(
+                            for: .groupCall(groupId: uuid),
+                            credential: communicationTokenCredential,
+                            displayName: displayName
+                        )
+                    )
 
-        switch joinConfig.callType {
-        case .groupCall:
-            self.callComposite?.launch(
-                remoteOptions: RemoteOptions(
-                    for: .groupCall(groupId: uuid),
-                    credential: communicationTokenCredential,
-                    displayName: displayName
-                )
-            )
-
-        case .teamsMeeting:
-            self.callComposite?.launch(
-                remoteOptions: RemoteOptions(
-                    for: .teamsMeeting(teamsLink: joinIdStr),
-                    credential: communicationTokenCredential,
-                    displayName: displayName
-                )
-            )
+                case .teamsMeeting:
+                    self?.callComposite?.launch(
+                        remoteOptions: RemoteOptions(
+                            for: .teamsMeeting(teamsLink: joinIdStr),
+                            credential: communicationTokenCredential,
+                            displayName: displayName
+                        )
+                    )
+                }
+            }
+            completionHandler()
         }
     }
 }
