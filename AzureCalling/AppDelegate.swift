@@ -22,8 +22,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
+        if let keywindow = UIApplication.shared.windows.filter({$0.isKeyWindow}).first,
+            let navigationController = keywindow.rootViewController as? UINavigationController {
+
+            if navigationController.visibleViewController is IntroViewController
+                || navigationController.visibleViewController is StartCallViewController
+                || navigationController.visibleViewController is JoinCallViewController
+                || navigationController.visibleViewController is InviteViewController {
+                return UIInterfaceOrientationMask.portrait
+            } else {
+                return UIInterfaceOrientationMask.all
+            }
+        }
+        return UIInterfaceOrientationMask.all
     }
+
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
