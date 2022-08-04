@@ -17,6 +17,7 @@ class InviteViewController: UIViewController {
     private var shareButton: FluentUI.Button!
     private var continueButton: FluentUI.Button!
     private let busyOverlay = BusyOverlay(frame: .zero)
+    private var shareSheetActivityVC: UIActivityViewController?
 
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
@@ -108,8 +109,20 @@ class InviteViewController: UIViewController {
                                               text: groupCallId ?? "",
                                               iconImage: image)]
 
-        let activityVC = UIActivityViewController(activityItems: objectsToShare,
+        shareSheetActivityVC = UIActivityViewController(activityItems: objectsToShare,
                                                   applicationActivities: nil)
+
+        guard let activityVC = shareSheetActivityVC else {
+            return
+        }
+        // On iPad the UIActivityViewController will be displayed as a popover.
+        // It requires to set a non-nil sourceView to specify the anchor location for the popover.
+        if let popoverPresentationController = activityVC.popoverPresentationController {
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.canOverlapSourceViewRect = true
+            //Remove the arrow
+            popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
+        }
         self.present(activityVC, animated: true, completion: nil)
     }
 
