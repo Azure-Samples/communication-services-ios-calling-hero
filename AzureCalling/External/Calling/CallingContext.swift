@@ -54,6 +54,7 @@ final class CallingContext {
             }
     }
 
+    @MainActor
     func startCallComposite(_ joinConfig: JoinCallConfig) async {
         let callCompositeOptions = CallCompositeOptions()
         self.callComposite = CallComposite(withOptions: callCompositeOptions)
@@ -64,26 +65,24 @@ final class CallingContext {
 
         do {
             let communicationTokenCredential = try await getTokenCredential()
-            DispatchQueue.main.async {
-                switch joinConfig.callType {
-                case .groupCall:
-                    self.callComposite?.launch(
-                        remoteOptions: RemoteOptions(
-                            for: .groupCall(groupId: uuid),
-                            credential: communicationTokenCredential,
-                            displayName: displayName
-                        )
+            switch joinConfig.callType {
+            case .groupCall:
+                self.callComposite?.launch(
+                    remoteOptions: RemoteOptions(
+                        for: .groupCall(groupId: uuid),
+                        credential: communicationTokenCredential,
+                        displayName: displayName
                     )
+                )
 
-                case .teamsMeeting:
-                    self.callComposite?.launch(
-                        remoteOptions: RemoteOptions(
-                            for: .teamsMeeting(teamsLink: joinIdStr),
-                            credential: communicationTokenCredential,
-                            displayName: displayName
-                        )
+            case .teamsMeeting:
+                self.callComposite?.launch(
+                    remoteOptions: RemoteOptions(
+                        for: .teamsMeeting(teamsLink: joinIdStr),
+                        credential: communicationTokenCredential,
+                        displayName: displayName
                     )
-                }
+                )
             }
         } catch {
             print("ERROR: Cannot start or join a call due to user credential creating error: \(error.localizedDescription).")
