@@ -113,9 +113,8 @@ class InviteViewController: UIViewController {
         self.present(activityVC, animated: true, completion: nil)
     }
 
-    @MainActor
     private func onContinueButtonTapped() {
-        Task {
+        Task { @MainActor in
             let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
             busyOverlay.presentIn(view: view)
             await self.callingContext.startCallComposite(callConfig)
