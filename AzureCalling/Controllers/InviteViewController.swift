@@ -114,12 +114,11 @@ class InviteViewController: UIViewController {
     }
 
     private func onContinueButtonTapped() {
-        let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
-        busyOverlay.presentIn(view: view)
-        self.callingContext.startCallComposite(callConfig, completionHandler: { [weak self] in
-            DispatchQueue.main.async {
-                self?.busyOverlay.hide()
-            }
-        })
+        Task { @MainActor in
+            let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
+            busyOverlay.presentIn(view: view)
+            await self.callingContext.startCallComposite(callConfig)
+            self.busyOverlay.hide()
+        }
     }
 }

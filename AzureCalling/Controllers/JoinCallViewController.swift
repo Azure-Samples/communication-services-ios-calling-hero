@@ -128,7 +128,7 @@ class JoinCallViewController: UIViewController {
         return true
     }
 
-    private func handleFormState() {
+    private func handleFormState() async {
         guard validateMeetingLink() else {
             joinIdTextField.becomeFirstResponder()
             typeTitle.colorStyle = .error
@@ -138,7 +138,7 @@ class JoinCallViewController: UIViewController {
 
         if !(displayNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false) {
             // Have a valid display name
-            navigateToCall()
+            await navigateToCall()
         } else {
             let notification = FluentUI.NotificationView()
             notification.setup(style: .dangerToast, message: "Display name is missing")
@@ -162,17 +162,14 @@ class JoinCallViewController: UIViewController {
     }
 
     // MARK: Navigation
-    func navigateToCall() {
+    func navigateToCall() async {
         guard let joinId = joinIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
             return
         }
         let callConfig = JoinCallConfig(joinId: joinId, displayName: displayName ?? "", callType: joinCallType)
         busyOverlay.presentIn(view: view)
-        self.callingContext.startCallComposite(callConfig, completionHandler: { [weak self] in
-            DispatchQueue.main.async {
-                self?.busyOverlay.hide()
-            }
-        })
+        await self.callingContext.startCallComposite(callConfig)
+        self.busyOverlay.hide()
     }
 
     // MARK: User interaction handling
@@ -194,7 +191,9 @@ class JoinCallViewController: UIViewController {
 
     // Action button
     private func handleAction() {
-        handleFormState()
+        Task { @MainActor in
+            await handleFormState()
+        }
     }
 }
 
