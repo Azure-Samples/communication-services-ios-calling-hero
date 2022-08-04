@@ -6,3 +6,4 @@
 /// Include the user-specific overrides for app settings, which are injected into the
 /// Info.plist file
 #include? "AppSettings.xcconfig"
+#include? "AzureCalling/AppSettings.xcconfig"

@@ -39,7 +39,7 @@ Additional documentation for this sample can be found on [Microsoft Docs](https:
 3. Create a text file called `AppSettings.xcconfig` at the root and add the following values:
 
 ```text
-communicationTokenFetchUrl = <URL for your Authentication Endpoint>
+communicationTokenFetchUrl = <URL for your Authentication Endpoint, without the https:// component>
 ```
 
 ## Run Sample
@@ -57,9 +57,12 @@ With additional configuration, this sample also supports connecting to an **Azur
 2. Go to your registered app overview page under Azure Active Directory App Registrations. Take note of the `Application (client) ID`, `Directory (tenant) ID`, `Application ID URI`
    ![Azure Active Directory Configuration](./docs/images/aadOverview.png)
 3. Add the following values to the `AppSettings.xcconfig` file:
-   - `communicationTokenFetchUrl`: the URL to request Azure Communication Services token
-   - `aadClientId`: your Application (client) ID
-   - `aadTenantId`: your Directory (tenant) ID
+
+   ```text
+   communicationTokenFetchUrl = <Application ID URI, without the https://>
+   aadClientId = <your Application (client) ID>
+   aadTenantId = <your Directory (tenant) ID>
+   ```
 
 ## Optional Configuration
 
