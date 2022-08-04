@@ -24,12 +24,6 @@ class InviteViewController: UIViewController {
         setupUI()
     }
 
-    override func viewDidLayoutSubviews() {
-        if let activityVC = shareSheetActivityVC, let popoverPresentationController = activityVC.popoverPresentationController {
-            setPopoverSourceView(for: popoverPresentationController)
-        }
-    }
-
     // MARK: UI layout
     private func setupUI() {
         view.backgroundColor = ThemeColor.lightSurfacesPrimary
@@ -124,15 +118,11 @@ class InviteViewController: UIViewController {
         // It requires to set a non-nil sourceView to specify the anchor location for the popover.
         if let popoverPresentationController = activityVC.popoverPresentationController {
             popoverPresentationController.sourceView = self.view
-            setPopoverSourceView(for: popoverPresentationController)
+            popoverPresentationController.canOverlapSourceViewRect = true
             //Remove the arrow
             popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
         }
         self.present(activityVC, animated: true, completion: nil)
-    }
-
-    private func setPopoverSourceView(for popoverPresentationController: UIPopoverPresentationController) {
-        popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
     }
 
     private func onContinueButtonTapped() {
