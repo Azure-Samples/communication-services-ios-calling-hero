@@ -15,8 +15,16 @@ class TokenService {
     }
 
     func getCommunicationToken(completionHandler: @escaping (String?, Error?) -> Void) {
-        guard let url = URL(string: communicationTokenFetchUrl) else {
-            assertionFailure("You need to provide the URL for the endpoint to fetch the ACS token. This should be set in the info.plist file.")
+        guard let url = URL(string: communicationTokenFetchUrl),
+              url.host != nil else {
+            assertionFailure(
+"""
+\n
+        You need to provide the URL for the endpoint to fetch the ACS token.
+        This should be set in a AppSettings.xcconfig file.
+\n
+"""
+            )
             return
         }
         var urlRequest = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)

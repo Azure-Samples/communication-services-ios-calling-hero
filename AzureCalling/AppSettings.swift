@@ -14,7 +14,10 @@ class AppSettings {
     }
 
     var isAADAuthEnabled: Bool {
-        return settings["isAADAuthEnabled"] as! Bool
+        guard let clientId = settings["aadClientId"] as? String else {
+            return false
+        }
+        return !clientId.isEmpty
     }
 
     var aadClientId: String {
@@ -33,15 +36,25 @@ class AppSettings {
         return settings["aadScopes"] as! [String]
     }
 
-    init() {
-        if let url = Bundle.main.url(forResource: "AppSettings", withExtension: "plist") {
-            do {
-                let data = try Data(contentsOf: url)
-                settings = try (PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any])!
-            } catch {
-                print(error)
-            }
-        }
+    var displayName: String {
+        return settings["displayName"] as? String ?? ""
     }
 
+    var teamsUrl: URL? {
+        guard let teamsUrlString = settings["teamsUrl"] as? String else {
+            return nil
+        }
+        return URL(string: teamsUrlString)
+    }
+
+    var groupCallUuid: UUID? {
+        guard let groupIdString = settings["groupCallUuid"] as? String else {
+            return nil
+        }
+        return UUID(uuidString: groupIdString)
+    }
+
+    init() {
+        settings = Bundle.main.infoDictionary ?? [:]
+    }
 }

@@ -12,7 +12,6 @@
 		1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */; };
 		1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */; };
 		1F7CD40025C1E9E80081D8F1 /* AADAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */; };
-		1F7CD40325C1E9E80081D8F1 /* AppSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */; };
 		1F7CD40425C1E9E80081D8F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */; };
 		1F7CD40525C1E9E80081D8F1 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */; };
 		1F7CD40A25C1E9E80081D8F1 /* JoinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7CD3F025C1E9E80081D8F1 /* JoinCallViewController.swift */; };
@@ -30,6 +29,7 @@
 		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
 		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
 		756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DE3082885C6B500A943CF /* BusyOverlay.swift */; };
+		7591BBE7289AFBBB00EE666F /* AppConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +53,6 @@
 		1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		1F7CD3E425C1E9E80081D8F1 /* AADAuthHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AADAuthHandler.swift; sourceTree = "<group>"; };
-		1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppSettings.plist; sourceTree = "<group>"; };
 		1F7CD3E825C1E9E80081D8F1 /* AzureCalling.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = AzureCalling.entitlements; sourceTree = "<group>"; };
 		1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F7CD3EB25C1E9E80081D8F1 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +75,7 @@
 		7557330028739D8E0072A021 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		755733042875E9F00072A021 /* PaddingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingContainer.swift; sourceTree = "<group>"; };
 		756DE3082885C6B500A943CF /* BusyOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyOverlay.swift; sourceTree = "<group>"; };
+		7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
 		F538450C6909F619B02539DC /* Pods_AzureCalling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AzureCalling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -95,17 +95,17 @@
 		1F7CD3DA25C1E9E80081D8F1 /* AzureCalling */ = {
 			isa = PBXGroup;
 			children = (
+				7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */,
 				1F7CD3E925C1E9E80081D8F1 /* AppDelegate.swift */,
-				1F7CD3E725C1E9E80081D8F1 /* AppSettings.plist */,
 				1F7CD3E225C1E9E80081D8F1 /* AppSettings.swift */,
 				1F7CD3E025C1E9E80081D8F1 /* Assets.xcassets */,
 				1F7CD3E825C1E9E80081D8F1 /* AzureCalling.entitlements */,
 				69900DF128756613005C9EF5 /* Components */,
 				1F7CD3EA25C1E9E80081D8F1 /* Controllers */,
-				692001672880B6F400148D07 /* Managers */,
 				1F7CD3E125C1E9E80081D8F1 /* External */,
 				1F7CD3F925C1E9E80081D8F1 /* Info.plist */,
 				1F7CD3DC25C1E9E80081D8F1 /* LaunchScreen.storyboard */,
+				692001672880B6F400148D07 /* Managers */,
 				1F7CD3FA25C1E9E80081D8F1 /* SceneDelegate.swift */,
 				21C19BD125C8098F00EB0991 /* Utilities */,
 			);
@@ -278,8 +278,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7591BBE7289AFBBB00EE666F /* AppConfig.xcconfig in Resources */,
 				1F7CD3FB25C1E9E80081D8F1 /* LaunchScreen.storyboard in Resources */,
-				1F7CD40325C1E9E80081D8F1 /* AppSettings.plist in Resources */,
 				1F7CD3FD25C1E9E80081D8F1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,6 +390,7 @@
 /* Begin XCBuildConfiguration section */
 		21F3B96F25473BFA00BD9F91 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

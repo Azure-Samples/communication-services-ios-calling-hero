@@ -245,10 +245,10 @@ class IntroViewController: UIViewController {
                 signinButton.isEnabled = false
                 busyOverlay.presentIn(view: view)
                 userDetails = try await authHandler.login(presentingVc: self)
-                handleAuthState()
             } catch {
                 print(error)
             }
+            handleAuthState()
         }
     }
 
@@ -258,10 +258,10 @@ class IntroViewController: UIViewController {
                 signOutButton.isEnabled = false
                 busyOverlay.presentIn(view: view)
                 try await authHandler.signOut(presentingVc: self)
-                handleAuthState()
             } catch {
                 print("MSAL couldn't sign out account with error: \(error)")
             }
+            handleAuthState()
         }
     }
 
