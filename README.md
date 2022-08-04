@@ -36,7 +36,11 @@ Additional documentation for this sample can be found on [Microsoft Docs](https:
 
 1. Run `pod install` on the root of the project directory. This generates `AzureCalling.xcworkspace`
 2. Open `AzureCalling.xcworkspace` in XCode.
-3. Update `AppSettings.plist`. Set the value for the `communicationTokenFetchUrl` key to be the URL for your Authentication Endpoint.
+3. Create a text file called `AppSettings.xcconfig` at the root and add the following values:
+
+```text
+communicationTokenFetchUrl = <URL for your Authentication Endpoint>
+```
 
 ## Run Sample
 
@@ -52,13 +56,22 @@ With additional configuration, this sample also supports connecting to an **Azur
    - [Configure your App Service or Azure Functions app to use Azure AD login](https://docs.microsoft.com/azure/app-service/configure-authentication-provider-aad)
 2. Go to your registered app overview page under Azure Active Directory App Registrations. Take note of the `Application (client) ID`, `Directory (tenant) ID`, `Application ID URI`
    ![Azure Active Directory Configuration](./docs/images/aadOverview.png)
-3. Open `AppSettings.plist` in Xcode, add the following key values:
+3. Add the following values to the `AppSettings.xcconfig` file:
    - `communicationTokenFetchUrl`: the URL to request Azure Communication Services token
-   - `isAADAuthEnabled`: a boolean value to indicate if the Azure Communication Services token authentication is required or not
    - `aadClientId`: your Application (client) ID
    - `aadTenantId`: your Directory (tenant) ID
-   - `aadRedirectURI`: the redirect URI should be in this format: `msauth.<app_bundle_id>://auth`
-   - `aadScopes`: an array of permission scopes requested from users for authorization. Add `<Application ID URI>/user_impersonation` to the array to grant access to authentication endpoint
+
+## Optional Configuration
+
+If you would like to specify a group call UUID or a teams link to join when using the app in your environment, you can add the following parameters to the `AppSettings.xcconfig` file:
+
+```text
+displayName = <Your call display name> (optional)
+groupCallUuid = <Group call UUID locator> (optional) 
+teamsUrl = <teams URL to use, minus the protocol component (optional)>
+```
+
+Note that using a teamsUrl will override the group call UUID.
 
 ## Additional Reading
 
