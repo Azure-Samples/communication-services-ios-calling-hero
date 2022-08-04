@@ -28,13 +28,11 @@ final class CallingContext {
     }
 
     // MARK: Private function
-
     private func fetchInitialToken() async -> String? {
         return await withCheckedContinuation { continuation in
             tokenFetcher { token, error in
-                guard error == nil else {
-                    print("ERROR: Failed to fetch initial token. \(error?.localizedDescription ?? "")")
-                    return
+                if let error = error {
+                    print("ERROR: Failed to fetch initial token. \(error.localizedDescription)")
                 }
                 continuation.resume(returning: token)
             }

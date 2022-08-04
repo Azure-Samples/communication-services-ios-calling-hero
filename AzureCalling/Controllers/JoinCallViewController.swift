@@ -128,6 +128,7 @@ class JoinCallViewController: UIViewController {
         return true
     }
 
+    @MainActor
     private func handleFormState() async {
         guard validateMeetingLink() else {
             joinIdTextField.becomeFirstResponder()
@@ -191,7 +192,7 @@ class JoinCallViewController: UIViewController {
 
     // Action button
     private func handleAction() {
-        Task { @MainActor in
+        Task {
             await handleFormState()
         }
     }
