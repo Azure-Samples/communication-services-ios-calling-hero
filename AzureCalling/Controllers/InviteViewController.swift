@@ -16,6 +16,7 @@ class InviteViewController: UIViewController {
     private var subtitleLabel: FluentUI.Label!
     private var shareButton: FluentUI.Button!
     private var continueButton: FluentUI.Button!
+    private let busyOverlay = BusyOverlay(frame: .zero)
     private var shareSheetActivityVC: UIActivityViewController?
 
     // MARK: ViewController Lifecycle
@@ -126,7 +127,11 @@ class InviteViewController: UIViewController {
     }
 
     private func onContinueButtonTapped() {
-        let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
-        callingContext.startCallComposite(callConfig)
+        Task { @MainActor in
+            let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
+            busyOverlay.presentIn(view: view)
+            await self.callingContext.startCallComposite(callConfig)
+            self.busyOverlay.hide()
+        }
     }
 }

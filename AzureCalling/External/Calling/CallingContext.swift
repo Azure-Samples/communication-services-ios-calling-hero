@@ -27,22 +27,33 @@ final class CallingContext {
         self.tokenFetcher = tokenFetcher
     }
 
-    // MARK: Public API
-
-    func getTokenCredential() -> CommunicationTokenCredential? {
-        var tokenCredential: CommunicationTokenCredential
-        let tokenCredentialOptions = CommunicationTokenRefreshOptions(initialToken: nil, refreshProactively: true, tokenRefresher: tokenFetcher)
-
-        do {
-            tokenCredential = try CommunicationTokenCredential(withOptions: tokenCredentialOptions)
-        } catch {
-            print("ERROR: It was not possible to create user credential.")
-            return nil
+    // MARK: Private function
+    private func fetchInitialToken() async -> String? {
+        return await withCheckedContinuation { continuation in
+            tokenFetcher { token, error in
+                if let error = error {
+                    print("ERROR: Failed to fetch initial token. \(error.localizedDescription)")
+                }
+                continuation.resume(returning: token)
+            }
         }
-        return tokenCredential
     }
 
-    func startCallComposite(_ joinConfig: JoinCallConfig) {
+    // MARK: Public API
+    func getTokenCredential() async throws -> CommunicationTokenCredential {
+            let token = await fetchInitialToken()
+            let tokenCredentialOptions = CommunicationTokenRefreshOptions(initialToken: token, refreshProactively: true, tokenRefresher: self.tokenFetcher)
+            do {
+                let tokenCredential = try CommunicationTokenCredential(withOptions: tokenCredentialOptions)
+                return tokenCredential
+            } catch {
+                print("ERROR: It was not possible to create user credential.")
+                throw error
+            }
+    }
+
+    @MainActor
+    func startCallComposite(_ joinConfig: JoinCallConfig) async {
         let callCompositeOptions = CallCompositeOptions()
         self.callComposite = CallComposite(withOptions: callCompositeOptions)
 
@@ -50,28 +61,29 @@ final class CallingContext {
         let uuid = UUID(uuidString: joinIdStr) ?? UUID()
         let displayName = joinConfig.displayName
 
-        guard let communicationTokenCredential = self.getTokenCredential() else {
-            return
-        }
-
-        switch joinConfig.callType {
-        case .groupCall:
-            self.callComposite?.launch(
-                remoteOptions: RemoteOptions(
-                    for: .groupCall(groupId: uuid),
-                    credential: communicationTokenCredential,
-                    displayName: displayName
+        do {
+            let communicationTokenCredential = try await getTokenCredential()
+            switch joinConfig.callType {
+            case .groupCall:
+                self.callComposite?.launch(
+                    remoteOptions: RemoteOptions(
+                        for: .groupCall(groupId: uuid),
+                        credential: communicationTokenCredential,
+                        displayName: displayName
+                    )
                 )
-            )
 
-        case .teamsMeeting:
-            self.callComposite?.launch(
-                remoteOptions: RemoteOptions(
-                    for: .teamsMeeting(teamsLink: joinIdStr),
-                    credential: communicationTokenCredential,
-                    displayName: displayName
+            case .teamsMeeting:
+                self.callComposite?.launch(
+                    remoteOptions: RemoteOptions(
+                        for: .teamsMeeting(teamsLink: joinIdStr),
+                        credential: communicationTokenCredential,
+                        displayName: displayName
+                    )
                 )
-            )
+            }
+        } catch {
+            print("ERROR: Cannot start or join a call due to user credential creating error: \(error.localizedDescription).")
         }
     }
 }
