@@ -261,6 +261,7 @@ class IntroViewController: UIViewController {
             } catch {
                 print("MSAL couldn't sign out account with error: \(error)")
             }
+            signOutButton.isEnabled = true
             handleAuthState()
         }
     }
