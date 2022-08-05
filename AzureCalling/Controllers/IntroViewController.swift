@@ -269,7 +269,8 @@ class IntroViewController: UIViewController {
     private func joinCall() {
         let joinCallVc = JoinCallViewController()
         joinCallVc.callingContext = createCallingContextFunction()
-        joinCallVc.displayName = userDetails?.userProfile?.displayName
+        let appSettings = AppSettings()
+        joinCallVc.displayName = userDetails?.userProfile?.displayName ?? appSettings.displayName
 
         navigationController?.pushViewController(joinCallVc, animated: true)
     }
