@@ -86,10 +86,15 @@ class AADAuthHandler {
         var userDetails = UserDetails(authToken: result?.accessToken)
         updateAccessToken(result?.accessToken)
         currentAccount = result?.account
+        userDetails.userProfile = UserProfile(displayName: currentAccount?.username)
 
-        userDetails.userProfile = try await getProfile()
+        // If you are using AAD backed through the Microsoft Graph API, you can get
+        // the profile with this call
+        if let profile = try? await getProfile() {
+            userDetails.userProfile = profile
+        }
 
-        // Uncomment to obtain the user's avatar image if they have one
+        // Or you can get the avatar image using this call.
 //        let avatar = try? await getAvatarImage()
 //        userDetails.avatar = avatar
         return userDetails
@@ -158,6 +163,8 @@ class AADAuthHandler {
         return try await appContext.acquireToken(with: parameters)
     }
 
+    /// Gets the user profile of the current user, through the Microsoft graph API
+    ///
     private func getProfile() async throws -> UserProfile {
         guard let detailsUrl = URL(string: kGraphHost.appending("/me")),
               let accessToken = authToken else {
@@ -183,6 +190,8 @@ class AADAuthHandler {
         })
     }
 
+    /// Gets the user avatar image of the current user, through the Microsoft graph API, if there is one
+    ///
     private func getAvatarImage() async throws -> UIImage {
         guard let avatarUrl = URL(string: kGraphHost.appending("/me/photos/48x48/$value")),
               let accessToken = authToken else {

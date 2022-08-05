@@ -77,29 +77,29 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>displayName</key>
-	<string>${displayName}</string>
-	<key>groupCallUuid</key>
-	<string>${groupCallUuid}</string>
-	<key>teamsUrl</key>
-	<string>https://${teamsUrl}</string>
-	<key>communicationTokenFetchUrl</key>
-	<string>https://${communicationTokenFetchUrl}</string>
-	<key>aadClientId</key>
-	<string>${aadClientId}</string>
-	<key>aadTenantId</key>
-	<string>${aadTenantId}</string>
-	<key>aadRedirectURI</key>
-	<string>msauth.com.azure.samples.communication.calling://auth</string>
-	<key>aadScopes</key>
-	<array>
-		<string>user.read</string>
-	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>aadClientId</key>
+	<string>${aadClientId}</string>
+	<key>aadRedirectURI</key>
+	<string>msauth.com.azure.samples.communication.calling://auth</string>
+	<key>aadScopes</key>
+	<array>
+		<string>user.read</string>
+	</array>
+	<key>aadTenantId</key>
+	<string>${aadTenantId}</string>
+	<key>communicationTokenFetchUrl</key>
+	<string>https://${communicationTokenFetchUrl}</string>
+	<key>displayName</key>
+	<string>${displayName}</string>
+	<key>groupCallUuid</key>
+	<string>${groupCallUuid}</string>
+	<key>teamsUrl</key>
+	<string>https://${teamsUrl}</string>
 </dict>
 </plist>

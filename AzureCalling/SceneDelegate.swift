@@ -83,7 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func setupNavigationController() -> UIViewController {
-        let fluentNavVc = FluentUI.UINavigationController(rootViewController: IntroViewController())
+        let fluentNavVc = PortraitOnlyNavController(rootViewController: IntroViewController())
         fluentNavVc.view.backgroundColor = .white
         fluentNavVc.view.tintColor = FluentUI.Colors.textSecondary
         fluentNavVc.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
@@ -95,5 +95,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         fluentNavVc.navigationBar.scrollEdgeAppearance = appearance
         return fluentNavVc
     }
+}
 
+class PortraitOnlyNavController: FluentUI.UINavigationController {
+
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override var shouldAutorotate: Bool { false }
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation { .portrait }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
 }
