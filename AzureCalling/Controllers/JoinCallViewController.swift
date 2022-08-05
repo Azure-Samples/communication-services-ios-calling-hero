@@ -73,10 +73,10 @@ class JoinCallViewController: UIViewController {
         if let teamsUrl = appSettings.teamsUrl,
             isValidTeamsUrl(url: teamsUrl) {
             callTypeSelector.selectedSegmentIndex = JoinCallType.teamsMeeting.rawValue
-            joinIdTextField.text = teamsUrl.absoluteString
+            handleSegmentChanged(action: UIAction(title: teamsUrl.absoluteString, handler: { _ in }) )
         } else if let groupCallUuid = appSettings.groupCallUuid {
             callTypeSelector.selectedSegmentIndex = JoinCallType.groupCall.rawValue
-            joinIdTextField.text = groupCallUuid.uuidString
+            handleSegmentChanged(action: UIAction(title: groupCallUuid.uuidString, handler: { _ in }) )
         }
     }
 
@@ -198,6 +198,8 @@ class JoinCallViewController: UIViewController {
     private func handleSegmentChanged(action: UIAction) {
         if let callType = JoinCallType(rawValue: callTypeSelector.selectedSegmentIndex) {
             joinCallType = callType
+            typeTitle.colorStyle = .secondary
+            joinIdTextField.text = action.title
             switch callType {
             case .groupCall:
                 typeTitle.text = "Group call"
