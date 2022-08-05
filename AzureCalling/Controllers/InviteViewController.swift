@@ -104,6 +104,7 @@ class InviteViewController: UIViewController {
 
     // MARK: Action Handling
     private func onShareButtonTapped() {
+        busyOverlay.presentIn(view: view)
         let image = UIImage(named: "ic_fluent_key_20_regular")
         let objectsToShare: [Any] = [LinkMetadataManager(title: "Group call ID",
                                               text: groupCallId ?? "",
@@ -123,7 +124,9 @@ class InviteViewController: UIViewController {
             //Remove the arrow
             popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
         }
-        self.present(activityVC, animated: true, completion: nil)
+        self.present(activityVC, animated: true, completion: { [weak self] in
+            self?.busyOverlay.hide()
+        })
     }
 
     private func onContinueButtonTapped() {
