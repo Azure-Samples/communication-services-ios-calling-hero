@@ -19,14 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-//        if let keywindow = UIApplication.shared.windows.filter({$0.isKeyWindow}).first,
-//           let navigationController = keywindow.rootViewController as? UINavigationController,
-//           let visibleVc = navigationController.visibleViewController {
-//            return visibleVc.supportedInterfaceOrientations
-//        }
-//        return .portrait
-//    }
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
