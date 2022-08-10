@@ -96,16 +96,18 @@ class IntroViewController: UIViewController {
     }
 
     private func layoutMainContainer() {
-        let titleLabel = FluentUI.Label(style: .title1)
-        titleLabel.text = "Video calling sample"
+        let titleLabel = FluentUI.Label.createWith(style: .title1,
+                                                   colorStyle: .regular,
+                                                   value: "Video calling sample")
 
-        let builtWithLabel = FluentUI.Label(style: .body)
-        builtWithLabel.text = "Built with"
+        let builtWithLabel = FluentUI.Label.createWith(style: .body,
+                                                       colorStyle: .regular,
+                                                       value: "Built with")
         builtWithLabel.directionalLayoutMargins.top = 24
 
-        let acsImageLabel = FluentUI.Label(style: .button1)
-        acsImageLabel.text = "Azure Communication Services"
-        acsImageLabel.textColor = ThemeColor.primary
+        let acsImageLabel = FluentUI.Label.createWith(style: .button1,
+                                                      colorStyle: .primary,
+                                                      value: "Azure Communication Services")
 
         let acsLabelStack = UIStackView(arrangedSubviews: [
             UIImageView(image: UIImage(named: "acsLogo")),
@@ -154,8 +156,8 @@ class IntroViewController: UIViewController {
         signOutButton.pinToRight()
 
         userAvatar = MSFAvatar(style: .default, size: .small)
-        userDisplayName = FluentUI.Label(style: .body, colorStyle: .regular)
-
+        userDisplayName = FluentUI.Label.createWith(style: .body,
+                                                    colorStyle: .regular)
         let userDetails = UIStackView(arrangedSubviews: [
             userAvatar.view,
             userDisplayName
