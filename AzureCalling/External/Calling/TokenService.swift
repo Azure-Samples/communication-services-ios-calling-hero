@@ -36,13 +36,25 @@ class TokenService {
         URLSession.shared.dataTask(with: urlRequest) { (data, _, error) in
             if let error = error {
                 print(error)
+                completionHandler(nil, error)
             } else if let data = data {
                 do {
                     let res = try JSONDecoder().decode(TokenResponse.self, from: data)
-                    print(res.token)
                     completionHandler(res.token, nil)
                 } catch let error {
-                    print(error)
+                    if let parsedPayload = data.asPrettyJson {
+                        print("Payload:\n\(parsedPayload)")
+                    }
+                    assertionFailure(
+"""
+\n
+        JSON Parsing of the token response failed.
+        This code expects a top level key named 'token' with a string value
+        Please modify TokenResponse to match as necessary
+\n
+"""
+                    )
+                    completionHandler(nil, error)
                 }
             }
         }.resume()

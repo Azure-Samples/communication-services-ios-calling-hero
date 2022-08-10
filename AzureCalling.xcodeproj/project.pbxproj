@@ -28,6 +28,7 @@
 		755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755732FD28733B410072A021 /* FluentUiExtensions.swift */; };
 		7557330128739D8E0072A021 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557330028739D8E0072A021 /* UserDetails.swift */; };
 		755733052875E9F00072A021 /* PaddingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755733042875E9F00072A021 /* PaddingContainer.swift */; };
+		7563059B28A4054E0028B2C6 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563059A28A4054E0028B2C6 /* Data+Extensions.swift */; };
 		756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DE3082885C6B500A943CF /* BusyOverlay.swift */; };
 		7591BBE7289AFBBB00EE666F /* AppConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */; };
 		8931886CE784B7FCF6503FCD /* Pods_AzureCalling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F538450C6909F619B02539DC /* Pods_AzureCalling.framework */; };
@@ -74,6 +75,7 @@
 		755732FD28733B410072A021 /* FluentUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluentUiExtensions.swift; sourceTree = "<group>"; };
 		7557330028739D8E0072A021 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		755733042875E9F00072A021 /* PaddingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingContainer.swift; sourceTree = "<group>"; };
+		7563059A28A4054E0028B2C6 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		756DE3082885C6B500A943CF /* BusyOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyOverlay.swift; sourceTree = "<group>"; };
 		7591BBE6289AFBBB00EE666F /* AppConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		83FB20DFF3EE83EF2044575D /* Pods-ACSCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSCall.release.xcconfig"; path = "Target Support Files/Pods-ACSCall/Pods-ACSCall.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				75495F58286E1910004E4313 /* LayoutHelpers.swift */,
 				755733042875E9F00072A021 /* PaddingContainer.swift */,
 				1F2BEA39262A46EC00D98266 /* ThemeColor.swift */,
+				7563059A28A4054E0028B2C6 /* Data+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				1F7CD41225C1E9E80081D8F1 /* SceneDelegate.swift in Sources */,
 				698B19002889228A008EDF11 /* JoinCallType.swift in Sources */,
 				1F7CD3FE25C1E9E80081D8F1 /* AppSettings.swift in Sources */,
+				7563059B28A4054E0028B2C6 /* Data+Extensions.swift in Sources */,
 				7557330128739D8E0072A021 /* UserDetails.swift in Sources */,
 				756DE3092885C6B500A943CF /* BusyOverlay.swift in Sources */,
 				755732FE28733B410072A021 /* FluentUiExtensions.swift in Sources */,
