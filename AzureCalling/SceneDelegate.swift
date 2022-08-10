@@ -85,7 +85,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func setupNavigationController() -> UIViewController {
         let fluentNavVc = PortraitOnlyNavController(rootViewController: IntroViewController())
         fluentNavVc.view.backgroundColor = FluentUI.Colors.surfaceSecondary
-        fluentNavVc.view.tintColor = FluentUI.Colors.textSecondary
+        fluentNavVc.view.tintColor = FluentUI.Colors.iconPrimary
         fluentNavVc.navigationBar.topItem?.backButtonDisplayMode = .minimal
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = FluentUI.Colors.surfaceSecondary

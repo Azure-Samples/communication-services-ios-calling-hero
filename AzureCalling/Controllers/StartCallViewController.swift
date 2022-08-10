@@ -29,7 +29,7 @@ class StartCallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = FluentUI.Colors.surfaceSecondary
-        title = "Start call"
+        title = "Start a call"
 
         contentView = setupUI()
 
