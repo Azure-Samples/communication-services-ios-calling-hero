@@ -13,8 +13,4 @@ enum ThemeColor {
     static var lightSurfacesPrimary = UIColor(named: "lightSurfacesPrimary")
     static var lightSurfacesSecondary = UIColor(named: "lightSurfacesSecondary")
 
-    static var textPrimary = UIColor(named: "gray900")!
-    static let textSecondary = UIColor(named: "gray500")!
-    static let error = UIColor(named: "dangerPrimary")!
-    static let warning = UIColor(named: "warningShade30")!
 }
