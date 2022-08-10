@@ -28,7 +28,7 @@ class IntroViewController: UIViewController {
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ThemeColor.lightSurfacesSecondary
+        view.backgroundColor = FluentUI.Colors.surfacePrimary
         createControls()
         layoutView()
 
@@ -123,7 +123,7 @@ class IntroViewController: UIViewController {
         acsLabelStack.centerHorizontallyInContainer()
 
         labelContainer.layer.cornerRadius = 12
-        labelContainer.backgroundColor = ThemeColor.lightSurfacesPrimary
+        labelContainer.backgroundColor = FluentUI.Colors.surfacePrimary
         NSLayoutConstraint.activate(
             NSLayoutConstraint.constraints(
                 withVisualFormat: "V:|-24-[builtWith]-[labelStack]-24-|",
