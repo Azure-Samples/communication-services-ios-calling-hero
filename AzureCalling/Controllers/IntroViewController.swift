@@ -247,9 +247,17 @@ class IntroViewController: UIViewController {
                 userDetails = try await authHandler.login(presentingVc: self)
             } catch {
                 print(error)
+                handleError(message: error.localizedDescription)
             }
             handleAuthState()
         }
+    }
+
+    private func handleError(message: String) {
+        let notification = FluentUI.NotificationView()
+        notification.setup(style: .dangerToast, message: message)
+        notification.show(in: view)
+        notification.hide(after: 5, animated: true, completion: nil)
     }
 
     private func signOutAAD() {
@@ -260,6 +268,7 @@ class IntroViewController: UIViewController {
                 try await authHandler.signOut(presentingVc: self)
             } catch {
                 print("MSAL couldn't sign out account with error: \(error)")
+                handleError(message: error.localizedDescription)
             }
             signOutButton.isEnabled = true
             handleAuthState()
