@@ -28,7 +28,7 @@ class StartCallViewController: UIViewController {
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = FluentUI.Colors.surfacePrimary
+        view.backgroundColor = FluentUI.Colors.surfaceSecondary
         title = "Start call"
 
         contentView = setupUI()

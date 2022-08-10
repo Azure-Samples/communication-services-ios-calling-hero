@@ -36,7 +36,7 @@ class JoinCallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Join"
-        view.backgroundColor = FluentUI.Colors.surfacePrimary
+        view.backgroundColor = FluentUI.Colors.surfaceSecondary
 
         contentView = setupUI()
 
@@ -294,7 +294,7 @@ private extension JoinCallViewController {
             SegmentItem(title: "Group call"),
             SegmentItem(title: "Teams meeting")
         ])
-        callTypeSelector.backgroundColor = FluentUI.Colors.surfacePrimary
+        callTypeSelector.backgroundColor = FluentUI.Colors.surfaceSecondary
         callTypeSelector.addAction(UIAction(handler: handleSegmentChanged), for: .valueChanged)
     }
 
@@ -371,7 +371,7 @@ private extension JoinCallViewController {
             )
         ])
         formStack.axis = .vertical
-        formStack.backgroundColor = FluentUI.Colors.surfacePrimary
+        formStack.backgroundColor = FluentUI.Colors.surfaceSecondary
 
         return formStack
     }

@@ -27,7 +27,7 @@ class InviteViewController: UIViewController {
 
     // MARK: UI layout
     private func setupUI() {
-        view.backgroundColor = FluentUI.Colors.surfacePrimary
+        view.backgroundColor = FluentUI.Colors.surfaceSecondary
         title = "Invite another device ?"
         setupImageViews()
         setupLabels()
