@@ -131,6 +131,7 @@ class AADAuthHandler {
             let msalParameters = MSALParameters()
             applicationContext.getCurrentAccount(with: msalParameters) { currentAccount, _, error in
                 if let err = error {
+                    print("Error loading MSAL account: \(err.localizedDescription)")
                     continuation.resume(throwing: err)
                 } else {
                     continuation.resume(returning: currentAccount)
