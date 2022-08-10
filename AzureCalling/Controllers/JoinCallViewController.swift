@@ -322,7 +322,7 @@ private extension JoinCallViewController {
         joinIdTextField.delegate = self
         joinIdTextField.placeholder = kGroupIdPlaceHolder
         joinIdTextField.padding = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
-        joinIdTextField.keyboardType = .asciiCapable
+        joinIdTextField.keyboardType = .default
         joinIdTextField.autocorrectionType = .no
         joinIdTextField.autocapitalizationType = .none
 

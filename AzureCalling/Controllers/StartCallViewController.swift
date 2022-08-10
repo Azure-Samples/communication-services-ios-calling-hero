@@ -179,7 +179,7 @@ private extension StartCallViewController {
         displayNameTextField.placeholder = "Enter a name"
         displayNameTextField.image = UIImage(named: "ic_fluent_person_20_regular")
         displayNameTextField.imageSize = CGSize(width: 16, height: 20)
-        displayNameTextField.keyboardType = .asciiCapable
+        displayNameTextField.keyboardType = .default
         displayNameTextField.autocorrectionType = .no
         displayNameTextField.delegate = self
     }
