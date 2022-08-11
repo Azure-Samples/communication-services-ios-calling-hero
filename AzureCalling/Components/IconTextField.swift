@@ -65,7 +65,7 @@ final class IconTextField: UITextField {
     }
 
     private func initialize() {
-        self.backgroundColor = .white
+        self.backgroundColor = FluentUI.Colors.surfacePrimary
         self.textColor = FluentUI.Colors.textPrimary
         self.font = FluentUI.Fonts.body
         UITextField.appearance().tintColor = FluentUI.Colors.iconSecondary
