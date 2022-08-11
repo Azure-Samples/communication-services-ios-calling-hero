@@ -6,7 +6,7 @@
 import FluentUI
 import UIKit
 
-let learnMoreURL = "https://azure.microsoft.com/services/communication-services/"
+let learnMoreURL = "https://aka.ms/acs"
 
 class IntroViewController: UIViewController {
 
