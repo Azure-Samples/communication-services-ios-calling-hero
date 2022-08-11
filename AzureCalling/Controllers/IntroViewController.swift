@@ -6,7 +6,7 @@
 import FluentUI
 import UIKit
 
-let learnMoreURL = "https://aka.ms/ACS-CallingSample-iOS"
+let learnMoreURL = "https://azure.microsoft.com/services/communication-services/"
 
 class IntroViewController: UIViewController {
 
@@ -133,6 +133,12 @@ class IntroViewController: UIViewController {
 
         let stackView = UIStackView(arrangedSubviews: [titleLabel, labelContainer])
         labelContainer.expandHorizontallyInSuperView()
+        labelContainer.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.showLearnMoreWebView)
+            )
+        )
 
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -230,7 +236,7 @@ class IntroViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func showLearnMoreWebView() {
+    @objc private func showLearnMoreWebView() {
         guard let urlLink = URL(string: learnMoreURL) else {
             return
         }
