@@ -75,7 +75,7 @@ class AADAuthHandler {
     func login(presentingVc: UIViewController) async throws -> UserDetails {
         // Attempt silent login with existing account, falling back to interactive.
         var result: MSALResult?
-        if let account = try await loadMsalAccount() {
+        if let account = try? await loadMsalAccount() {
             result = try? await loginSilently(account: account)
         }
 
@@ -131,6 +131,7 @@ class AADAuthHandler {
             let msalParameters = MSALParameters()
             applicationContext.getCurrentAccount(with: msalParameters) { currentAccount, _, error in
                 if let err = error {
+                    print("Error loading MSAL account: \(err.localizedDescription)")
                     continuation.resume(throwing: err)
                 } else {
                     continuation.resume(returning: currentAccount)
