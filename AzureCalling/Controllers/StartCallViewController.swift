@@ -13,6 +13,7 @@ class StartCallViewController: UIViewController {
 
     // MARK: Properties
     var callingContext: CallingContext!
+    var displayName: String?
 
     private var contentView: UIView!
     private var displayNameStackView: UIStackView!
@@ -52,12 +53,15 @@ class StartCallViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Set up any developer overrides from the AppConfig.xcconfig file
-        let appSettings = AppSettings()
-        if displayNameTextField.text?.isEmpty ?? true,
-            !appSettings.displayName.isEmpty {
-            displayNameTextField.text = appSettings.displayName
-        } else {
+        if displayNameTextField.text?.isEmpty ?? true {
+            displayNameTextField.text = displayName ?? ""
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if displayNameTextField.text?.isEmpty ?? true {
             displayNameTextField.becomeFirstResponder()
         }
     }
