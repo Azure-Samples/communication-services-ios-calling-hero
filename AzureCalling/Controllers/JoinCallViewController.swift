@@ -189,7 +189,7 @@ class JoinCallViewController: UIViewController {
             return
         }
         let callConfig = JoinCallConfig(joinId: joinId, displayName: displayName ?? "", callType: joinCallType)
-        busyOverlay.presentIn(view: view)
+        busyOverlay.present()
         await self.callingContext.startCallComposite(callConfig)
         self.busyOverlay.hide()
     }
