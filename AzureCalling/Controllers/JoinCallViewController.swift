@@ -64,12 +64,12 @@ class JoinCallViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        if displayNameField.text?.isEmpty ?? true {
+            displayNameField.text = displayName ?? ""
+        }
+
         // Set up any developer overrides from the AppConfig.xcconfig file
         let appSettings = AppSettings()
-        if displayNameField.text?.isEmpty ?? true,
-            !appSettings.displayName.isEmpty {
-            displayNameField.text = appSettings.displayName
-        }
         if let teamsUrl = appSettings.teamsUrl,
             isValidTeamsUrl(url: teamsUrl) {
             callTypeSelector.selectedSegmentIndex = JoinCallType.teamsMeeting.rawValue
@@ -189,7 +189,7 @@ class JoinCallViewController: UIViewController {
             return
         }
         let callConfig = JoinCallConfig(joinId: joinId, displayName: displayName ?? "", callType: joinCallType)
-        busyOverlay.presentIn(view: view)
+        busyOverlay.present()
         await self.callingContext.startCallComposite(callConfig)
         self.busyOverlay.hide()
     }

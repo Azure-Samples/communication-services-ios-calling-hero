@@ -36,8 +36,8 @@ class AppSettings {
         return settings["aadScopes"] as! [String]
     }
 
-    var displayName: String {
-        return settings["displayName"] as? String ?? ""
+    var displayName: String? {
+        return settings["displayName"] as? String
     }
 
     var teamsUrl: URL? {

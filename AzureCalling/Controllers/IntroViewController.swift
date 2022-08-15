@@ -199,7 +199,7 @@ class IntroViewController: UIViewController {
         }
 
         if showBusy {
-            busyOverlay.presentIn(view: view)
+            busyOverlay.present()
             signinButton.isEnabled = false
         } else {
             busyOverlay.hide()
@@ -251,7 +251,7 @@ class IntroViewController: UIViewController {
         Task {
             do {
                 signinButton.isEnabled = false
-                busyOverlay.presentIn(view: view)
+                busyOverlay.present()
                 userDetails = try await authHandler.login(presentingVc: self)
             } catch {
                 print(error)
@@ -272,7 +272,7 @@ class IntroViewController: UIViewController {
         Task {
             do {
                 signOutButton.isEnabled = false
-                busyOverlay.presentIn(view: view)
+                busyOverlay.present()
                 try await authHandler.signOut(presentingVc: self)
             } catch {
                 print("MSAL couldn't sign out account with error: \(error)")
@@ -286,15 +286,18 @@ class IntroViewController: UIViewController {
     private func joinCall() {
         let joinCallVc = JoinCallViewController()
         joinCallVc.callingContext = createCallingContextFunction()
-        let appSettings = AppSettings()
-        joinCallVc.displayName = userDetails?.userProfile?.displayName ?? appSettings.displayName
-
+        joinCallVc.displayName = displayName()
         navigationController?.pushViewController(joinCallVc, animated: true)
     }
 
     private func startCall() {
         let startCallVc = StartCallViewController()
         startCallVc.callingContext = createCallingContextFunction()
+        startCallVc.displayName = displayName()
         navigationController?.pushViewController(startCallVc, animated: true)
+    }
+
+    private func displayName() -> String? {
+        return userDetails?.userProfile?.displayName ?? AppSettings().displayName
     }
 }

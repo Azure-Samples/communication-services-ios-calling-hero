@@ -104,7 +104,7 @@ class InviteViewController: UIViewController {
 
     // MARK: Action Handling
     private func onShareButtonTapped() {
-        busyOverlay.presentIn(view: view)
+        busyOverlay.present()
         let image = UIImage(named: "ic_fluent_key_20_regular")
         let objectsToShare: [Any] = [LinkMetadataManager(title: "Group call ID",
                                               text: groupCallId ?? "",
@@ -132,7 +132,7 @@ class InviteViewController: UIViewController {
     private func onContinueButtonTapped() {
         Task { @MainActor in
             let callConfig = JoinCallConfig(joinId: groupCallId, displayName: displayName ?? "", callType: .groupCall)
-            busyOverlay.presentIn(view: view)
+            busyOverlay.present()
             await self.callingContext.startCallComposite(callConfig)
             self.busyOverlay.hide()
         }

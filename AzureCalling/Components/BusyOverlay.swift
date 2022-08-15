@@ -47,6 +47,24 @@ class BusyOverlay: UIView {
 }
 
 extension BusyOverlay {
+
+    func present(animated: Bool = true) {
+        guard superview == nil else {
+            setVisible(visible: true, animated: animated)
+            return
+        }
+
+        let appKeyWindow = UIApplication.shared.connectedScenes
+            .flatMap({ ($0 as? UIWindowScene)?.windows ?? [] })
+            .first { $0.isKeyWindow }
+
+        guard let view = appKeyWindow else {
+            print("Error: No top level view to present in!")
+            return
+        }
+        presentIn(view: view, animated: animated)
+    }
+
     func presentIn(view: UIView, animated: Bool = true) {
         guard superview == nil else {
             setVisible(visible: true, animated: animated)
