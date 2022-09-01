@@ -3,27 +3,36 @@
 //  Licensed under the MIT License.
 //
 
+import FluentUI
 import UIKit
 
-let learnMoreURL = "https://aka.ms/ACS-CallingSample-iOS"
+let learnMoreURL = "https://aka.ms/acs"
 
 class IntroViewController: UIViewController {
 
     // MARK: Properties
-
     var authHandler: AADAuthHandler!
     var createCallingContextFunction: (() -> CallingContext)!
 
-    // MARK: IBOutlets
+    private var userDetails: UserDetails?
 
-    @IBOutlet weak var signOutButton: UIButton!
-    @IBOutlet weak var loginButton: UIRoundedButton!
-    @IBOutlet weak var startCallButton: UIRoundedButton!
-    @IBOutlet weak var joinCallButton: UIRoundedButton!
+    private var signinButton: FluentUI.Button!
+    private var startCallButton: FluentUI.Button!
+    private var joinCallButton: FluentUI.Button!
+    private var signOutButton: FluentUI.Button!
+    private var topBar: UIView!
+    private var userAvatar: MSFAvatar!
+    private var userDisplayName: FluentUI.Label!
+    private let busyOverlay = BusyOverlay(frame: .zero)
 
+    // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupAuthAndUI()
+        view.backgroundColor = FluentUI.Colors.surfaceSecondary
+        createControls()
+        layoutView()
+
+        handleAuthState()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,81 +45,178 @@ class IntroViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    // MARK: Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-
-        switch segue.identifier {
-        case "StartNewCall":
-            prepareStartCall(destination: segue.destination)
-        case "JoinCall":
-            prepareJoinCall(destination: segue.destination)
-        default:
-            fatalError("Unexpected Segue Identifier: \(segue.identifier ?? "")")
-        }
-    }
-
-    private func prepareStartCall(destination: UIViewController) {
-        guard let lobbyViewController = destination as? LobbyViewController else {
-            fatalError("Unexpected destination: \(destination)")
-        }
-
-        lobbyViewController.callingContext = createCallingContextFunction()
-
-    }
-
-    private func prepareJoinCall(destination: UIViewController) {
-        guard let joinCallViewController = destination as? JoinCallViewController else {
-            fatalError("Unexpected destination: \(destination)")
-        }
-
-        joinCallViewController.createCallingContextFunction = createCallingContextFunction
-    }
-
     // MARK: UI layout
+    private func createControls() {
+        signinButton = FluentUI.Button.createWith(
+            style: .primaryFilled,
+            title: "Sign in",
+            action: { [weak self] _ in self?.loginAAD() }
+        )
+        signinButton.setTitle("Signing in...", for: .disabled)
 
-    private func setupAuthAndUI() {
-        authHandler.loadAccountAndSilentlyLogin(from: self) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.layoutButton()
-        }
+        startCallButton = FluentUI.Button.createWith(
+            style: .primaryFilled,
+            title: "Start a call",
+            action: { [weak self] _ in self?.startCall() }
+        )
+        joinCallButton = FluentUI.Button.createWith(
+            style: .primaryOutline,
+            title: "Join a call",
+            action: { [weak self] _ in self?.joinCall() }
+        )
+        signOutButton = FluentUI.Button.createWith(
+            style: .borderless,
+            title: "Sign out",
+            action: { [weak self] _ in self?.showSignOutAlert() }
+        )
     }
 
-    private func layoutButton() {
+    private func layoutView() {
+        layoutButtons()
+        layoutMainContainer()
+        layoutTopBar()
+    }
+
+    private func layoutButtons() {
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                signinButton,
+                startCallButton,
+                joinCallButton
+            ]
+        )
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        view.addSubview(stackView)
+        signinButton.expandHorizontallyInSuperView()
+        startCallButton.expandHorizontallyInSuperView()
+        joinCallButton.expandHorizontallyInSuperView()
+        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
+        stackView.pinToBottom(withMargin: 16)
+    }
+
+    private func layoutMainContainer() {
+        let titleLabel = FluentUI.Label.createWith(style: .title1,
+                                                   colorStyle: .regular,
+                                                   value: "Video calling sample")
+
+        let builtWithLabel = FluentUI.Label.createWith(style: .body,
+                                                       colorStyle: .regular,
+                                                       value: "Built with")
+        builtWithLabel.directionalLayoutMargins.top = 24
+
+        let acsImageLabel = FluentUI.Label.createWith(style: .button1,
+                                                      colorStyle: .primary,
+                                                      value: "Azure Communication Services")
+
+        let acsLabelStack = UIStackView(arrangedSubviews: [
+            UIImageView(image: UIImage(named: "acsLogo")),
+            acsImageLabel
+        ])
+        acsLabelStack.spacing = 8
+
+        let labelContainer = UIView()
+        labelContainer.translatesAutoresizingMaskIntoConstraints = false
+        labelContainer.addSubview(builtWithLabel)
+        labelContainer.addSubview(acsLabelStack)
+        builtWithLabel.centerHorizontallyInContainer()
+        acsLabelStack.centerHorizontallyInContainer()
+
+        labelContainer.layer.cornerRadius = 12
+        labelContainer.backgroundColor = FluentUI.Colors.surfaceTertiary
+        NSLayoutConstraint.activate(
+            NSLayoutConstraint.constraints(
+                withVisualFormat: "V:|-24-[builtWith]-[labelStack]-24-|",
+                metrics: nil,
+                views: ["builtWith": builtWithLabel,
+                        "labelStack": acsLabelStack]
+            )
+        )
+
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, labelContainer])
+        labelContainer.expandHorizontallyInSuperView()
+        labelContainer.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.showLearnMoreWebView)
+            )
+        )
+
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 32
+        view.addSubview(stackView)
+
+        stackView.expandHorizontallyInSuperView(withEqualMargin: 16)
+        stackView.centerVerticallyInContainer()
+    }
+
+    private func layoutTopBar() {
+        let container = UIView()
+        topBar = container
+        view.addSubview(container)
+        topBar.pinToTop()
+        topBar.expandHorizontallyInSuperView()
+        topBar.addSubview(signOutButton)
+        signOutButton.expandVerticallyInSuperView()
+        signOutButton.pinToRight()
+
+        userAvatar = MSFAvatar(style: .default, size: .small)
+        userDisplayName = FluentUI.Label.createWith(style: .body,
+                                                    colorStyle: .regular)
+        let userDetails = UIStackView(arrangedSubviews: [
+            userAvatar.view,
+            userDisplayName
+        ])
+        topBar.addSubview(userDetails)
+        userDetails.spacing = 8
+        userDetails.centerVerticallyInContainer()
+        userDetails.pinToLeft(withMargin: 16)
+    }
+
+    // MARK: - Authentication State Handling
+    private func handleAuthState() {
+        userAvatar.state.image = userDetails?.avatar
+        userAvatar.state.primaryText = userDetails?.userProfile?.displayName
+        userDisplayName.text = userDetails?.userProfile?.displayName
+        var showBusy = false
+
         switch authHandler.authStatus {
         case .authorized:
-            hideLoginButtonAndDisplayCallingButton()
-            showSignOutButton()
-        case .noAuthRequire:
-            hideLoginButtonAndDisplayCallingButton()
-            hideSignOutButton()
-        case .waitingAuth:
-            showLoginButtonAndHideCallingButton()
-            hideSignOutButton()
+            hideLoginButtonAndDisplayCallingButtons()
+            topBar.isHidden = false
+
+        case .noAuthRequired:
+            hideLoginButtonAndDisplayCallingButtons()
+            topBar.isHidden = true
+
+        case .unauthorized:
+            topBar.isHidden = true
+            showLoginButtonAndHideCallingButtons()
+
+        case .authorizing:
+            showBusy = true
+        }
+
+        if showBusy {
+            busyOverlay.present()
+            signinButton.isEnabled = false
+        } else {
+            busyOverlay.hide()
+            signinButton.isEnabled = true
         }
     }
 
-    private func hideLoginButtonAndDisplayCallingButton() {
-        loginButton.isHidden = true
+    private func hideLoginButtonAndDisplayCallingButtons() {
+        signinButton.isHidden = true
         startCallButton.isHidden = false
         joinCallButton.isHidden = false
     }
 
-    private func showLoginButtonAndHideCallingButton() {
-        loginButton.isHidden = false
+    private func showLoginButtonAndHideCallingButtons() {
+        signinButton.isHidden = false
         startCallButton.isHidden = true
         joinCallButton.isHidden = true
-    }
-
-    private func showSignOutButton() {
-        signOutButton.isHidden = false
-    }
-
-    private func hideSignOutButton() {
-        signOutButton.isHidden = true
     }
 
     private func showSignOutAlert() {
@@ -123,16 +229,16 @@ class IntroViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Yes",
                                       style: .default,
                                       handler: { [weak self] _ in
-                                        guard let self = self else {
-                                            return
-                                        }
-                                        self.signOutAAD()
-                                      }))
+            guard let self = self else {
+                return
+            }
+            self.signOutAAD()
+        }))
 
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func showLearnMoreWebView() {
+    @objc private func showLearnMoreWebView() {
         guard let urlLink = URL(string: learnMoreURL) else {
             return
         }
@@ -140,41 +246,58 @@ class IntroViewController: UIViewController {
         UIApplication.shared.open(urlLink)
     }
 
-    // MARK: Private Functions
-
+    // MARK: Action Handling
     private func loginAAD() {
-        authHandler.acquireTokenInteractively(from: self) { [weak self] in
-            guard let self = self else {
-                return
+        Task {
+            do {
+                signinButton.isEnabled = false
+                busyOverlay.present()
+                userDetails = try await authHandler.login(presentingVc: self)
+            } catch {
+                print(error)
+                handleError(message: error.localizedDescription)
             }
-            self.layoutButton()
+            handleAuthState()
         }
+    }
+
+    private func handleError(message: String) {
+        let notification = FluentUI.NotificationView()
+        notification.setup(style: .dangerToast, message: message)
+        notification.show(in: view)
+        notification.hide(after: 5, animated: true, completion: nil)
     }
 
     private func signOutAAD() {
-        authHandler.signOutCurrentAccount(from: self) { [weak self] in
-            guard let self = self else {
-                return
+        Task {
+            do {
+                signOutButton.isEnabled = false
+                busyOverlay.present()
+                try await authHandler.signOut(presentingVc: self)
+            } catch {
+                print("MSAL couldn't sign out account with error: \(error)")
+                handleError(message: error.localizedDescription)
             }
-            self.layoutButton()
+            signOutButton.isEnabled = true
+            handleAuthState()
         }
     }
 
-    // MARK: Actions
-
-    @IBAction func unwindToStart(sender: UIStoryboardSegue) {
-        // Allow segue unwind
+    private func joinCall() {
+        let joinCallVc = JoinCallViewController()
+        joinCallVc.callingContext = createCallingContextFunction()
+        joinCallVc.displayName = displayName()
+        navigationController?.pushViewController(joinCallVc, animated: true)
     }
 
-    @IBAction func loginButtonPressed(_ sender: UIButton) {
-        loginAAD()
+    private func startCall() {
+        let startCallVc = StartCallViewController()
+        startCallVc.callingContext = createCallingContextFunction()
+        startCallVc.displayName = displayName()
+        navigationController?.pushViewController(startCallVc, animated: true)
     }
 
-    @IBAction func signOutButtonPressed(_ sender: UIButton) {
-        showSignOutAlert()
-    }
-
-    @IBAction func learnMoreLinkPressed(_ sender: UITapGestureRecognizer) {
-        showLearnMoreWebView()
+    private func displayName() -> String? {
+        return userDetails?.userProfile?.displayName ?? AppSettings().displayName
     }
 }

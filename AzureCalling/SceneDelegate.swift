@@ -3,31 +3,37 @@
 //  Licensed under the MIT License.
 //
 
-import UIKit
+import FluentUI
 import MSAL
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard (scene as? UIWindowScene) != nil else {
+        guard let winScene = scene as? UIWindowScene else {
             return
         }
 
-        // Inject dependencies to IntroViewController
+        window = UIWindow(windowScene: winScene)
+        window?.rootViewController = setupNavigationController()
+
         if let navigationViewController = window?.rootViewController as? UINavigationController,
-           let introViewController = navigationViewController.visibleViewController as? IntroViewController,
+           let rootVc = navigationViewController.visibleViewController as? IntroViewController,
            let appDelegate = UIApplication.shared.delegate as? AppDelegate {
 
-            introViewController.authHandler = appDelegate.authHandler
-            introViewController.createCallingContextFunction = { () -> CallingContext in
+            rootVc.authHandler = appDelegate.authHandler
+            rootVc.createCallingContextFunction = { () -> CallingContext in
                 return CallingContext(tokenFetcher: appDelegate.tokenService.getCommunicationToken)
             }
         }
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -76,4 +82,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         MSALPublicClientApplication.handleMSALResponse(url, sourceApplication: sourceApp)
     }
 
+    private func setupNavigationController() -> UIViewController {
+        let fluentNavVc = PortraitOnlyNavController(rootViewController: IntroViewController())
+        fluentNavVc.view.backgroundColor = FluentUI.Colors.surfaceSecondary
+        fluentNavVc.view.tintColor = FluentUI.Colors.iconPrimary
+        fluentNavVc.navigationBar.topItem?.backButtonDisplayMode = .minimal
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = FluentUI.Colors.surfaceSecondary
+        appearance.titleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
+        appearance.largeTitleTextAttributes = [.foregroundColor: FluentUI.Colors.textPrimary]
+
+        fluentNavVc.navigationBar.standardAppearance = appearance
+        fluentNavVc.navigationBar.scrollEdgeAppearance = appearance
+        return fluentNavVc
+    }
+}
+
+class PortraitOnlyNavController: FluentUI.UINavigationController {
+
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override var shouldAutorotate: Bool { false }
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation { .portrait }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
 }
