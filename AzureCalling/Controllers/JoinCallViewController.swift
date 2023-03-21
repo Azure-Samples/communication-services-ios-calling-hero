@@ -162,8 +162,8 @@ class JoinCallViewController: UIViewController {
             // Have a valid display name
             await navigateToCall()
         } else {
-            let notification = FluentUI.NotificationView()
-            notification.setup(style: .dangerToast, message: "Display name is missing")
+            let notification = FluentUI.MSFNotification(style: .dangerToast)
+            notification.state.message = "Display name is missing"
             notification.show(in: contentView)
             notification.hide(after: kToastTimeout, animated: true, completion: nil)
         }
@@ -177,8 +177,8 @@ class JoinCallViewController: UIViewController {
         case .teamsMeeting:
             alertMessage = value.isEmpty ? "Teams link required" : "We can't find that meeting\nCheck the link and try again"
         }
-        let notification = FluentUI.NotificationView()
-        notification.setup(style: .dangerToast, message: alertMessage)
+        let notification = FluentUI.MSFNotification(style: .dangerToast)
+        notification.state.message = alertMessage
         notification.show(in: contentView)
         notification.hide(after: kToastTimeout, animated: true, completion: nil)
     }

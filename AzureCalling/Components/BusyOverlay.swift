@@ -34,9 +34,9 @@ class BusyOverlay: UIView {
 
         containerView.fixHeightTo(height: 100)
         containerView.fixWidthTo(width: 100)
-        containerView.addSubview(activityIndicator.view)
-        activityIndicator.view.centerVerticallyInContainer()
-        activityIndicator.view.centerHorizontallyInContainer()
+        containerView.addSubview(activityIndicator)
+        activityIndicator.centerVerticallyInContainer()
+        activityIndicator.centerHorizontallyInContainer()
 
         addSubview(containerView)
         containerView.centerVerticallyInContainer()
