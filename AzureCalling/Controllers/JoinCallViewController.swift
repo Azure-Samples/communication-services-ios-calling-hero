@@ -73,10 +73,10 @@ class JoinCallViewController: UIViewController {
         if let teamsUrl = appSettings.teamsUrl,
             isValidTeamsUrl(url: teamsUrl) {
             callTypeSelector.selectedSegmentIndex = JoinCallType.teamsMeeting.rawValue
-            handleSegmentChanged(action: UIAction(title: teamsUrl.absoluteString, handler: { _ in }) )
+            handleSegmentChanged(title: teamsUrl.absoluteString, index: callTypeSelector.selectedSegmentIndex)
         } else if let groupCallUuid = appSettings.groupCallUuid {
             callTypeSelector.selectedSegmentIndex = JoinCallType.groupCall.rawValue
-            handleSegmentChanged(action: UIAction(title: groupCallUuid.uuidString, handler: { _ in }) )
+            handleSegmentChanged(title: groupCallUuid.uuidString, index: callTypeSelector.selectedSegmentIndex)
         }
     }
 
@@ -162,8 +162,8 @@ class JoinCallViewController: UIViewController {
             // Have a valid display name
             await navigateToCall()
         } else {
-            let notification = FluentUI.NotificationView()
-            notification.setup(style: .dangerToast, message: "Display name is missing")
+            let notification = MSFNotification(style: .dangerToast)
+            notification.state.message = "Display name is missing"
             notification.show(in: contentView)
             notification.hide(after: kToastTimeout, animated: true, completion: nil)
         }
@@ -177,8 +177,8 @@ class JoinCallViewController: UIViewController {
         case .teamsMeeting:
             alertMessage = value.isEmpty ? "Teams link required" : "We can't find that meeting\nCheck the link and try again"
         }
-        let notification = FluentUI.NotificationView()
-        notification.setup(style: .dangerToast, message: alertMessage)
+        let notification = MSFNotification(style: .dangerToast)
+        notification.state.message = alertMessage
         notification.show(in: contentView)
         notification.hide(after: kToastTimeout, animated: true, completion: nil)
     }
@@ -195,11 +195,11 @@ class JoinCallViewController: UIViewController {
     }
 
     // MARK: User interaction handling
-    private func handleSegmentChanged(action: UIAction) {
-        if let callType = JoinCallType(rawValue: callTypeSelector.selectedSegmentIndex) {
+    private func handleSegmentChanged(title: String, index: Int) {
+        if let callType = JoinCallType(rawValue: index) {
             joinCallType = callType
             typeTitle.colorStyle = .secondary
-            joinIdTextField.text = action.title
+            joinIdTextField.text = title
             switch callType {
             case .groupCall:
                 typeTitle.text = "Group call"
@@ -295,7 +295,9 @@ private extension JoinCallViewController {
             SegmentItem(title: "Teams meeting")
         ])
         callTypeSelector.backgroundColor = FluentUI.Colors.surfaceSecondary
-        callTypeSelector.addAction(UIAction(handler: handleSegmentChanged), for: .valueChanged)
+        callTypeSelector.onSelectAction = {[weak self] (selectedItem, index) in
+            self?.handleSegmentChanged(title: selectedItem.title, index: index)
+        }
     }
 
     func createNextButton() -> UIView {
