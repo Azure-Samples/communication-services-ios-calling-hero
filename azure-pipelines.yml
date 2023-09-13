@@ -20,7 +20,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'build'
-    scheme: ''
+    scheme: 'AzureCalling'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcWorkspacePath: 'AzureCalling.xcworkspace'
