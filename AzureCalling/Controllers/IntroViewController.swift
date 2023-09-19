@@ -161,11 +161,11 @@ class IntroViewController: UIViewController {
         signOutButton.expandVerticallyInSuperView()
         signOutButton.pinToRight()
 
-        userAvatar = MSFAvatar(style: .default, size: .small)
+        userAvatar = MSFAvatar(style: .default, size: .size24)
         userDisplayName = FluentUI.Label.createWith(style: .body,
                                                     colorStyle: .regular)
         let userDetails = UIStackView(arrangedSubviews: [
-            userAvatar.view,
+            userAvatar,
             userDisplayName
         ])
         topBar.addSubview(userDetails)
@@ -262,8 +262,8 @@ class IntroViewController: UIViewController {
     }
 
     private func handleError(message: String) {
-        let notification = FluentUI.NotificationView()
-        notification.setup(style: .dangerToast, message: message)
+        let notification = MSFNotification(style: .dangerToast)
+        notification.state.message = message
         notification.show(in: view)
         notification.hide(after: 5, animated: true, completion: nil)
     }
