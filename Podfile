@@ -3,7 +3,7 @@ use_frameworks!
 
 target 'AzureCalling' do
 
-pod 'AzureCommunicationUICalling', '1.4.0'
+pod 'AzureCommunicationUICalling', '1.5.0'
 pod 'MicrosoftFluentUI/Notification_ios', '0.10.0'
 pod 'MicrosoftFluentUI/SegmentedControl_ios', '0.10.0'
 pod 'MSAL', '1.2.2'
