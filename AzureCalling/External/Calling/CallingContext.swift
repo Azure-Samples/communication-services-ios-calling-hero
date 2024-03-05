@@ -54,7 +54,7 @@ final class CallingContext {
 
     @MainActor
     func startCallComposite(_ joinConfig: JoinCallConfig) async {
-        let callCompositeOptions = CallCompositeOptions()
+        let callCompositeOptions = CallCompositeOptions(enableMultitasking: true, enableSystemPictureInPictureWhenMultitasking: true)
         self.callComposite = CallComposite(withOptions: callCompositeOptions)
 
         let joinIdStr = joinConfig.joinId?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
