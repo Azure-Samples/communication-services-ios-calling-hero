@@ -13,7 +13,6 @@ The sample is a native iOS application that uses the Azure Communication Service
 
 Additional documentation for this sample can be found on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/communication-services/samples/calling-hero-sample?pivots=platform-ios). See this sample's wiki to see updated information on [known issues](https://github.com/Azure-Samples/communication-services-ios-calling-hero/wiki/Known-Issues)
 
-
 ## Features
 
 - Start a new group call
@@ -24,6 +23,10 @@ Additional documentation for this sample can be found on [Microsoft Docs](https:
 - Mute/unmute local microphone audio
 
 ![Homepage](./docs/images/landing-page-ios.png)
+
+## ❤️ Feedback
+
+We appreciate your feedback and energy helping us improve our services. [If you've tried the service, please give us feedback through this survey](https://microsoft.qualtrics.com/jfe/form/SV_9WTOR2ItSo0oFee). 
 
 ## Prerequisites
 
